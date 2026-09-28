@@ -70,10 +70,10 @@ preference:
   template), restyle the `<details>` disclosure's panel into that overlay —
   same backdrop/panel colors, item typography and spacing, submenu treatment,
   and a close control matching the source's — keeping it details-based with
-  no JS infrastructure forked (a second `<summary>` styled as the X is the
-  close control; Chromium does not natively toggle non-first summaries, so a
-  tiny UI-module enhancement provides the close, Esc-to-close, exit fade, and
-  focus return).
+  no JS infrastructure forked (a `<summary>` styled as the X, placed inside
+  the panel's top strip, is the close control; Chromium does not natively
+  toggle non-first summaries, so a tiny UI-module enhancement provides the
+  close, Esc-to-close, exit fade, and focus return).
 - Pair all equivalent routes in `translations.json` (distinct slugs per
   locale are fine). `check:links` counts `<link rel="alternate" hreflang>`
   targets, so a pair whose pages are not all built yet fails the build — add
