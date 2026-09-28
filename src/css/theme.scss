@@ -97,7 +97,6 @@
     padding: 10px 20px;
     border: 1px solid #FFAE00;
     border-radius: 4px;
-
     font-size: 0.9375rem;
 
     .callout__icon {
@@ -107,12 +106,22 @@
 }
 
 // The live page-top banners span the full content container, not the narrow
-// prose column the callout block uses.
-.design-system section:has(> .container-narrow > .callout--warning) > .container-narrow {
+// prose column the callout block uses. The TrumpAccounts.gov warning cards on
+// the signup pages use the same full-width treatment on the live site.
+// Below the banner the live site flows straight into the breadcrumb trail, so
+// the banner section keeps no bottom padding of its own.
+.design-system section:has(> .container-narrow > .callout--warning) > .container-narrow,
+.design-system section:has(> .container-narrow > .callout--info) > .container-narrow {
   max-width: 1200px;
 
   @media (width >= 48rem) {
     padding-inline: 32px;
+  }
+}
+
+.design-system section:has(> .container-narrow > .callout--warning) {
+  @media (width >= 48rem) {
+    padding-bottom: 8px;
   }
 }
 
@@ -124,7 +133,6 @@
   position: sticky;
   z-index: 500;
   top: 0;
-
   background: #011E29;
 
   // Live header content sits in the same centered container as the page
@@ -242,7 +250,10 @@
 
 // ---------------------------------------------------------------------------
 // Split layouts used as page heroes: the live heroes sit directly on the cream
-// page background with a bare rounded image, no panel fills.
+// page background with a bare rounded image, no panel fills. The live hero
+// photo fills its half of a ~48px-gutter split (about half the 1200px
+// container), so the media transform's intrinsic-width cap is countermanded
+// here and the default 96px split gutter is halved.
 // ---------------------------------------------------------------------------
 .design-system .split {
   .left,
@@ -265,7 +276,12 @@
     width: fit-content;
   }
 
+  > figure {
+    border: none;
+  }
+
   .image-wrapper {
+    max-width: 100% !important;
     border-radius: 16px;
   }
 
@@ -275,11 +291,55 @@
     padding: 24px;
     background: #FFF;
   }
+
+  @media (width >= 48rem) {
+    gap: 48px;
+  }
+}
+
+// Inner-page (compact) heroes are tighter vertically on the live site than
+// the template's compact section padding (~40-50px above and below the photo
+// versus 64px); the home hero keeps the default 96px section padding.
+.design-system section.compact:has(> .container-wide > .split) {
+  @media (width >= 48rem) {
+    --section-padding-y: 48px;
+  }
 }
 
 // The homepage hero H1 is larger than inner-page heroes on the live site.
 body.design-system:has(.block-columns-2) .split h1 {
   font-size: 3rem;
+}
+
+// ---------------------------------------------------------------------------
+// Live page backgrounds: the source site has no alternating band colors —
+// every section sits on the cream page background (the FAQ list on white, the
+// CTA band on navy), so the template's even-section striping is switched off.
+// ---------------------------------------------------------------------------
+.design-system > section:nth-child(even),
+.design-system main > section:nth-child(even) {
+  background: var(--color-bg);
+}
+
+// The breadcrumb trail renders as main's first child, but the live site shows
+// it below the page-top banner (banner → breadcrumb → hero). Order the
+// banner first and the trail second so the visual order matches without
+// moving the include out of main.
+.design-system main#content {
+  display: flex;
+  flex-direction: column;
+
+  > * {
+    order: 3;
+  }
+
+  > section:has(> .container-narrow > .callout--warning) {
+    order: 1;
+  }
+
+  > nav:has(> ol.breadcrumbs) {
+    order: 2;
+  }
 }
 
 // ---------------------------------------------------------------------------
@@ -340,9 +400,14 @@ body.design-system:has(.block-columns-2) .split h1 {
 }
 
 // ---------------------------------------------------------------------------
-// CTA band: solid navy with cream text and a white button.
+// CTA band: solid navy, edge-to-edge with square corners like the live band
+// (the template renders it as a rounded card inside the content container),
+// with tight section spacing above and below.
 // ---------------------------------------------------------------------------
 .design-system .cta {
+  margin-inline: calc(50% - 50vw);
+  padding-inline: calc(50vw - 50%);
+  border-radius: 0;
   background: #011E29;
 
   .btn--primary {
@@ -356,25 +421,22 @@ body.design-system:has(.block-columns-2) .split h1 {
   }
 }
 
-// ---------------------------------------------------------------------------
-// FAQs: question rows separated by hairlines, like the live accordion list.
-// ---------------------------------------------------------------------------
-.design-system .faqs {
-  dt {
-    padding: 16px 0;
-    border-bottom: 1px solid rgb(1 30 41 / 15%);
-    font-weight: 700;
-  }
-
-  dd {
-    margin-bottom: 16px;
-  }
+.design-system section:has(> .container-wide > .cta) {
+  padding-top: 48px;
+  padding-bottom: 8px;
 }
 
-// The FAQ list is the page's last section; the live equivalent sits on the
-// plain page background rather than the alternating fill.
+// The FAQ list renders as collapsed accordions on a white, edge-to-edge
+// section with tight top spacing — the live accordion list sits on white with
+// the rows' own 18px padding supplying the rhythm.
 .design-system section:has(> .container-wide > .faqs) {
-  background: var(--color-bg);
+  padding-top: 8px;
+  padding-bottom: 40px;
+  background: var(--color-card-bg);
+
+  @media (width >= 48rem) {
+    padding-bottom: 80px;
+  }
 }
 
 // ---------------------------------------------------------------------------
