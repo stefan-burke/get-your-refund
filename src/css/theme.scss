@@ -205,23 +205,86 @@
       }
     }
 
-    &[open] summary {
+    &[open] summary.gyr-menu-button {
       color: #E8FDF7;
     }
 
-    .gyr-menu-panel {
-      position: absolute;
-      z-index: 600;
-      top: calc(100% + 12px);
+    // Close toggle for the open overlay: white square in the navy strip's
+    // top-right corner holding the legacy popup's crossed-lines X
+    // (93-unit viewBox stroked #011E29, rendered at 30px).
+    summary.gyr-menu-close {
+      cursor: pointer;
+
+      position: fixed;
+      z-index: 610;
+      top: 0;
       right: 0;
 
-      min-width: 300px;
-      padding: 8px 0;
-      border: 1px solid rgb(1 30 41 / 15%);
-      border-radius: 10px;
+      display: none;
+      align-items: center;
+      justify-content: center;
+
+      width: 70px;
+      height: 72px;
+
+      list-style: none;
+
+      background: #FFF;
+
+      &::-webkit-details-marker {
+        display: none;
+      }
+
+      &:focus-visible {
+        outline: 2px solid #011E29;
+        outline-offset: -4px;
+      }
+    }
+
+    &[open] summary.gyr-menu-close {
+      display: flex;
+    }
+
+    // Full-screen overlay mirroring the legacy Elementor popup (template
+    // 194 en / 1492 es): transparent backdrop, navy strip across the top,
+    // cream panel (500px, right-aligned) filling the rest, fadeIn 0.3s.
+    .gyr-menu-panel {
+      position: fixed;
+      z-index: 600;
+      inset: 0;
+
+      display: none;
+      flex-direction: column;
+      align-items: flex-end;
+
+      background: transparent;
+
+      &::before {
+        content: "";
+
+        flex: none;
+        align-self: flex-end;
+
+        width: min(1000px, 100%);
+        height: 72px;
+
+        background: #011E29;
+      }
+    }
+
+    &[open] .gyr-menu-panel {
+      display: flex;
+      animation: gyr-menu-fade 0.3s ease;
+    }
+
+    .gyr-menu-body {
+      overflow-y: auto;
+      flex: 1 1 auto;
+
+      width: 500px;
+      padding-bottom: 100px;
 
       background: #FFFFF5;
-      box-shadow: var(--shadow-md);
 
       ul {
         margin: 0;
@@ -229,20 +292,137 @@
         list-style: none;
       }
 
-      li ul {
-        padding-left: 20px;
+      > ul > li:not(:last-child) {
+        border-bottom: 1px solid #011E29;
       }
 
       a {
-        display: block;
-        padding: 10px 20px;
+        position: relative;
+
+        display: flex;
+        align-items: center;
+
+        width: 100%;
+        padding: 24px 50px;
+
+        font-family: Geologica, sans-serif;
+        font-size: 18px;
+        font-weight: 700;
+        line-height: 20px;
         color: #011E29;
         text-decoration: none;
 
-        &:hover {
-          color: #011E29;
-          background: #E8FDF7;
+        &:focus-visible {
+          outline: 2px solid #011E29;
+          outline-offset: -2px;
         }
+      }
+
+      // Current-page marker: the live popup pins a 12px green dot left of
+      // the row (and on hover), like its circle.svg ornament.
+      li.current > a::before,
+      li > a:hover::before {
+        content: "";
+
+        position: absolute;
+        top: 27px;
+        left: 32px;
+
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+
+        background: #008817;
+      }
+
+      .sub-menu {
+        padding-bottom: 24px;
+
+        li {
+          padding-bottom: 16px;
+
+          &:not(:last-child) {
+            border-bottom: none;
+          }
+        }
+
+        a {
+          display: block;
+
+          padding: 0 0 0 51px;
+
+          font-family: Inter, sans-serif;
+          font-size: 18px;
+          font-weight: 400;
+        }
+      }
+
+      .sub-menu li.current > a::before,
+      .sub-menu li > a:hover::before {
+        top: calc(50% - 6px);
+      }
+    }
+  }
+}
+
+// Exit fade (matches the legacy popup's 0.3s fadeIn exit) driven by
+// ui/gyr-menu.js before it unsets `open`.
+details.gyr-menu.gyr-menu-closing {
+  .gyr-menu-panel,
+  .gyr-menu-close {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+}
+
+// The legacy popup locks page scroll while open.
+body:has(details.gyr-menu[open]) {
+  overflow: hidden;
+}
+
+@keyframes gyr-menu-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@media (width < 48rem) {
+  .design-system nav.site-nav.gyr-header details.gyr-menu {
+    // Mobile: the legacy popup leaves the site header (logo, language link)
+    // visible — its navy strip is only a small tab behind the close box, so
+    // size it to the 66px header band and let it disappear against the navy.
+    summary.gyr-menu-close {
+      width: 80px;
+      height: 66px;
+    }
+
+    .gyr-menu-panel::before {
+      width: 100px;
+      height: 66px;
+    }
+
+    .gyr-menu-body {
+      width: 90vw;
+
+      a {
+        padding: 18px 40px;
+        font-size: 16px;
+        line-height: 1.1;
+      }
+
+      li.current > a::before,
+      li > a:hover::before {
+        top: 20px;
+        left: 22px;
+      }
+
+      .sub-menu li {
+        padding-bottom: 14px;
+      }
+
+      .sub-menu a {
+        padding: 0 0 0 41px;
+        font-size: 16px;
       }
     }
   }

@@ -1,7 +1,11 @@
 {%- comment -%}
   Site header: sticky navy bar, logo left; language switcher + "Menu"
-  disclosure right. The menu mirrors the live site's nav (locale-branched);
-  the how-to-signup submenu renders indented.
+  disclosure right. The menu mirrors the live site's Elementor popup: opening
+  it reveals a full-screen overlay with a navy top strip, a cream panel
+  (right-aligned) holding the locale-branched nav as large rows with the
+  how-to-signup submenu inline, and a white close box with a navy X at the
+  top-right corner. Pure <details> disclosure (keyboard operable, no JS
+  required); ui/gyr-menu.js adds Esc-to-close, an exit fade, and focus return.
 {%- endcomment -%}
 <nav class="site-nav gyr-header">
   <div class="gyr-header-inner">
@@ -9,49 +13,56 @@
   <div class="gyr-header-bar">
     {%- include "navigation-end.html" -%}
     <details class="gyr-menu">
-      <summary>
+      <summary class="gyr-menu-button">
         {%- if pageLanguage.code == "es" -%}Menú{%- else -%}Menu{%- endif -%}
       </summary>
+      <summary class="gyr-menu-close" aria-label="Close menu">
+        <svg width="30" height="30" viewBox="0 0 93 93" fill="none" aria-hidden="true" focusable="false">
+          <path d="M3.53553 3.53552L88.5355 88.5355M88.5355 3.53552L3.53552 88.5355" stroke="#011E29" stroke-width="10" />
+        </svg>
+      </summary>
       <nav class="gyr-menu-panel" aria-label="{{ pageLanguage.home_label }}">
+        <div class="gyr-menu-body">
         {%- if pageLanguage.code == "es" -%}
         <ul>
-          <li><a href="/es/">Inicio</a></li>
-          <li><a href="/es/what-is-530a-account/">¿Qué es una cuenta 530A?</a></li>
-          <li><a href="/es/who-puts-money-into-530a/">¿De dónde viene el dinero de una cuenta 530A?</a></li>
-          <li><a href="/es/how-530a-account-works/">¿Cómo funciona una cuenta 530A?</a></li>
-          <li><a href="/es/automatic-eligibility/">¿Recibo este dinero automáticamente?</a></li>
-          <li>
+          <li{% if page.url == "/es/" %} class="current"{% endif %}><a href="/es/">Inicio</a></li>
+          <li{% if page.url == "/es/what-is-530a-account/" %} class="current"{% endif %}><a href="/es/what-is-530a-account/">¿Qué es una cuenta 530A?</a></li>
+          <li{% if page.url == "/es/who-puts-money-into-530a/" %} class="current"{% endif %}><a href="/es/who-puts-money-into-530a/">¿De dónde viene el dinero de una cuenta 530A?</a></li>
+          <li{% if page.url == "/es/how-530a-account-works/" %} class="current"{% endif %}><a href="/es/how-530a-account-works/">¿Cómo funciona una cuenta 530A?</a></li>
+          <li{% if page.url == "/es/automatic-eligibility/" %} class="current"{% endif %}><a href="/es/automatic-eligibility/">¿Recibo este dinero automáticamente?</a></li>
+          <li{% if page.url == "/es/how-to-signup/" %} class="current"{% endif %}>
             <a href="/es/how-to-signup/">¿Cómo abro una cuenta 530A?</a>
-            <ul>
-              <li><a href="/es/how-to-signup/get-started/">Cómo empezar</a></li>
-              <li><a href="/es/how-to-signup/account-activation/">Activar la cuenta</a></li>
-              <li><a href="/es/how-to-signup/who-should-sign-up/">¿Quiénes deberían inscribirse?</a></li>
+            <ul class="sub-menu">
+              <li{% if page.url == "/es/how-to-signup/get-started/" %} class="current"{% endif %}><a href="/es/how-to-signup/get-started/">Cómo empezar</a></li>
+              <li{% if page.url == "/es/how-to-signup/account-activation/" %} class="current"{% endif %}><a href="/es/how-to-signup/account-activation/">Activar la cuenta</a></li>
+              <li{% if page.url == "/es/how-to-signup/who-should-sign-up/" %} class="current"{% endif %}><a href="/es/how-to-signup/who-should-sign-up/">¿Quiénes deberían inscribirse?</a></li>
             </ul>
           </li>
-          <li><a href="/es/manage-account/">Administrar una cuenta 530A</a></li>
-          <li><a href="/es/additional-resources/">Otras preguntas</a></li>
+          <li{% if page.url == "/es/manage-account/" %} class="current"{% endif %}><a href="/es/manage-account/">Administrar una cuenta 530A</a></li>
+          <li{% if page.url == "/es/additional-resources/" %} class="current"{% endif %}><a href="/es/additional-resources/">Otras preguntas</a></li>
           <li><a href="https://www.getyourrefund.org/es">Visite GetYourRefund</a></li>
         </ul>
         {%- else -%}
         <ul>
-          <li><a href="/en/">Home</a></li>
-          <li><a href="/en/what-is-530a-account/">What is a 530A account?</a></li>
-          <li><a href="/en/who-puts-money-into-530a/">Who puts money into 530A accounts?</a></li>
-          <li><a href="/en/how-530a-account-works/">How does a 530A account work?</a></li>
-          <li><a href="/en/automatic-eligibility/">Do I get this money automatically?</a></li>
-          <li>
+          <li{% if page.url == "/en/" %} class="current"{% endif %}><a href="/en/">Home</a></li>
+          <li{% if page.url == "/en/what-is-530a-account/" %} class="current"{% endif %}><a href="/en/what-is-530a-account/">What is a 530A account?</a></li>
+          <li{% if page.url == "/en/who-puts-money-into-530a/" %} class="current"{% endif %}><a href="/en/who-puts-money-into-530a/">Who puts money into 530A accounts?</a></li>
+          <li{% if page.url == "/en/how-530a-account-works/" %} class="current"{% endif %}><a href="/en/how-530a-account-works/">How does a 530A account work?</a></li>
+          <li{% if page.url == "/en/automatic-eligibility/" %} class="current"{% endif %}><a href="/en/automatic-eligibility/">Do I get this money automatically?</a></li>
+          <li{% if page.url == "/en/how-to-signup/" %} class="current"{% endif %}>
             <a href="/en/how-to-signup/">How do I sign up for a 530A account?</a>
-            <ul>
-              <li><a href="/en/how-to-signup/get-started/">Get Started</a></li>
-              <li><a href="/en/how-to-signup/account-activation/">Account Activation</a></li>
-              <li><a href="/en/how-to-signup/who-should-sign-up/">Who should sign up?</a></li>
+            <ul class="sub-menu">
+              <li{% if page.url == "/en/how-to-signup/get-started/" %} class="current"{% endif %}><a href="/en/how-to-signup/get-started/">Get Started</a></li>
+              <li{% if page.url == "/en/how-to-signup/account-activation/" %} class="current"{% endif %}><a href="/en/how-to-signup/account-activation/">Account Activation</a></li>
+              <li{% if page.url == "/en/how-to-signup/who-should-sign-up/" %} class="current"{% endif %}><a href="/en/how-to-signup/who-should-sign-up/">Who should sign up?</a></li>
             </ul>
           </li>
-          <li><a href="/en/manage-account/">Managing a 530A account</a></li>
-          <li><a href="/en/additional-resources/">Other topics</a></li>
+          <li{% if page.url == "/en/manage-account/" %} class="current"{% endif %}><a href="/en/manage-account/">Managing a 530A account</a></li>
+          <li{% if page.url == "/en/additional-resources/" %} class="current"{% endif %}><a href="/en/additional-resources/">Other topics</a></li>
           <li><a href="https://getyourrefund.org/530A-referral">Visit GetYourRefund</a></li>
         </ul>
         {%- endif -%}
+        </div>
       </nav>
     </details>
   </div>
