@@ -5,10 +5,12 @@ meta_description: No recibirá este dinero automáticamente. Conoce por qué deb
 permalink: /es/automatic-eligibility/
 blocks:
   - type: callout
+    compact: true
     variant: warning
     icon: hugeicons:checkmark-circle-02
     content: La información en esta página está actualizada a junio 4 de 2026
   - type: split-image
+    compact: true
     content: |
       # ¿Recibo este dinero automáticamente?
 

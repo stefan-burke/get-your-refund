@@ -5,10 +5,12 @@ meta_description: What happens after I file the IRS form?
 permalink: /en/how-to-signup/account-activation/
 blocks:
   - type: callout
+    compact: true
     variant: warning
     icon: hugeicons:checkmark-circle-02
     content: The information on this page is current as of July 20, 2026.
   - type: split-image
+    compact: true
     content: |
       # Account Activation
     figure_src: /images/530a-how-do-i-signup.png

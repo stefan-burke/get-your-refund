@@ -6,10 +6,12 @@ permalink: /es/how-to-signup/
 tags: ["pages", "gyr-signup"]
 blocks:
   - type: callout
+    compact: true
     variant: warning
     icon: hugeicons:checkmark-circle-02
     content: La información en esta página está actualizada a junio 4 de 2026
   - type: split-image
+    compact: true
     content: |
       # ¿Cómo abro una cuenta 530A?
 

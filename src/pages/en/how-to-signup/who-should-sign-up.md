@@ -5,10 +5,12 @@ meta_description: Am I the right person to sign up for my child?
 permalink: /en/how-to-signup/who-should-sign-up/
 blocks:
   - type: callout
+    compact: true
     variant: warning
     icon: hugeicons:checkmark-circle-02
     content: The information on this page is current as of July 20, 2026.
   - type: split-image
+    compact: true
     content: |
       # Who should sign up?
     figure_src: /images/530a-how-do-i-signup.png

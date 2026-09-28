@@ -5,6 +5,7 @@ meta_description: Do 530A Accounts have any impact on my eligibility for public 
 permalink: /en/additional-resources/
 blocks:
   - type: callout
+    compact: true
     variant: warning
     icon: hugeicons:checkmark-circle-02
     content: The information on this page is current as of July 30, 2026.

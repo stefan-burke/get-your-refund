@@ -5,10 +5,12 @@ meta_description: Aprenda dónde se invierte el dinero, qué opciones de inversi
 permalink: /es/manage-account/
 blocks:
   - type: callout
+    compact: true
     variant: warning
     icon: hugeicons:checkmark-circle-02
     content: La información en esta página está actualizada a julio 20 de 2026
   - type: split-image
+    compact: true
     content: |
       # Administrar una cuenta 530A
 

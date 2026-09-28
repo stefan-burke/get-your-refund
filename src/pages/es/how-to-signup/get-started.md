@@ -5,10 +5,12 @@ meta_description: Para abrir una cuenta 530A y recibir la contribución de $1,00
 permalink: /es/how-to-signup/get-started/
 blocks:
   - type: callout
+    compact: true
     variant: warning
     icon: hugeicons:checkmark-circle-02
     content: La información en esta página está actualizada a junio 4 de 2026
   - type: split-image
+    compact: true
     content: |
       # Cómo empezar: presente el formulario del IRS
 

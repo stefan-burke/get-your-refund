@@ -94,8 +94,25 @@
     --callout-bg: #FFFBEB;
     --callout-fg: #011D27;
 
+    padding: 10px 20px;
     border: 1px solid #FFAE00;
     border-radius: 4px;
+
+    font-size: 0.9375rem;
+
+    .callout__icon {
+      font-size: 1.25rem;
+    }
+  }
+}
+
+// The live page-top banners span the full content container, not the narrow
+// prose column the callout block uses.
+.design-system section:has(> .container-narrow > .callout--warning) > .container-narrow {
+  max-width: 1200px;
+
+  @media (width >= 48rem) {
+    padding-inline: 32px;
   }
 }
 
@@ -108,15 +125,21 @@
   z-index: 500;
   top: 0;
 
-  display: flex;
-  gap: 16px;
-  align-items: center;
-  justify-content: space-between;
-
-  min-height: 66px;
-  padding: 8px 24px;
-
   background: #011E29;
+
+  // Live header content sits in the same centered container as the page
+  .gyr-header-inner {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    justify-content: space-between;
+
+    width: 100%;
+    max-width: 1200px; // same box as .container-wide (border-box incl. gutters)
+    min-height: 66px;
+    margin-inline: auto;
+    padding: 8px 32px;
+  }
 
   .gyr-logo {
     display: inline-flex;
@@ -125,7 +148,7 @@
     img {
       display: block;
       width: auto;
-      height: 26px;
+      height: 22px;
     }
   }
 
@@ -228,7 +251,14 @@
   }
 
   h1 {
-    font-size: 2.375rem;
+    font-size: 2.5rem;
+  }
+
+  // The live homepage hero uses a larger H1 than inner-page heroes; the
+  // two-column band below it only exists on the gyr-home pages.
+  h3 {
+    font-size: 2.125rem;
+    font-weight: 400;
   }
 
   .btn {
@@ -245,6 +275,11 @@
     padding: 24px;
     background: #FFF;
   }
+}
+
+// The homepage hero H1 is larger than inner-page heroes on the live site.
+body.design-system:has(.block-columns-2) .split h1 {
+  font-size: 3rem;
 }
 
 // ---------------------------------------------------------------------------
@@ -352,6 +387,9 @@
   grid-template-columns: 1fr 1fr;
   gap: 8px 48px;
   align-items: start;
+
+  // Live footer content sits in the same centered container as the page
+  padding-inline: max(32px, calc(50% - 568px));
 
   text-align: left;
 

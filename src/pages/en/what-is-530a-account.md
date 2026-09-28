@@ -5,11 +5,13 @@ meta_description: Why do 530A accounts exist?
 permalink: /en/what-is-530a-account/
 blocks:
   - type: callout
+    compact: true
     variant: warning
     icon: hugeicons:checkmark-circle-02
     content: |-
       The information on this page is current as of July 20, 2026.
   - type: split-image
+    compact: true
     content: |
       # What is a 530A account?
 

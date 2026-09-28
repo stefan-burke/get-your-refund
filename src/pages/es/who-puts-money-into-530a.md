@@ -5,10 +5,12 @@ meta_description: El dinero de una cuenta 530A puede venir del gobierno federal,
 permalink: /es/who-puts-money-into-530a/
 blocks:
   - type: callout
+    compact: true
     variant: warning
     icon: hugeicons:checkmark-circle-02
     content: La información en esta página está actualizada a junio 4 de 2026
   - type: split-image
+    compact: true
     content: |
       # ¿De dónde viene el dinero de una cuenta 530A?
 

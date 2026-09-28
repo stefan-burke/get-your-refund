@@ -5,10 +5,12 @@ meta_description: Una cuenta 530A es una nueva cuenta de inversión para niños.
 permalink: /es/what-is-530a-account/
 blocks:
   - type: callout
+    compact: true
     variant: warning
     icon: hugeicons:checkmark-circle-02
     content: La información en esta página está actualizada a julio 20 de 2026
   - type: split-image
+    compact: true
     content: |
       # ¿Qué es una cuenta 530A?
 

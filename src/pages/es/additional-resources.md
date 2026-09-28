@@ -5,6 +5,7 @@ meta_description: ¿Las cuentas 530A afectan mis beneficios públicos, como SSI,
 permalink: /es/additional-resources/
 blocks:
   - type: callout
+    compact: true
     variant: warning
     icon: hugeicons:checkmark-circle-02
     content: La información en esta página está actualizada a junio 3 de 2026

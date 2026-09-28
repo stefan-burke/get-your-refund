@@ -5,10 +5,12 @@ meta_description: Después de que el IRS reciba y procese su formulario, recibir
 permalink: /es/how-to-signup/account-activation/
 blocks:
   - type: callout
+    compact: true
     variant: warning
     icon: hugeicons:checkmark-circle-02
     content: La información en esta página está actualizada a julio 20 de 2026
   - type: split-image
+    compact: true
     content: |
       # Activar la cuenta
     figure_src: /images/530a-how-do-i-signup.png

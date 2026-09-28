@@ -6,10 +6,12 @@ permalink: /en/how-to-signup/
 tags: ["pages", "gyr-signup"]
 blocks:
   - type: callout
+    compact: true
     variant: warning
     icon: hugeicons:checkmark-circle-02
     content: The information on this page is current as of June 4, 2026.
   - type: split-image
+    compact: true
     content: |
       # How do I sign up for a 530A account?
 

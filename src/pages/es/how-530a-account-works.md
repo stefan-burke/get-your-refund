@@ -5,10 +5,12 @@ meta_description: ¿Puedo retirar dinero antes de que mi hijo cumpla 18 años?
 permalink: /es/how-530a-account-works/
 blocks:
   - type: callout
+    compact: true
     variant: warning
     icon: hugeicons:checkmark-circle-02
     content: La información en esta página está actualizada a julio 20 de 2026
   - type: split-image
+    compact: true
     content: |
       # ¿Cómo funciona una cuenta 530A?
 

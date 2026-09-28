@@ -5,10 +5,12 @@ meta_description: ¿Soy la persona correcta para inscribir a mi hijo(a)?
 permalink: /es/how-to-signup/who-should-sign-up/
 blocks:
   - type: callout
+    compact: true
     variant: warning
     icon: hugeicons:checkmark-circle-02
     content: La información en esta página está actualizada a junio 4 de 2026
   - type: split-image
+    compact: true
     content: |
       # ¿Quién debe abrir la cuenta?
     figure_src: /images/530a-how-do-i-signup.png

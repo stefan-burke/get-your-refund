@@ -5,11 +5,13 @@ meta_description: Where is the money invested? Can I make choices on where to in
 permalink: /en/manage-account/
 blocks:
   - type: callout
+    compact: true
     variant: warning
     icon: hugeicons:checkmark-circle-02
     content: |-
       The information on this page is current as of July 20, 2026.
   - type: split-image
+    compact: true
     content: |
       # Managing a 530A account
 
