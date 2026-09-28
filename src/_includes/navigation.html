@@ -16,12 +16,19 @@
       <summary class="gyr-menu-button">
         {%- if pageLanguage.code == "es" -%}Menú{%- else -%}Menu{%- endif -%}
       </summary>
-      <summary class="gyr-menu-close" aria-label="Close menu">
-        <svg width="30" height="30" viewBox="0 0 93 93" fill="none" aria-hidden="true" focusable="false">
-          <path d="M3.53553 3.53552L88.5355 88.5355M88.5355 3.53552L3.53552 88.5355" stroke="#011E29" stroke-width="10" />
-        </svg>
-      </summary>
       <nav class="gyr-menu-panel" aria-label="{{ pageLanguage.home_label }}">
+        {%- comment -%} Navy band across the overlay's top, the header's
+        continuation; the close toggle lives in its top-right corner. A real
+        element (not a ::before pseudo-element) so the close box sizes itself
+        from the strip instead of hand-mimicking the header band's geometry.
+        {%- endcomment -%}
+        <div class="gyr-menu-strip">
+          <summary class="gyr-menu-close" aria-label="Close menu">
+            <svg width="30" height="30" viewBox="0 0 93 93" fill="none" aria-hidden="true" focusable="false">
+              <path d="M3.53553 3.53552L88.5355 88.5355M88.5355 3.53552L3.53552 88.5355" stroke="#011E29" stroke-width="10" />
+            </svg>
+          </summary>
+        </div>
         <div class="gyr-menu-body">
         {%- if pageLanguage.code == "es" -%}
         <ul>

@@ -4,10 +4,12 @@ import { onReady } from "#public/utils/on-ready.js";
  * GYR 530a header menu overlay.
  *
  * The menu is a pure <details> disclosure (keyboard operable without JS):
- * the second <summary> is the overlay's close toggle. This enhancement adds
- * what native details cannot do: Escape-to-close, the legacy popup's 0.3s
- * fade-out exit before `open` is unset, and focus returned to the Menu
- * button after closing via Esc or the X.
+ * the overlay's close toggle is a <summary> inside the panel's navy strip.
+ * (It is not a direct child of <details>, so browsers never natively toggle
+ * it — the Menu summary remains the no-JS open/close control.) This
+ * enhancement adds what native details cannot do: Escape-to-close, the
+ * legacy popup's 0.3s fade-out exit before `open` is unset, and focus
+ * returned to the Menu button after closing via Esc or the X.
  */
 
 const EXIT_FADE_MS = 300;

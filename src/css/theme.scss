@@ -130,6 +130,11 @@
 // disclosure right. Accessible <details> disclosure; no JS required.
 // ---------------------------------------------------------------------------
 .design-system nav.site-nav.gyr-header {
+  // Shared band height: the sticky header bar and the menu overlay's navy
+  // strip both derive from it, so the strip reads as the header continuing
+  // over the overlay instead of hand-mimicking its geometry.
+  --gyr-header-h: 66px;
+
   position: sticky;
   z-index: 500;
   top: 0;
@@ -144,7 +149,7 @@
 
     width: 100%;
     max-width: 1200px; // same box as .container-wide (border-box incl. gutters)
-    min-height: 66px;
+    min-height: var(--gyr-header-h);
     margin-inline: auto;
     padding: 8px 32px;
   }
@@ -209,23 +214,20 @@
       color: #E8FDF7;
     }
 
-    // Close toggle for the open overlay: white square in the navy strip's
+    // Close toggle for the open overlay: white box in the navy strip's
     // top-right corner holding the legacy popup's crossed-lines X
-    // (93-unit viewBox stroked #011E29, rendered at 30px).
+    // (93-unit viewBox stroked #011E29, rendered at 30px). Lives in-flow
+    // inside .gyr-menu-strip; sized by its own padding around the 30px X —
+    // 2 × 20px + 30px = the legacy close box's measured 70px width — and
+    // stretched to the strip's full height (100% of the header band).
     summary.gyr-menu-close {
       cursor: pointer;
 
-      position: fixed;
-      z-index: 610;
-      top: 0;
-      right: 0;
-
-      display: none;
+      display: flex;
       align-items: center;
       justify-content: center;
 
-      width: 70px;
-      height: 72px;
+      padding: 0 20px;
 
       list-style: none;
 
@@ -241,10 +243,6 @@
       }
     }
 
-    &[open] summary.gyr-menu-close {
-      display: flex;
-    }
-
     // Full-screen overlay mirroring the legacy Elementor popup (template
     // 194 en / 1492 es): transparent backdrop, navy strip across the top,
     // cream panel (500px, right-aligned) filling the rest, fadeIn 0.3s.
@@ -258,18 +256,24 @@
       align-items: flex-end;
 
       background: transparent;
+    }
 
-      &::before {
-        content: "";
+    // Navy band across the overlay's top, the sticky header's continuation
+    // (the live popup's own band measures 72px — an Elementor artifact of its
+    // taller header; we bind to our 66px header band instead so the strip
+    // never overhangs it). Width stays the legacy popup's measured 1000px
+    // region; the close box sits right-aligned inside, stretched to the
+    // strip's full height.
+    .gyr-menu-strip {
+      display: flex;
+      flex: none;
+      align-items: stretch;
+      justify-content: flex-end;
 
-        flex: none;
-        align-self: flex-end;
+      width: min(1000px, 100%);
+      height: var(--gyr-header-h);
 
-        width: min(1000px, 100%);
-        height: 72px;
-
-        background: #011E29;
-      }
+      background: #011E29;
     }
 
     &[open] .gyr-menu-panel {
@@ -389,16 +393,18 @@ body:has(details.gyr-menu[open]) {
 @media (width < 48rem) {
   .design-system nav.site-nav.gyr-header details.gyr-menu {
     // Mobile: the legacy popup leaves the site header (logo, language link)
-    // visible — its navy strip is only a small tab behind the close box, so
-    // size it to the 66px header band and let it disappear against the navy.
-    summary.gyr-menu-close {
-      width: 80px;
-      height: 66px;
+    // visible — its navy strip is only a small tab behind the close box.
+    // Live-measured geometry: the strip is the close box plus a 20px navy
+    // bleed to its left (100px total), both the full height of the header
+    // band, so the tab disappears against the navy header behind it.
+    .gyr-menu-strip {
+      width: fit-content;
+      padding-left: 20px;
     }
 
-    .gyr-menu-panel::before {
-      width: 100px;
-      height: 66px;
+    // 2 × 25px + the 30px X = the legacy mobile close box's 80px width.
+    summary.gyr-menu-close {
+      padding: 0 25px;
     }
 
     .gyr-menu-body {

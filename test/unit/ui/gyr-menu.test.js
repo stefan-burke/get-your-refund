@@ -4,10 +4,12 @@ import { initGyrMenu } from "#public/ui/gyr-menu.js";
 const MENU_HTML = `
 <details class="gyr-menu">
   <summary class="gyr-menu-button">Menu</summary>
-  <summary class="gyr-menu-close" aria-label="Close menu">
-    <svg aria-hidden="true"></svg>
-  </summary>
   <nav class="gyr-menu-panel" aria-label="Menu">
+    <div class="gyr-menu-strip">
+      <summary class="gyr-menu-close" aria-label="Close menu">
+        <svg aria-hidden="true"></svg>
+      </summary>
+    </div>
     <ul><li><a href="/en/">Home</a></li></ul>
   </nav>
 </details>
