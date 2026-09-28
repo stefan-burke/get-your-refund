@@ -39,7 +39,11 @@ preference:
   `margin-inline: calc(50% - 50vw)`).
 - Prose → `markdown`; Q&A/accordion runs → `faqs` with inline `items`;
   standalone buttons → `link-button`; closing bands → `cta`; long legal text
-  → `markdown` blocks per h2 plus `table-of-contents`.
+  → `markdown` blocks per h2 plus `table-of-contents`. When the source renders
+  Q&A runs as collapsed accordions (Elementor accordion widgets, chevron
+  icons), the `faqs` block already matches: it renders native
+  `<details>/<summary>` rows, collapsed by default, through a forked include
+  (documented diff from the template's historical open definition list).
 - Cross-check every link against the raw HTML, restore audit MISSING-HREF
   anchors inline, and re-add `<strong>` bold the extractor lost.
 
@@ -79,9 +83,14 @@ Decide per case; document each in an upstream notes file:
   checker skips scheme'd hrefs) so the mirror reproduces the live behavior.
 - Empty placeholder pages: build a no-content page (`no_index: true`,
   scraped title) so the URL parity holds; record the decision.
-- Deliberately dropped source features (breadcrumbs, tracking pixels,
-  third-party seals that cannot be scraped): list them as conscious diffs in
-  a per-page visual-notes file.
+- Breadcrumb trails: when the source shows a breadcrumb on inner pages, leave
+  the template's breadcrumb feature on (`show_breadcrumbs` in
+  `src/_data/config.json`) and restyle it to match; suppress it per page with
+  `no_breadcrumbs: true` where the source has none (e.g. legal pages). Pages
+  whose trail names differ from their titles use `eleventyNavigation.parent`.
+- Deliberately dropped source features (tracking pixels, third-party seals
+  that cannot be scraped): list them as conscious diffs in a per-page
+  visual-notes file.
 
 ## 6. Validate and compare
 

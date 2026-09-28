@@ -33,10 +33,12 @@ of conscious deviations.
   `#FFAE00`), Geologica/Inter self-hosted in `src/css/_fonts.scss` +
   `src/assets/fonts/` (downloaded from Bunny Fonts), navy sticky header with a
   `<details>` "Menu" disclosure, full-bleed mint/sand home columns, navy CTA
-  band, and a two-column navy footer. Column arrangements are configured in
+  band, collapsible `<details>/<summary>` FAQ accordions on a white band, and
+  a two-column navy footer. Column arrangements are configured in
   `src/_data/blockLayouts.json` under the `gyr-home` / `gyr-signup` page tags.
-- **Config toggles:** breadcrumbs, search, theme switcher, and placeholder
-  images off; external links open in a new tab (as on the live site).
+- **Config toggles:** search, theme switcher, and placeholder images off;
+  breadcrumbs on (styled to the live trail, suppressed on pages the source
+  shows none); external links open in a new tab (as on the live site).
 
 ## Working on it
 
