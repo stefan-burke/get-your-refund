@@ -177,3 +177,5 @@ src/assets/icons/iconify/test/
 
 # cpd.test.js writes its report fixture here
 test/unit/scripts/.cpd-report-fixture/
+upstream.txt
+.mirror-scratch/

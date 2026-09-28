@@ -55,8 +55,7 @@ npm run check:a11y   # axe WCAG 2.2 AA audit of built pages
 npm run lint:scss    # stylelint (theme changed? run this too)
 ```
 
-Node 22 (see `package.json` `engines`); this checkout was built with Node
-v22.23.3 at `/tmp/node22/bin`.
+Node 22 (see `package.json` `engines`); this site was built with Node v22.23.3.
 
 ## Deployment
 
