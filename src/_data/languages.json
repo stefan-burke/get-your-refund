@@ -1,14 +1,25 @@
 [
 	{
 		"code": "en",
-		"hreflang": "en-GB",
-		"og_locale": "en_GB",
+		"hreflang": "en-US",
+		"og_locale": "en_US",
 		"label": "English",
-		"home_url": "/",
+		"home_url": "/en/",
 		"home_label": "Home",
 		"breadcrumb_label": "Breadcrumb",
 		"skip_to_content_label": "Skip to main content",
 		"search_label": "Search",
 		"is_default": true
+	},
+	{
+		"code": "es",
+		"hreflang": "es-US",
+		"og_locale": "es_US",
+		"label": "Español",
+		"home_url": "/es/",
+		"home_label": "Inicio",
+		"breadcrumb_label": "Ruta de navegación",
+		"skip_to_content_label": "Saltar al contenido principal",
+		"search_label": "Buscar"
 	}
 ]

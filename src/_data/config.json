@@ -1,11 +1,11 @@
 {
-  "show_breadcrumbs": true,
-  "placeholder_images": true,
-  "sticky_mobile_nav": null,
-  "horizontal_nav": null,
+  "show_breadcrumbs": false,
+  "placeholder_images": false,
+  "sticky_mobile_nav": false,
+  "horizontal_nav": false,
   "collapse_mobile_menu": true,
-  "enable_theme_switcher": true,
-  "externalLinksTargetBlank": null,
+  "enable_theme_switcher": false,
+  "externalLinksTargetBlank": true,
   "homepage_footer_markdown": null,
   "default_image_widths": null,
   "timezone": null,
@@ -15,6 +15,6 @@
   "screenshots": null,
   "use_visual_editor": true,
   "search_collections": null,
-  "linkify_urls": null,
+  "linkify_urls": false,
   "disable_liquid_cache": null
 }

@@ -12,14 +12,6 @@
 export interface PagesCMSEleventyNavigation {
   key?: string;
   order?: number;
-  url?: string;
-}
-
-export interface PagesCMSFaq {
-  /** Question */
-  question: string;
-  /** Answer */
-  answer: string;
 }
 
 export interface PagesCMSSocial {

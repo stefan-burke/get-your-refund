@@ -1,27 +1,20 @@
 {
-	"name": "CfA Static",
-	"url": "https://cfa-static.apps.dev.services.cfa.codes",
-	"description": "A static-site template for informational and marketing sites, derived from the Chobble Template.",
-	"socials": {
-		"Github": "https://github.com/codeforamerica/cfa-static",
-		"RSS": "/feed.xml"
-	},
+	"name": "530a Accounts - GetYourRefund",
+	"url": "https://530a.getyourrefund.org",
+	"description": "If your child was born after January 1, 2025, you should open a 530A investment account (Trump Account) as soon as you can. The government will add $1,000 to the account.",
 	"cms_config": {
 		"collections": [
 			"pages",
-			"news",
-			"guide-categories",
-			"guide-pages",
 			"snippets"
 		],
 		"features": {
-			"permalinks": true,
-			"redirects": true,
-			"faqs": true,
-			"galleries": true,
-			"external_navigation_urls": true,
-			"use_visual_editor": true,
-			"no_index": true
+			"permalinks": false,
+			"redirects": false,
+			"faqs": false,
+			"galleries": false,
+			"external_navigation_urls": false,
+			"use_visual_editor": false,
+			"no_index": false
 		},
 		"hasSrcFolder": true,
 		"customBlocksCollections": []

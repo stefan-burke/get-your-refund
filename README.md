@@ -1,196 +1,68 @@
-# CfA Static
+# 530a Accounts — GetYourRefund
 
-A static-site template for small informational and marketing sites, built on
-[Eleventy](https://www.11ty.dev/) and Node.js. Pages are
-assembled from composable, schema-validated content blocks written in YAML
-frontmatter, so engineering-adjacent authors (and AI assistants) can build and
-edit pages without touching templates.
+Static rebuild of [530a.getyourrefund.org](https://530a.getyourrefund.org), the
+Code for America guide to 530A ("Trump") investment accounts for children, in
+English and Spanish. Built from [CfA Static](https://github.com/codeforamerica/cfa-static);
+template updates arrive only through a reviewed `upstream` merge.
 
-Derived from the [Chobble Template](https://github.com/chobbledotcom/chobble-template),
-relicensed to MIT here by its sole author, and cut down to an informational
-core: no e-commerce, no forms, no user data handling — just fast, accessible,
-static pages.
+## Status
 
-## What's included
+Migration in progress from the WordPress/Elementor original. Scraped source
+material (page inventories, raw HTML, images, style notes) lives in the
+gitignored `.mirror-scratch/` directory and is the ground truth for content.
 
-- **Content blocks** — heroes, FAQs, callouts, image cards,
-  split layouts, galleries, and stats declared in frontmatter and validated at
-  build time with loud, file-specific errors. See the generated
-  [block reference](skills/cfa-static-site-builder/references/blocks.md)
-  and [layout reference](skills/cfa-static-site-builder/references/layouts.md),
-  or the deployed site's `/blocks/` page,
-  where standalone-previewable types render next to YAML from the same tested
-  fixtures. Collection-restricted contextual blocks show usage guidance
-  instead.
-- **Content types** — Pages, News (with Atom feed), Guides (categorised
-  documentation pages), and reusable Snippets.
-- **Multi-language** — publish the same page in more than one language with
-  `hreflang` tags, an `x-default`, and a footer language switcher. See the
-  Languages section below.
-- **Theming** — CSS custom properties throughout, prebuilt themes, a
-  visual theme editor at `/theme-editor/` with export.
-- **Images** — responsive `srcset` via eleventy-img, base64 LQIP placeholders,
-  aspect-ratio cropping, unused-image detection.
-- **Accessibility** — `npm test` checks every built page with axe-core's
-  automated WCAG 2.2 AA rules, including gallery coverage for blocks that
-  support standalone previews. Pages get a skip link, named landmarks, and
-  per-language chrome labels out of the box. Manual review is still required
-  for context, visual contrast, keyboard flow, and other qualities automation
-  cannot settle.
-- **Search** — static full-text search via Pagefind.
-- **SEO** — schema.org JSON-LD (WebSite, Organization, BreadcrumbList,
-  BlogPosting, FAQPage), canonical URLs, sitemap, social cards.
-- **Editing layer** — a generated [PagesCMS](https://pagescms.org/) config
-  (`.pages.yml`) wired to the block schemas, plus `npm run customise-cms`, an
-  interactive/non-interactive wizard that tailors the editor to the
-  collections a site actually uses.
+- Migrated: `/en/`, `/es/`, `/en/how-to-signup/`, `/en/privacy-policy/`
+- Remaining: the other 20 sitemap pages (see `.mirror-scratch/INDEX.md`), plus
+  restoring the temporarily-deferred internal links listed in `upstream.txt`
+- Deferred: `/en/elementor-page-675/` is an empty WordPress placeholder and is
+  not being migrated
 
-## Quick start
+## Customisations from template defaults
 
-Use the Node.js version specified in the
-[Site Builder Reference](docs/developer-reference.md), then:
+- **Collections/CMS:** pages only (no news, no guides, no galleries). Managed
+  via `npm run customise-cms`; `cms_config` is saved in `src/_data/site.json`.
+- **Languages:** `en` (default) + `es` in `src/_data/languages.json`, page
+  pairs in `src/_data/translations.json`. Each locale's content is converted
+  from its own scraped page — the two locales are NOT symmetric (different
+  footer links, copy, and meta). The es privacy page keeps its distinct slug
+  `/es/politica-de-privacidad/`.
+- **Locale-aware chrome:** the header menu (`src/_includes/navigation.html`)
+  and footer copy (`src/snippets/footer-content-en.md` /
+  `footer-content-es.md`, picked by `pageLanguage.code`) differ per locale,
+  matching the live site's per-locale footer link rows.
+- **Theme:** `src/css/theme.scss` carries the 530a palette (navy `#011E29`,
+  cream `#FFFFF5`, mint `#E8FDF7`, sand `#EBECDB`, teal `#007C7C`, amber
+  `#FFAE00`), Geologica/Inter self-hosted in `src/css/_fonts.scss` +
+  `src/assets/fonts/` (downloaded from Bunny Fonts), navy sticky header with a
+  `<details>` "Menu" disclosure, full-bleed mint/sand home columns, navy CTA
+  band, and a two-column navy footer. Column arrangements are configured in
+  `src/_data/blockLayouts.json` under the `gyr-home` / `gyr-signup` page tags.
+- **Config toggles:** breadcrumbs, search, theme switcher, and placeholder
+  images off; external links open in a new tab (as on the live site).
 
-```bash
-npm install          # install dependencies
-npm run serve        # dev server with hot reload
-npm run build        # build to _site/ (includes internal link check)
+## Working on it
+
+- [Site Builder Reference](docs/developer-reference.md), [CLAUDE.md](CLAUDE.md)
+- Generated block reference:
+  [skills/cfa-static-site-builder/references/blocks.md](skills/cfa-static-site-builder/references/blocks.md);
+  live gallery at `/blocks/` was removed with the demo pages — regenerate
+  reference material with `npm run generate-references` if needed
+- Site data in `src/_data/`, content in `src/pages/`
+
+## Checks
+
+```sh
+npm run build        # Eleventy build + Pagefind + internal link check
+npm run check:a11y   # axe WCAG 2.2 AA audit of built pages
+npm run lint:scss    # stylelint (theme changed? run this too)
 ```
 
-See the Site Builder Reference for selected site-building commands and the
-[verification guide](skills/cfa-static-site-builder/references/verification.md) for checks.
-
-The build needs no application secrets or server-side services. Dependency
-installation, uncached Iconify icons, and configured remote source images may
-require network access. The deployable artifact is the `_site/` directory —
-publish it with any static host or pipeline.
-
-## Agent Skill
-
-[`skills/cfa-static-site-builder/`](skills/cfa-static-site-builder/) is a
-portable [Agent Skill](https://agentskills.io/) for building and maintaining a
-site from this template. Configure a compatible agent client to load that
-directory according to the client's skill-discovery instructions. The package
-travels with each fork and points agents back to the fork's live schemas,
-generators, and checks rather than duplicating them.
-
-## Starting a site from this template
-
-Each site is a **fork of this repository**, not a dependency of it. A site's
-content, configuration, and theme live in the fork, and the template's own
-demo content is deleted or replaced there.
-
-After cloning the fork, replace the `name`, `url`, and `description` in
-`src/_data/site.json` before building. Missing or obvious placeholder identity
-data fails the build rather than being published.
-
-Replace this README too. Once the fork is the site, a README describing the
-template misleads everyone who lands on the repository and hides the choices
-the site made. Say what the site is, how it departs from the template's
-defaults, and where its schemas and checks live — while keeping the pointers to
-the [block reference](skills/cfa-static-site-builder/references/blocks.md),
-[Site Builder Reference](docs/developer-reference.md), `CLAUDE.md`, and the
-`/blocks/` gallery that anyone editing the site will need. The skill's
-[project setup reference](skills/cfa-static-site-builder/references/project-setup.md#site-readme)
-lists what to cover, including provenance and how the site deploys.
-
-Updates flow one way and only when a site asks for them:
-
-```bash
-git remote add upstream https://github.com/codeforamerica/cfa-static.git
-git fetch upstream
-git merge upstream/main      # deliberate, reviewed, and never automatic
-```
-
-That is the point of the arrangement. A site that has shipped keeps building
-exactly as it built yesterday; template changes reach it when someone chooses
-to merge them, reviews what changed, and re-runs the site's own checks. The
-quality gates travel with the fork, so a site that pulls an update finds out
-immediately whether the update broke anything it publishes.
+Node 22 (see `package.json` `engines`); this checkout was built with Node
+v22.23.3 at `/tmp/node22/bin`.
 
 ## Deployment
 
-The default deployment is SharedServices, CfA's Okta-protected internal
-hosting. The `sharedservices-deploy.yaml` workflow builds `_site/` with the
-selected environment's `SITE_URL`, then passes its artifact to the platform's
-[shared static deployment workflow](https://github.com/codeforamerica/shared-services-infra/blob/main/.github/workflows/shared-deploy-static.yaml).
-The shared workflow handles AWS authentication, S3 sync, and CloudFront
-invalidation. Okta SSO is enforced at the edge, so the site itself never
-handles authentication. Deployment is manual: under **Actions**, run
-**Deploy to SharedServices** on `main` and pick an environment; a dispatch
-queues behind an in-flight deploy rather than cancelling it mid-sync.
-
-One-time setup is a DevOps task:
-
-1. Register the app by adding a spec to
-   `shared-services-infra/tofu/configs/static-app/specs/` and applying it.
-2. Have DevOps configure the `development` environment through Doppler with the variables
-   `AWS_REGION`, `STATIC_BUCKET`, `STATIC_PREFIX` (set to `cfa-static`),
-   `CLOUDFRONT_DISTRIBUTION_ID` (for cache invalidation), and `SITE_URL` (the app's
-   endpoint URL, with no trailing slash), plus the `AWS_ROLE_ARN` secret.
-
-`app.yaml` at the repo root declares the platform registration. SharedServices
-serves each app at the root of its own subdomain
-(`https://<name>.apps.<domain>`), so builds involve no path prefix. For a
-step-by-step walkthrough of the one-time
-setup — written for a DevOps engineer and whoever coordinates them — see
-[`docs/devops-sharedservices-setup.html`](docs/devops-sharedservices-setup.html).
-Both deploy workflows merge `docs/` into the built site, so the walkthrough is
-also served at `/docs/devops-sharedservices-setup.html` under each deployment's
-base URL, not at a `/docs/` index page.
-
-### Public deployment to GitHub Pages
-
-The repo also ships a public deploy workflow (`.github/workflows/pages.yml`)
-that builds and publishes to GitHub Pages on every push to `main`. One-time
-setup: under the repository's **Settings → Pages**, set **Source** to
-**GitHub Actions**. On a project site (`https://<owner>.github.io/<repo>/`)
-the build uses the `/<repo>/` path prefix and rewrites internal URLs to
-match; with a custom domain or a user/organization site it builds with no
-prefix. Both deployments build `_site/` from the same commit and differ only
-in `SITE_URL`.
-
-To host elsewhere instead, `npm run build` produces a self-contained `_site/`
-directory with no application server and no application-secret requirement;
-point any static host - or your own pipeline - at it.
-
-## Configuration
-
-- `src/_data/site.json` — site name, URL, social links
-- `src/_data/config.json` — feature toggles (breadcrumbs, theme switcher,
-  navigation style, search collections)
-- `src/_data/strings.json` — news/guide label and permalink overrides
-- `src/_data/languages.json` / `translations.json` — languages the site
-  publishes and which pages say the same thing in each
-
-## Languages
-
-A site is written in one language until it says otherwise, and nothing in the
-template names a language.
-
-- `_data/languages.json` lists every language the site publishes, each with a
-  `code`, `hreflang`, `og_locale`, `label`, `home_url` prefix, `home_label`,
-  `breadcrumb_label`, `skip_to_content_label`, and `search_label`. Exactly one
-  entry has `is_default: true`.
-- `_data/translations.json` pairs the pages that say the same thing, keyed by
-  language code, e.g. `[{ "en": "/about/", "de": "/de/ueber-uns/" }]`.
-
-A page's language comes from its URL prefix. The template ships one language
-and no translations, which renders with no hreflang tags and no switcher.
-
-## Development
-
-The [Site Builder Reference](docs/developer-reference.md) covers the Node requirement,
-installation, selected site-building commands, CMS options, and authoring links.
-For maintainer details, read [package.json](package.json) for scripts and import
-aliases, [biome.json](biome.json) for lint configuration, and the
-[FP source JSDoc](src/_lib/utils/fp/) for helper APIs. For how to write useful
-tests rather than just pass the checks, read the authored
-[test quality criteria](test/TEST-QUALITY-CRITERIA.md).
-
-Run `npm run generate-references` to refresh both generated references,
-`.pages.yml`, and the CMS types from their sources and saved CMS configuration.
-The individual generator commands remain available for focused updates.
-
-## License
-
-[MIT](LICENSE).
+Not configured yet. The template's SharedServices and GitHub Pages workflows
+are present under `.github/workflows/`; see the [CfA Static deployment
+docs](https://github.com/codeforamerica/cfa-static#deployment) before enabling
+either.
