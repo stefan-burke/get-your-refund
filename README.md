@@ -32,7 +32,9 @@ of conscious deviations.
   cream `#FFFFF5`, mint `#E8FDF7`, sand `#EBECDB`, teal `#007C7C`, amber
   `#FFAE00`), Geologica/Inter self-hosted in `src/css/_fonts.scss` +
   `src/assets/fonts/` (downloaded from Bunny Fonts), navy sticky header with a
-  `<details>` "Menu" disclosure, full-bleed mint/sand home columns, navy CTA
+  full-screen `<details>` "Menu" overlay mirroring the legacy Elementor popup
+  (cream right-hand panel, navy strip, white close box, tiny `gyr-menu.js`
+  enhancement for Esc/close/focus), full-bleed mint/sand home columns, navy CTA
   band, collapsible `<details>/<summary>` FAQ accordions on a white band, and
   a two-column navy footer. Column arrangements are configured in
   `src/_data/blockLayouts.json` under the `gyr-home` / `gyr-signup` page tags.
