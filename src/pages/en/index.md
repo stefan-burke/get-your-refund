@@ -17,7 +17,7 @@ blocks:
       the money before your child turns 18.
 
       Some children born before 2025 may still benefit from opening a 530A
-      account. [Learn more about money available for some older children here.](https://530a.getyourrefund.org/en/who-puts-money-into-530a/)
+      account. [Learn more about money available for some older children here.](/en/who-puts-money-into-530a/)
     button:
       text: How to open an account
       href: /en/how-to-signup/
@@ -43,7 +43,7 @@ blocks:
       their own money to these accounts.**
   - type: link-button
     text: Learn about 530A Accounts
-    href: https://530a.getyourrefund.org/en/what-is-530a-account/
+    href: /en/what-is-530a-account/
     variant: secondary
   - type: markdown
     content: |
@@ -59,8 +59,8 @@ blocks:
       [how do I sign up](/en/how-to-signup/).
   - type: markdown
     content: |
-      To open the account and receive the $1,000 government contribution, you
-      must complete two steps:
+      **To open the account and receive the $1,000 government contribution,
+      you must complete two steps:**
 
       1. File a form with the IRS while filing your taxes, or file a standalone
          form.
@@ -114,7 +114,7 @@ blocks:
           You do not have to contribute money to open the account or receive
           government or donor contributions.
 
-          [Learn about contributions](https://530a.getyourrefund.org/en/who-puts-money-into-530a/)
+          [Learn about contributions](/en/who-puts-money-into-530a/)
       - question: How does a 530A account work? How can I spend the money?
         answer: |
           In most cases, you cannot take money out of a 530A account before
@@ -127,7 +127,7 @@ blocks:
           home, some personal or family emergencies, some large medical
           expenses, and some birth or adoption expenses.
 
-          [See the details here](https://530a.getyourrefund.org/how-530a-account-works/)
+          [See the details here](/en/how-530a-account-works/)
       - question: Should I put my own money in a 530A Account?
         answer: |
           Maybe. For some families, contributing to a 530A can be a good way to
@@ -137,7 +137,7 @@ blocks:
           donor contributions. You can simply open the account and receive any
           contributions your child qualifies for.
 
-          [Learn more](https://530a.getyourrefund.org/en/who-puts-money-into-530a/)
+          [Learn more](/en/who-puts-money-into-530a/)
       - question: Will a 530A account affect my public benefits, like SSI or SNAP?
         answer: |
           It’s unlikely, but possible. The 530A shouldn’t affect your public
@@ -146,7 +146,7 @@ blocks:
           cautious if you are enrolled in Temporary Assistance for Needy
           Families (TANF).
 
-          [Get more information](https://530a.getyourrefund.org/additional-resources/)
+          [Get more information](/en/additional-resources/)
       - question: How is a 530A investment account different from a 529 plan?
         answer: |
           Both 529 and 530A accounts help families save money for a child’s
@@ -155,7 +155,7 @@ blocks:
           where you live. If you plan to save your own money, think carefully
           about which account is right for you.
 
-          [Learn more](https://530a.getyourrefund.org/who-puts-money-into-530a/).
+          [Learn more](/en/who-puts-money-into-530a/).
       - question: Where is the money invested?
         answer: |
           530A funds are invested in stocks and bonds that track the overall
@@ -169,4 +169,4 @@ blocks:
           schedule is not yet known. Any fees should be deducted automatically
           from the account.
 
-          [Learn more about how the money is invested.](https://530a.getyourrefund.org/en/who-puts-money-into-530a/)
+          [Learn more about how the money is invested.](/en/who-puts-money-into-530a/)

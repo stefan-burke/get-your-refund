@@ -1,7 +1,7 @@
 {%- comment -%}
-  Site header: sticky cream bar, logo left; language switcher + "Menu"
-  disclosure right. The menu lists this language's pages. Pages not yet
-  migrated appear once their content lands.
+  Site header: sticky navy bar, logo left; language switcher + "Menu"
+  disclosure right. The menu mirrors the live site's nav (locale-branched);
+  the how-to-signup submenu renders indented.
 {%- endcomment -%}
 <nav class="site-nav gyr-header">
   {%- include "navigation-start.html" -%}
@@ -12,15 +12,45 @@
         {%- if pageLanguage.code == "es" -%}Menú{%- else -%}Menu{%- endif -%}
       </summary>
       <nav class="gyr-menu-panel" aria-label="{{ pageLanguage.home_label }}">
+        {%- if pageLanguage.code == "es" -%}
         <ul>
-          {%- if pageLanguage.code == "es" -%}
-            <li><a href="/es/">Inicio</a></li>
-            <li><a href="https://530a.getyourrefund.org/es/how-to-signup/">¿Cómo abro una cuenta 530A?</a></li>
-          {%- else -%}
-            <li><a href="/en/">Home</a></li>
-            <li><a href="/en/how-to-signup/">How do I sign up for a 530A account?</a></li>
-          {%- endif -%}
+          <li><a href="/es/">Inicio</a></li>
+          <li><a href="/es/what-is-530a-account/">¿Qué es una cuenta 530A?</a></li>
+          <li><a href="/es/who-puts-money-into-530a/">¿De dónde viene el dinero de una cuenta 530A?</a></li>
+          <li><a href="/es/how-530a-account-works/">¿Cómo funciona una cuenta 530A?</a></li>
+          <li><a href="/es/automatic-eligibility/">¿Recibo este dinero automáticamente?</a></li>
+          <li>
+            <a href="/es/how-to-signup/">¿Cómo abro una cuenta 530A?</a>
+            <ul>
+              <li><a href="/es/how-to-signup/get-started/">Cómo empezar</a></li>
+              <li><a href="/es/how-to-signup/account-activation/">Activar la cuenta</a></li>
+              <li><a href="/es/how-to-signup/who-should-sign-up/">¿Quiénes deberían inscribirse?</a></li>
+            </ul>
+          </li>
+          <li><a href="/es/manage-account/">Administrar una cuenta 530A</a></li>
+          <li><a href="/es/additional-resources/">Otras preguntas</a></li>
+          <li><a href="https://www.getyourrefund.org/es">Visite GetYourRefund</a></li>
         </ul>
+        {%- else -%}
+        <ul>
+          <li><a href="/en/">Home</a></li>
+          <li><a href="/en/what-is-530a-account/">What is a 530A account?</a></li>
+          <li><a href="/en/who-puts-money-into-530a/">Who puts money into 530A accounts?</a></li>
+          <li><a href="/en/how-530a-account-works/">How does a 530A account work?</a></li>
+          <li><a href="/en/automatic-eligibility/">Do I get this money automatically?</a></li>
+          <li>
+            <a href="/en/how-to-signup/">How do I sign up for a 530A account?</a>
+            <ul>
+              <li><a href="/en/how-to-signup/get-started/">Get Started</a></li>
+              <li><a href="/en/how-to-signup/account-activation/">Account Activation</a></li>
+              <li><a href="/en/how-to-signup/who-should-sign-up/">Who should sign up?</a></li>
+            </ul>
+          </li>
+          <li><a href="/en/manage-account/">Managing a 530A account</a></li>
+          <li><a href="/en/additional-resources/">Other topics</a></li>
+          <li><a href="https://getyourrefund.org/530A-referral">Visit GetYourRefund</a></li>
+        </ul>
+        {%- endif -%}
       </nav>
     </details>
   </div>

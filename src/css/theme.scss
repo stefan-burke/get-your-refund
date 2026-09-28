@@ -228,7 +228,7 @@
   }
 
   h1 {
-    font-size: 2.5rem;
+    font-size: 2.375rem;
   }
 
   .btn {
@@ -237,6 +237,13 @@
 
   .image-wrapper {
     border-radius: 16px;
+  }
+
+  // The sign-up hero photo sits in a white rounded card on the live page
+  // (the home hero photo is bare on cream); distinguish by source image.
+  &:has(img[src*="530a-how-do-i-signup"]) .image-wrapper {
+    padding: 24px;
+    background: #FFF;
   }
 }
 

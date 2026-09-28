@@ -7,7 +7,7 @@
     ]
   },
   "gyr-signup": {
-    "before": ["callout", "split-image"],
+    "before": ["callout", "split-image", "callout"],
     "columns": [
       { "types": ["markdown", "link-button"] },
       { "types": ["markdown", "link-button"] },

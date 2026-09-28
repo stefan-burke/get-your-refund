@@ -36,7 +36,7 @@ blocks:
       a standalone form.
   - type: link-button
     text: Learn how to file
-    href: https://530a.getyourrefund.org/en/how-to-signup/get-started/
+    href: /en/how-to-signup/get-started/
     variant: secondary
   - type: markdown
     content: |
@@ -55,7 +55,7 @@ blocks:
       For more information about eligibility and who can sign up, click below.
   - type: link-button
     text: Learn who should file
-    href: https://530a.getyourrefund.org/en/how-to-signup/who-should-sign-up/
+    href: /en/how-to-signup/who-should-sign-up/
     variant: secondary
   - type: cta
     content: |-
