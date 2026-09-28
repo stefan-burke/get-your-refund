@@ -7,25 +7,23 @@ template updates arrive only through a reviewed `upstream` merge.
 
 ## Status
 
-Migration in progress from the WordPress/Elementor original. Scraped source
+Mirrors all 25 URLs of the original site's `page-sitemap.xml` from the
+WordPress/Elementor original (including the empty `/en/elementor-page-675/`
+placeholder, kept for URL parity and marked `no_index`). Scraped source
 material (page inventories, raw HTML, images, style notes) lives in the
-gitignored `.mirror-scratch/` directory and is the ground truth for content.
-
-- Migrated: `/en/`, `/es/`, `/en/how-to-signup/`, `/en/privacy-policy/`
-- Remaining: the other 20 sitemap pages (see `.mirror-scratch/INDEX.md`), plus
-  restoring the temporarily-deferred internal links listed in `upstream.txt`
-- Deferred: `/en/elementor-page-675/` is an empty WordPress placeholder and is
-  not being migrated
+gitignored `.mirror-scratch/` directory and is the ground truth for content;
+`upstream.txt` (also gitignored) records template friction and the small set
+of conscious deviations.
 
 ## Customisations from template defaults
 
 - **Collections/CMS:** pages only (no news, no guides, no galleries). Managed
   via `npm run customise-cms`; `cms_config` is saved in `src/_data/site.json`.
-- **Languages:** `en` (default) + `es` in `src/_data/languages.json`, page
-  pairs in `src/_data/translations.json`. Each locale's content is converted
-  from its own scraped page — the two locales are NOT symmetric (different
-  footer links, copy, and meta). The es privacy page keeps its distinct slug
-  `/es/politica-de-privacidad/`.
+- **Languages:** `en` (default) + `es` in `src/_data/languages.json`, all 12
+  page pairs in `src/_data/translations.json`. Each locale's content is
+  converted from its own scraped page — the two locales are NOT symmetric
+  (different footer links, copy, and meta). The es privacy page keeps its
+  distinct slug `/es/politica-de-privacidad/`.
 - **Locale-aware chrome:** the header menu (`src/_includes/navigation.html`)
   and footer copy (`src/snippets/footer-content-en.md` /
   `footer-content-es.md`, picked by `pageLanguage.code`) differ per locale,
