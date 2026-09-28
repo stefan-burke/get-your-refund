@@ -1178,7 +1178,7 @@ blocks:
 
 ## `faqs`
 
-Renders question/answer pairs as a definition list. Available on all page types.
+Renders question/answer pairs as collapsible details/summary accordions. Available on all page types.
 
 **Schema:** `src/_lib/utils/block-schema/faqs.js`
 
@@ -1199,7 +1199,7 @@ Renders question/answer pairs as a definition list. Available on all page types.
 | `items[].answer` | `markdown` | optional | None | Answer (Markdown) |  |
 | `intro_content` | `markdown` | optional | None | Intro Content (Markdown) | Markdown content rendered above the block in \`.prose\`. |
 
-**Usage notes:** Define FAQs inline via \`items\`, or omit to fall back to the page-level \`faqs\` array (useful for pages and guide pages that declare FAQs in frontmatter). Answers are rendered as markdown.
+**Usage notes:** Define FAQs inline via \`items\`, or omit to fall back to the page-level \`faqs\` array (useful for pages and guide pages that declare FAQs in frontmatter). Answers are rendered as markdown; each pair is collapsed until its question is activated (native \<details> behavior, no JS).
 
 ### Canonical example
 

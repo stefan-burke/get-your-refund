@@ -1,5 +1,6 @@
 {%- comment -%}
-Faqs block - renders question/answer pairs as a definition list.
+Faqs block - renders question/answer pairs as collapsed <details> accordions
+(matching accordion-style sources; expands on click, no JS).
 
 Parameters (via block object):
   - block.items: Array of FAQ objects with:
@@ -13,10 +14,15 @@ If block.items is not provided, falls back to the page-level `faqs` array.
 {%- assign _faqs = block.items | default: faqs -%}
 {%- if _faqs.size > 0 -%}
 {%- include "design-system/block-intro.html" -%}
-<dl class="faqs">
+<div class="faqs">
   {%- for faq in _faqs -%}
-  <dt>{{ faq.question }}</dt>
-  <dd class="prose">{{ faq.answer | renderContent: "md" }}</dd>
+  <details class="faqs__item">
+    <summary class="faqs__question">
+      {{- faq.question -}}
+      <svg class="faqs__chevron" aria-hidden="true" focusable="false" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+    </summary>
+    <div class="faqs__answer prose">{{ faq.answer | renderContent: "md" }}</div>
+  </details>
   {%- endfor -%}
-</dl>
+</div>
 {%- endif -%}

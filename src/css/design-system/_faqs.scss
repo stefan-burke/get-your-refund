@@ -3,8 +3,61 @@
 @use "../mixins" as *;
 // jscpd:ignore-end
 
+// =============================================================================
+// FAQS — collapsible question/answer accordions
+// =============================================================================
+// Question rows separated by hairlines with a rotating chevron, like the
+// accordion-style sources this site mirrors. Expanding is native
+// <details>/<summary> behavior; no JS.
+
 .design-system {
   .faqs {
-    @include faqs-list;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .faqs__item {
+    border-bottom: 1px solid rgb(1 30 41 / 15%);
+  }
+
+  .faqs__question {
+    cursor: pointer;
+
+    display: flex;
+    gap: $space-md;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 18px 0;
+
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--color-text);
+    list-style: none;
+
+    &::-webkit-details-marker {
+      display: none;
+    }
+  }
+
+  .faqs__chevron {
+    flex: none;
+    width: 15px;
+    height: 15px;
+    transition: transform 0.2s ease;
+  }
+
+  .faqs__item[open] {
+    .faqs__chevron {
+      transform: rotate(180deg);
+    }
+  }
+
+  .faqs__answer {
+    @include body-base;
+
+    padding: 0 0 18px 18px;
+    line-height: $line-height-relaxed;
+    color: var(--color-text-muted);
   }
 }

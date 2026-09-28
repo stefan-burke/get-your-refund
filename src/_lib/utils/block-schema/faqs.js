@@ -22,9 +22,9 @@ export const fields = {
 
 export const docs = {
   summary:
-    "Renders question/answer pairs as a definition list. Available on all page types.",
+    "Renders question/answer pairs as collapsible details/summary accordions. Available on all page types.",
   notes:
-    "Define FAQs inline via `items`, or omit to fall back to the page-level `faqs` array (useful for pages and guide pages that declare FAQs in frontmatter). Answers are rendered as markdown.",
+    "Define FAQs inline via `items`, or omit to fall back to the page-level `faqs` array (useful for pages and guide pages that declare FAQs in frontmatter). Answers are rendered as markdown; each pair is collapsed until its question is activated (native <details> behavior, no JS).",
 };
 
 export const example = {
