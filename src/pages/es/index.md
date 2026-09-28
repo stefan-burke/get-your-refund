@@ -18,10 +18,10 @@ blocks:
 
       Es posible que algunos niños nacidos antes de 2025 también se puedan
       beneficiar de una cuenta 530A.
-      [Siga leyendo para conocer más.](https://530a.getyourrefund.org/es/who-puts-money-into-530a/)
+      [Siga leyendo para conocer más.](/es/who-puts-money-into-530a/)
     button:
       text: Cómo abrir una cuenta
-      href: https://530a.getyourrefund.org/es/how-to-signup/
+      href: /es/how-to-signup/
       variant: primary
       size: lg
     figure_src: /images/530a-homepage.png
@@ -45,7 +45,7 @@ blocks:
       tutores deberían conocer cómo funcionan estas cuentas**
   - type: link-button
     text: Conozca las cuentas 530A
-    href: https://530a.getyourrefund.org/es/what-is-530a-account/
+    href: /es/what-is-530a-account/
     variant: secondary
   - type: markdown
     content: |
@@ -58,11 +58,11 @@ blocks:
 
       El proceso para abrir una cuenta 530A ha estado funcionando desde
       inicios del 2026, pero cambia continuamente. Para más información lea
-      [¿Cómo abro una cuenta?](https://530a.getyourrefund.org/es/how-to-signup/).
+      [¿Cómo abro una cuenta?](/es/how-to-signup/).
   - type: markdown
     content: |
-      Para abrir la cuenta y recibir la contribución de $1,000 del gobierno,
-      debe completar dos pasos.
+      **Para abrir la cuenta y recibir la contribución de $1,000 del gobierno,
+      debe completar dos pasos.**
 
       1. Envíe un formulario al IRS junto con su declaración de impuestos o
          complete un formulario por separado.
@@ -75,7 +75,7 @@ blocks:
       de mayo de 2026.*
   - type: link-button
     text: Conozca el proceso
-    href: https://530a.getyourrefund.org/es/how-to-signup/
+    href: /es/how-to-signup/
     variant: secondary
   - type: cta
     content: |-
@@ -98,7 +98,7 @@ blocks:
 
           Si no hace nada, su hijo no recibirá este dinero.
 
-          [Abrir la cuenta](https://530a.getyourrefund.org/es/how-to-signup/)
+          [Abrir la cuenta](/es/how-to-signup/)
       - question: ¿De dónde puede venir el dinero de una cuenta 530A?
         answer: |
           El dinero puede venir de cuatro fuentes:
@@ -118,7 +118,7 @@ blocks:
           No tiene que agregar dinero para abrir la cuenta ni para recibir
           contribuciones del gobierno o de donantes.
 
-          [Conozca sobre las contribuciones](https://530a.getyourrefund.org/es/who-puts-money-into-530a/)
+          [Conozca sobre las contribuciones](/es/who-puts-money-into-530a/)
       - question: ¿Debería agregar mi propio dinero a la cuenta 530A de mi hijo?
         answer: |
           Tal vez. Para algunas familias, una cuenta 530A puede ser una buena
@@ -131,7 +131,7 @@ blocks:
           cuenta y recibir las contribuciones para las que su hijo cumpla los
           requisitos.
 
-          [Conozca más](https://530a.getyourrefund.org/es/how-530a-account-works/)
+          [Conozca más](/es/how-530a-account-works/)
       - question: ¿Una cuenta 530A afectará mis beneficios públicos, como SSI o SNAP?
         answer: |
           Es poco probable, pero posible. Una cuenta 530A no debería afectar
@@ -141,7 +141,7 @@ blocks:
           Necesitadas (TANF, por sus siglas en inglés), le recomendamos ser más
           cuidadoso antes de abrir una cuenta.
 
-          [Lea más información](https://530a.getyourrefund.org/es/additional-resources/)
+          [Lea más información](/es/additional-resources/)
       - question: ¿En qué se diferencia una cuenta de inversión 530A de un plan 529?
         answer: |
           Las cuentas 529 y 530A pueden ayudar a las familias a ahorrar para el
@@ -151,7 +151,7 @@ blocks:
           planea agregar su propio dinero, conozca cómo funcionan estas cuentas
           antes de elegir una.
 
-          [Conozca más.](https://530a.getyourrefund.org/es/how-530a-account-works/)
+          [Conozca más.](/es/how-530a-account-works/)
       - question: ¿Dónde se invierte el dinero?
         answer: |
           Por defecto, la cuenta 530A de su hijo(a) es administrada por una
@@ -168,4 +168,4 @@ blocks:
           realizar transferencias. Vuelva a consultar esta página para ver las
           novedades.
 
-          [Conozca más sobre cómo se invierte el dinero](https://530a.getyourrefund.org/es/manage-account/)
+          [Conozca más sobre cómo se invierte el dinero](/es/manage-account/)
