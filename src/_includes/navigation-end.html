@@ -1,0 +1,14 @@
+{%- comment -%}
+  Link to this page's counterpart in every other language the site publishes.
+  Falls back to that language's home page when no pair exists.
+{%- endcomment -%}
+{%- for alternate in languages -%}
+  {%- unless alternate.code == pageLanguage.code -%}
+    <a
+      class="gyr-lang-link"
+      href="{{ pageTranslation[alternate.code] | default: alternate.home_url }}"
+      lang="{{ alternate.code }}"
+      hreflang="{{ alternate.hreflang }}"
+    >{{ alternate.label }}</a>
+  {%- endunless -%}
+{%- endfor -%}

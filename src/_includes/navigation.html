@@ -1,28 +1,27 @@
-<nav class="site-nav">
+{%- comment -%}
+  Site header: sticky cream bar, logo left; language switcher + "Menu"
+  disclosure right. The menu lists this language's pages. Pages not yet
+  migrated appear once their content lands.
+{%- endcomment -%}
+<nav class="site-nav gyr-header">
   {%- include "navigation-start.html" -%}
-  {%- if config.sticky_mobile_nav -%}
-    <input
-      type="checkbox"
-      id="nav-toggle"
-      class="toggle"
-      autocomplete="off"
-      aria-label="Toggle navigation menu"
-    >
-    <label
-      for="nav-toggle"
-      class="toggle-label"
-      aria-hidden="true"
-    >
-      <span></span>
-    </label>
-  {%- endif -%}
-  {%- assign navItems = collections.navigationLinks | eleventyNavigation -%}
-  {%- if page and page.navigationParent -%}
-    {{ navItems | toNavigation: page.navigationParent, pageLanguage.search_label -}}
-  {%- elsif eleventyNavigation and eleventyNavigation.key -%}
-    {{- navItems | toNavigation: eleventyNavigation.key, pageLanguage.search_label -}}
-  {%- else -%}
-    {{- navItems | toNavigation: navigationParent, pageLanguage.search_label -}}
-  {%- endif -%}
-  {%- include "navigation-end.html" -%}
+  <div class="gyr-header-bar">
+    {%- include "navigation-end.html" -%}
+    <details class="gyr-menu">
+      <summary>
+        {%- if pageLanguage.code == "es" -%}Menú{%- else -%}Menu{%- endif -%}
+      </summary>
+      <nav class="gyr-menu-panel" aria-label="{{ pageLanguage.home_label }}">
+        <ul>
+          {%- if pageLanguage.code == "es" -%}
+            <li><a href="/es/">Inicio</a></li>
+            <li><a href="https://530a.getyourrefund.org/es/how-to-signup/">¿Cómo abro una cuenta 530A?</a></li>
+          {%- else -%}
+            <li><a href="/en/">Home</a></li>
+            <li><a href="/en/how-to-signup/">How do I sign up for a 530A account?</a></li>
+          {%- endif -%}
+        </ul>
+      </nav>
+    </details>
+  </div>
 </nav>

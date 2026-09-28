@@ -31,7 +31,7 @@
       {%- if banner_split.rest.size > 0 -%}
         {%- include "design-system/blocks.html", blocks: banner_split.rest -%}
       {%- endif -%}
-      {%- assign footer_snippet_data = "footer-content" | snippet_data -%}
+      {%- assign footer_snippet_data = "footer-content-" | append: pageLanguage.code | snippet_data -%}
       {%- if footer_snippet_data.blocks -%}
         {%- include "design-system/blocks.html", blocks: footer_snippet_data.blocks -%}
       {%- endif -%}

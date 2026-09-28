@@ -1,15 +1,413 @@
-// Default Theme - matches design-system defaults from _variables.scss
+// 530a Accounts (GetYourRefund) theme
+// Palette and treatments mirrored from 530a.getyourrefund.org — see
+// .mirror-scratch/site-style.md for the extracted source values.
 :root {
-  --color-bg: #fafafa;
-  --body-background: #fafafa;
-  --body-background-alt: #f0f1f3;
-  --color-card-bg: #fff;
-  --color-text: #1f2937;
-  --color-text-muted: #6b7280;
-  --color-link: #2563eb;
-  --color-link-hover: #1d4ed8;
-  --color-tint: #dbeafe;
-  --color-secondary: #7c3aed;
-  --color-accent: #ebebeb;
-  --color-hover-bg: rgb(0 0 0 / 5%);
+  // Warm cream body, navy ink
+  --color-bg: #FFFFF5;
+  --body-background: #FFFFF5;
+  --body-background-alt: #EBECDB; // sand
+  --color-card-bg: #FFF;
+  --color-text: #011D27;
+  --color-text-muted: #69727D;
+  --color-link: #007C7C; // teal
+  --color-link-hover: #005656;
+  --color-tint: #E8FDF7; // mint
+  --color-secondary: #011E29;
+  --color-accent: #E8FDF7;
+  --color-hover-bg: rgb(1 30 41 / 6%);
+  --color-dark-bg: #011E29;
+  --color-dark-bg-alt: #00161F;
+  --color-dark-text: #FFFFF5;
+  --color-dark-text-muted: #D6D5D5;
+  --color-dark-link: #FFFFF5;
+  --color-contrast-text: #FFFFF5;
+  --color-contrast-text-muted: rgb(255 255 245 / 85%);
+  --color-gradient-start: #011E29;
+  --color-gradient-end: #011E29;
+  --color-video-play-bg: #011E29;
+  --color-video-play-hover: #007C7C;
+  --font-family-body: "Inter", system-ui, sans-serif;
+  --font-family-heading: "Geologica", "Inter", system-ui, sans-serif;
+
+  // Live kit headings render near 44px on desktop
+  --font-size-4xl: 2.75rem;
+  --border-radius: 10px;
+  --link-decoration: none;
+  --link-decoration-hover: underline;
+}
+
+// ---------------------------------------------------------------------------
+// Buttons: 10px radius, 15px/30px padding, Inter 700.
+// Primary: navy on cream text, hover teal. Secondary: cream with 2px navy
+// border, hover filled navy.
+// ---------------------------------------------------------------------------
+.design-system .btn {
+  padding: 15px 30px;
+  border-radius: 10px;
+  font-weight: 700;
+
+  &--primary {
+    color: #FFFFF5;
+    background: #011E29;
+
+    &:hover:not(:disabled) {
+      color: #FFFFF5;
+      background: #007C7C;
+    }
+  }
+
+  &--secondary {
+    border-color: #011E29;
+    color: #011E29;
+    background: #FFFFF5;
+
+    &:hover:not(:disabled) {
+      color: #FFFFF5;
+      background: #011E29;
+    }
+  }
+
+  &--lg {
+    padding: 15px 30px;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Callouts. The live "info" treatment is a white card with a 5px amber left
+// border; the page-top update banner is a thin amber outline on pale yellow.
+// ---------------------------------------------------------------------------
+.design-system .callout {
+  border-radius: 10px;
+
+  .callout__icon {
+    color: #FFAE00;
+  }
+
+  &--info {
+    --callout-bg: #FFF;
+    --callout-fg: #011D27;
+
+    border-left: 5px solid #FFAE00;
+  }
+
+  &--warning {
+    --callout-bg: #FFFBEB;
+    --callout-fg: #011D27;
+
+    border: 1px solid #FFAE00;
+    border-radius: 4px;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Header: sticky navy bar (~66px), white logo left; language link + "Menu"
+// disclosure right. Accessible <details> disclosure; no JS required.
+// ---------------------------------------------------------------------------
+.design-system nav.site-nav.gyr-header {
+  position: sticky;
+  z-index: 500;
+  top: 0;
+
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  justify-content: space-between;
+
+  min-height: 66px;
+  padding: 8px 24px;
+
+  background: #011E29;
+
+  .gyr-logo {
+    display: inline-flex;
+    align-items: center;
+
+    img {
+      display: block;
+      width: auto;
+      height: 26px;
+    }
+  }
+
+  .gyr-header-bar {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+  }
+
+  .gyr-lang-link {
+    font-weight: 700;
+    color: #FFFFF5;
+    text-decoration: none;
+
+    &:hover {
+      color: #E8FDF7;
+    }
+  }
+
+  details.gyr-menu {
+    position: relative;
+
+    summary {
+      cursor: pointer;
+
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+
+      padding: 4px 2px;
+      border: none;
+
+      font-weight: 400;
+      color: #FFFFF5;
+      text-decoration: underline;
+      list-style: none;
+
+      background: transparent;
+
+      &::-webkit-details-marker {
+        display: none;
+      }
+
+      &:hover {
+        color: #E8FDF7;
+      }
+    }
+
+    &[open] summary {
+      color: #E8FDF7;
+    }
+
+    .gyr-menu-panel {
+      position: absolute;
+      z-index: 600;
+      top: calc(100% + 12px);
+      right: 0;
+
+      min-width: 300px;
+      padding: 8px 0;
+      border: 1px solid rgb(1 30 41 / 15%);
+      border-radius: 10px;
+
+      background: #FFFFF5;
+      box-shadow: var(--shadow-md);
+
+      ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      li ul {
+        padding-left: 20px;
+      }
+
+      a {
+        display: block;
+        padding: 10px 20px;
+        color: #011E29;
+        text-decoration: none;
+
+        &:hover {
+          color: #011E29;
+          background: #E8FDF7;
+        }
+      }
+    }
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Split layouts used as page heroes: the live heroes sit directly on the cream
+// page background with a bare rounded image, no panel fills.
+// ---------------------------------------------------------------------------
+.design-system .split {
+  .left,
+  .right {
+    background: transparent;
+  }
+
+  h1 {
+    font-size: 2.5rem;
+  }
+
+  .btn {
+    width: fit-content;
+  }
+
+  .image-wrapper {
+    border-radius: 16px;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Home intro band (gyr-home block layout): the live homepage presents "What is
+// a 530A account?" on mint and "How do I sign up?" on sand as two flush
+// half-width columns. Full-bleed the grid and color each column.
+// ---------------------------------------------------------------------------
+.design-system .block-columns-section:has(> .container-wide > .block-columns-2) {
+  padding-block: 0;
+}
+
+.design-system .block-columns-2 {
+  gap: 0;
+  margin-inline: calc(50% - 50vw);
+  padding-inline: calc(50vw - 50%);
+
+  .block-column {
+    padding: 56px 48px;
+  }
+
+  > .block-column:first-child {
+    background: #E8FDF7;
+  }
+
+  > .block-column:last-child {
+    background: #EBECDB;
+
+    // The steps walkthrough renders as a white card on the sand column
+    > .prose:last-of-type {
+      padding: 24px 28px;
+      border-radius: 10px;
+      background: #FFF;
+    }
+  }
+
+  @media (width < 48rem) {
+    margin-inline: 0;
+    padding-inline: 0;
+
+    .block-column {
+      padding: 40px 24px;
+    }
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Sign-up step cards (gyr-signup block layout): three white cards in a row on
+// the cream background.
+// ---------------------------------------------------------------------------
+.design-system .block-columns-3 {
+  gap: 24px;
+
+  .block-column {
+    padding: 28px;
+    border-radius: 10px;
+    background: #FFF;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// CTA band: solid navy with cream text and a white button.
+// ---------------------------------------------------------------------------
+.design-system .cta {
+  background: #011E29;
+
+  .btn--primary {
+    color: #011E29;
+    background: #FFFFF5;
+
+    &:hover:not(:disabled) {
+      color: #011E29;
+      background: #E8FDF7;
+    }
+  }
+}
+
+// ---------------------------------------------------------------------------
+// FAQs: question rows separated by hairlines, like the live accordion list.
+// ---------------------------------------------------------------------------
+.design-system .faqs {
+  dt {
+    padding: 16px 0;
+    border-bottom: 1px solid rgb(1 30 41 / 15%);
+    font-weight: 700;
+  }
+
+  dd {
+    margin-bottom: 16px;
+  }
+}
+
+// The FAQ list is the page's last section; the live equivalent sits on the
+// plain page background rather than the alternating fill.
+.design-system section:has(> .container-wide > .faqs) {
+  background: var(--color-bg);
+}
+
+// ---------------------------------------------------------------------------
+// Footer: navy band, two columns — brand + sentence + link list on the left,
+// contact line on the right. Per-locale copy comes from the
+// footer-content-<lang> snippets.
+// ---------------------------------------------------------------------------
+.design-system .gyr-footer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 48px;
+  align-items: start;
+
+  text-align: left;
+
+  img {
+    display: block;
+    grid-column: 1;
+    grid-row: 1;
+
+    width: 36px;
+    height: 36px;
+    margin: 0 0 16px;
+  }
+
+  // The media transform wraps content images in a responsive wrapper with an
+  // inline max-width; cap it back to the small brand icon.
+  .image-wrapper {
+    max-width: 36px !important;
+  }
+
+  p {
+    margin: 0;
+  }
+
+  p:nth-of-type(1) {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  p:nth-of-type(2) {
+    grid-column: 2;
+    grid-row: 2;
+  }
+
+  ul {
+    display: flex;
+    grid-column: 1 / -1;
+    grid-row: 3;
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start;
+    justify-content: flex-start;
+
+    margin: 16px 0 0;
+    padding: 0;
+
+    list-style: none;
+  }
+
+  a {
+    color: #FFFFF5;
+    text-decoration: underline;
+
+    &:hover {
+      color: #E8FDF7;
+    }
+  }
+
+  @media (width < 48rem) {
+    grid-template-columns: 1fr;
+
+    p:nth-of-type(2) {
+      grid-column: 1;
+      grid-row: auto;
+    }
+  }
 }
