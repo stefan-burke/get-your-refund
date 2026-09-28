@@ -1,6 +1,8 @@
 ---
 name: Who should sign up?
 meta_title: Who should sign up? - GetYourRefund
+eleventyNavigation:
+  parent: "How do I sign up?"
 meta_description: Am I the right person to sign up for my child?
 permalink: /en/how-to-signup/who-should-sign-up/
 blocks:

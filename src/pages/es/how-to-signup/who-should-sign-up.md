@@ -1,6 +1,8 @@
 ---
 name: ¿Quiénes deberían inscribirse?
 meta_title: ¿Quiénes deberían inscribirse? - GetYourRefund
+eleventyNavigation:
+  parent: "¿Cómo abro una cuenta 530A?"
 meta_description: ¿Soy la persona correcta para inscribir a mi hijo(a)?
 permalink: /es/how-to-signup/who-should-sign-up/
 blocks:

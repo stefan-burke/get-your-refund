@@ -1,6 +1,8 @@
 ---
 name: Get Started
 meta_title: Get Started - GetYourRefund
+eleventyNavigation:
+  parent: "How do I sign up?"
 meta_description: "Option 1: Sign up online on the IRS website (Recommended)"
 permalink: /en/how-to-signup/get-started/
 blocks:

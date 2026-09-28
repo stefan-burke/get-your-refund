@@ -1,5 +1,5 @@
 {
-  "show_breadcrumbs": false,
+  "show_breadcrumbs": true,
   "placeholder_images": false,
   "sticky_mobile_nav": false,
   "horizontal_nav": false,

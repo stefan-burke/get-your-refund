@@ -1,6 +1,8 @@
 ---
 name: Account Activation
 meta_title: Account Activation - GetYourRefund
+eleventyNavigation:
+  parent: "How do I sign up?"
 meta_description: What happens after I file the IRS form?
 permalink: /en/how-to-signup/account-activation/
 blocks:

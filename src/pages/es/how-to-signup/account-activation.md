@@ -1,6 +1,8 @@
 ---
 name: Activar la cuenta
 meta_title: Activar la cuenta - GetYourRefund
+eleventyNavigation:
+  parent: "¿Cómo abro una cuenta 530A?"
 meta_description: Después de que el IRS reciba y procese su formulario, recibirá un correo electrónico de no-reply@TrumpAccounts.Treasury.gov con instrucciones para activar la
 permalink: /es/how-to-signup/account-activation/
 blocks:

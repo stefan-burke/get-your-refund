@@ -14,32 +14,40 @@
 
     display: flex;
     flex-flow: row wrap;
-    gap: $space-xs;
+    gap: $space-sm;
     align-items: center;
 
-    padding-block: $space-sm;
+    // The live trail sits tight under the page-top banner with ~8px of
+    // breathing room above the hero.
+    padding-block: 8px;
 
-    @include body-sm;
-
+    font-size: 1rem;
+    line-height: 1.5;
     list-style: none;
 
     li {
       display: flex;
       flex-direction: row;
-      gap: $space-xs;
+      gap: $space-sm;
       align-items: center;
     }
 
     a {
-      @include link-plain;
+      color: var(--color-link);
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
     }
 
     .separator {
-      @include muted-text;
+      font-size: 0.875rem;
+      opacity: 0.5;
     }
 
     span[aria-current] {
-      font-weight: 600;
+      font-weight: 500;
       color: var(--color-text);
     }
   }
