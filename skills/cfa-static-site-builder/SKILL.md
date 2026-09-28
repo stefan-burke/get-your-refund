@@ -94,7 +94,9 @@ for facts or decisions that block implementation:
 
 If factual content is missing, omit the optional section or ask for it. Do not
 publish plausible-looking filler. For a migration, inventory the source pages,
-assets, redirects, and metadata before mapping them into CfA Static.
+assets, redirects, and metadata before mapping them into CfA Static; for
+page-for-page mirrors of an existing live site, follow
+[site mirroring](site-mirroring.md).
 
 ### 3. Plan Before Editing
 
