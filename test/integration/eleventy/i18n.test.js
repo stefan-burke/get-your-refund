@@ -286,3 +286,19 @@ describe("a translated site's header and footer", () => {
     expect(logo.querySelector("picture")).toBeNull();
   });
 });
+
+describe("a site with no navigation pages", () => {
+  const getSite = useSharedSite({
+    files: [
+      navPage("pages/index.md", "/", "Home", { eleventyNavigation: false }),
+    ],
+  });
+
+  test("renders no menu or menu toggle", async () => {
+    const nav = (await getSite().getDoc("/index.html")).querySelector(
+      "nav.site-nav",
+    );
+    expect(nav.querySelector(".site-menu")).toBeNull();
+    expect(nav.querySelector(".menu-toggle")).toBeNull();
+  });
+});
