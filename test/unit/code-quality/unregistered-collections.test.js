@@ -27,8 +27,8 @@ describe("unregistered-collections", () => {
     ...createExtractor(/\.addCollection\(\s*"([^"]+)"/g)(
       getFiles(/^src\/.*\.js$/),
     ),
-    ...createExtractor(/"tags"\s*:\s*\[\s*"([^"]+)"\s*\]/g)(
-      getFiles(/^src\/.*\.json$/),
+    ...createExtractor(/"?tags"?\s*:\s*\[\s*"([^"]+)"\s*\]/g)(
+      getFiles(/^src\/.*\.(js|json)$/),
     ),
   ]);
 

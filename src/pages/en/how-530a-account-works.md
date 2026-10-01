@@ -1,8 +1,14 @@
 ---
 name: How does the money work?
+eleventyNavigation:
+  key: "How does the money work?"
+  title: "How does a 530A account work?"
+  order: 4
 meta_title: How does the money work? - GetYourRefund
 meta_description: A 530A account has rules about when money can be taken out and how it can be used. Learn more about when your child can access the money, what they can use it
 permalink: /en/how-530a-account-works/
+redirect_from:
+  - /how-530a-account-works/
 blocks:
   - type: callout
     compact: true
@@ -19,6 +25,7 @@ blocks:
     figure_src: /images/530a-how-does-it-work.png
     figure_alt: Carved stone frieze on the pediment of a classical building
   - type: faqs
+    collapsible: true
     items:
       - question: Can I take money out before my child is 18?
         answer: |

@@ -18,17 +18,26 @@ vi.mock("#media/image-lqip.js", async (importOriginal) => {
 
 describe("configureImages", () => {
   test("registers the shortcode, filter, plugin, and image collection", async () => {
-    const mockConfig = createMockEleventyConfig();
+    await withTempDirAsync("image-configure-collection", async (dir) => {
+      // The collection globs src/images relative to the working directory
+      mkdirSync(join(dir, "src/images"), { recursive: true });
+      for (const name of ["alpha.jpg", "beta.jpg", "notes.txt"]) {
+        writeFileSync(join(dir, "src/images", name), "");
+      }
+      await withChdirAsync(dir, async () => {
+        const mockConfig = createMockEleventyConfig();
 
-    await configureImages(mockConfig);
+        await configureImages(mockConfig);
 
-    expect(typeof mockConfig.asyncShortcodes.image).toBe("function");
-    expect(typeof mockConfig.filters.normalizeImageUrl).toBe("function");
-    expect(mockConfig.pluginCalls[0].plugin).toBe(servePlugin);
-
-    const images = mockConfig.collections.images();
-    expect(Array.isArray(images)).toBe(true);
-    expect(images.every((name) => name.endsWith(".jpg"))).toBe(true);
+        expect(typeof mockConfig.asyncShortcodes.image).toBe("function");
+        expect(typeof mockConfig.filters.normalizeImageUrl).toBe("function");
+        expect(mockConfig.pluginCalls[0].plugin).toBe(servePlugin);
+        expect(mockConfig.collections.images().toSorted()).toEqual([
+          "alpha.jpg",
+          "beta.jpg",
+        ]);
+      });
+    });
   });
 
   test("eleventy.after copies the image cache into the site when present", async () => {

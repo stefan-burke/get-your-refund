@@ -7,10 +7,12 @@ import { pickNonNull } from "#utils/fp/object.js";
 import configData from "./config.json" with { type: "json" };
 
 const userConfig = pickNonNull(configData);
-const baseConfig = {
+// validated-config has checked the settings that take a fixed set of values,
+// so the merged object is the declared type rather than the JSON's inference.
+const baseConfig = /** @type {Omit<SiteConfig, "internal_link_suffix">} */ ({
   ...DEFAULTS,
   ...userConfig,
-};
+});
 
 /** @type {SiteConfig} */
 const config = {

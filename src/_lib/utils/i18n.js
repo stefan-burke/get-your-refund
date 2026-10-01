@@ -61,6 +61,19 @@ export const languageForUrl = (url, languages) => {
 };
 
 /**
+ * Where a page sits for working out its language: its URL, or - for a page
+ * with no URL of its own (`permalink: false`, such as a navigation entry that
+ * links elsewhere) - its source path inside its collection directory, so
+ * `src/pages/es/visit.md` is Spanish like the pages published under /es/.
+ * @param {{ url?: string | false, filePathStem?: string } | undefined} page
+ * @returns {string | undefined}
+ */
+export const pageLocation = (page) =>
+  typeof page?.url === "string"
+    ? page.url
+    : page?.filePathStem?.replace(/^\/[^/]+/, "");
+
+/**
  * Everything a language declares beyond the optional `is_default` flag. None
  * of it comes from a page: the templates read these straight through, so a
  * language missing one publishes an empty `hreflang`, an unnamed breadcrumb
@@ -79,6 +92,23 @@ const REQUIRED_LANGUAGE_FIELDS = [
   "breadcrumb_label",
   "skip_to_content_label",
   "search_label",
+  "navigation_label",
+  "menu_label",
+  "close_menu_label",
+  "submenu_label",
+  "gallery_label",
+  "close_gallery_label",
+  "previous_image_label",
+  "next_image_label",
+  "gallery_images_label",
+  "download_label",
+  "load_more_label",
+  "no_results_label",
+  "back_to_label",
+  "result_count_one_label",
+  "result_count_other_label",
+  "redirect_label",
+  "redirect_link_label",
 ];
 /* jscpd:ignore-end */
 

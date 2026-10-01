@@ -2,6 +2,7 @@
 	"name": "530a Accounts - GetYourRefund",
 	"url": "https://530a.getyourrefund.org",
 	"description": "If your child was born after January 1, 2025, you should open a 530A investment account (Trump Account) as soon as you can. The government will add $1,000 to the account.",
+	"logo": "/images/cropped-GYR530A.webp",
 	"cms_config": {
 		"collections": [
 			"pages",
@@ -9,12 +10,12 @@
 		],
 		"features": {
 			"permalinks": false,
-			"redirects": false,
+			"redirects": true,
 			"faqs": false,
 			"galleries": false,
-			"external_navigation_urls": false,
+			"external_navigation_urls": true,
 			"use_visual_editor": false,
-			"no_index": false
+			"no_index": true
 		},
 		"hasSrcFolder": true,
 		"customBlocksCollections": []

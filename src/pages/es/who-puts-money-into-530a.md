@@ -1,5 +1,8 @@
 ---
 name: ¿De dónde viene el dinero de una cuenta 530A?
+eleventyNavigation:
+  key: "¿De dónde viene el dinero de una cuenta 530A?"
+  order: 3
 meta_title: ¿De dónde viene el dinero de una cuenta 530A? - GetYourRefund
 meta_description: El dinero de una cuenta 530A puede venir del gobierno federal, gobiernos estatales, donaciones privadas, su empleador o de usted, su familia y sus amigos.
 permalink: /es/who-puts-money-into-530a/
@@ -22,6 +25,7 @@ blocks:
     figure_src: /images/530a-who-puts-money-in.png
     figure_alt: Una madre carga a su bebé mientras usa una computadora portátil
   - type: faqs
+    collapsible: true
     items:
       - question: ¿Debería agregar mi propio dinero a la cuenta 530A de mi hijo?
         answer: |

@@ -1,77 +1,34 @@
 {%- comment -%}
-  Site header: sticky navy bar, logo left; language switcher + "Menu"
-  disclosure right. The menu mirrors the live site's Elementor popup: opening
-  it reveals a full-screen overlay with a navy top strip, a cream panel
-  (right-aligned) holding the locale-branched nav as large rows with the
-  how-to-signup submenu inline, and a white close box with a navy X at the
-  top-right corner. Pure <details> disclosure (keyboard operable, no JS
-  required); ui/gyr-menu.js adds Esc-to-close, an exit fade, and focus return.
+  The site header. Its menu lists the navigation pages written in this page's
+  language, marks the current page with aria-current, and collapses behind a
+  toggle button where config.collapse_menu asks ("mobile", "always", or
+  "never"). The toggle and close buttons ship hidden and the menu expanded;
+  ui/site-menu.js reveals the buttons and collapses the menu, so without
+  JavaScript the links are simply there. navigation-start.html and
+  navigation-end.html are the site's own slots before and after the menu.
 {%- endcomment -%}
-<nav class="site-nav gyr-header">
-  <div class="gyr-header-inner">
+{%- assign navItems = collections.navigationLinks | inLanguage: pageLanguage | eleventyNavigation -%}
+{%- assign activeKey = page.navigationParent | default: eleventyNavigation.key | default: navigationParent -%}
+<nav
+  class="site-nav"
+  aria-label="{{ pageLanguage.navigation_label }}"
+  data-collapse="{{ config.collapse_menu }}"
+  data-submenu-label="{{ pageLanguage.submenu_label }}"
+>
   {%- include "navigation-start.html" -%}
-  <div class="gyr-header-bar">
-    {%- include "navigation-end.html" -%}
-    <details class="gyr-menu">
-      <summary class="gyr-menu-button">
-        {%- if pageLanguage.code == "es" -%}Menú{%- else -%}Menu{%- endif -%}
-      </summary>
-      <nav class="gyr-menu-panel" aria-label="{{ pageLanguage.home_label }}">
-        {%- comment -%} Navy band across the overlay's top, the header's
-        continuation; the close toggle lives in its top-right corner. A real
-        element (not a ::before pseudo-element) so the close box sizes itself
-        from the strip instead of hand-mimicking the header band's geometry.
-        {%- endcomment -%}
-        <div class="gyr-menu-strip">
-          <summary class="gyr-menu-close" aria-label="Close menu">
-            <svg width="30" height="30" viewBox="0 0 93 93" fill="none" aria-hidden="true" focusable="false">
-              <path d="M3.53553 3.53552L88.5355 88.5355M88.5355 3.53552L3.53552 88.5355" stroke="#011E29" stroke-width="10" />
-            </svg>
-          </summary>
-        </div>
-        <div class="gyr-menu-body">
-        {%- if pageLanguage.code == "es" -%}
-        <ul>
-          <li{% if page.url == "/es/" %} class="current"{% endif %}><a href="/es/">Inicio</a></li>
-          <li{% if page.url == "/es/what-is-530a-account/" %} class="current"{% endif %}><a href="/es/what-is-530a-account/">¿Qué es una cuenta 530A?</a></li>
-          <li{% if page.url == "/es/who-puts-money-into-530a/" %} class="current"{% endif %}><a href="/es/who-puts-money-into-530a/">¿De dónde viene el dinero de una cuenta 530A?</a></li>
-          <li{% if page.url == "/es/how-530a-account-works/" %} class="current"{% endif %}><a href="/es/how-530a-account-works/">¿Cómo funciona una cuenta 530A?</a></li>
-          <li{% if page.url == "/es/automatic-eligibility/" %} class="current"{% endif %}><a href="/es/automatic-eligibility/">¿Recibo este dinero automáticamente?</a></li>
-          <li{% if page.url == "/es/how-to-signup/" %} class="current"{% endif %}>
-            <a href="/es/how-to-signup/">¿Cómo abro una cuenta 530A?</a>
-            <ul class="sub-menu">
-              <li{% if page.url == "/es/how-to-signup/get-started/" %} class="current"{% endif %}><a href="/es/how-to-signup/get-started/">Cómo empezar</a></li>
-              <li{% if page.url == "/es/how-to-signup/account-activation/" %} class="current"{% endif %}><a href="/es/how-to-signup/account-activation/">Activar la cuenta</a></li>
-              <li{% if page.url == "/es/how-to-signup/who-should-sign-up/" %} class="current"{% endif %}><a href="/es/how-to-signup/who-should-sign-up/">¿Quiénes deberían inscribirse?</a></li>
-            </ul>
-          </li>
-          <li{% if page.url == "/es/manage-account/" %} class="current"{% endif %}><a href="/es/manage-account/">Administrar una cuenta 530A</a></li>
-          <li{% if page.url == "/es/additional-resources/" %} class="current"{% endif %}><a href="/es/additional-resources/">Otras preguntas</a></li>
-          <li><a href="https://www.getyourrefund.org/es">Visite GetYourRefund</a></li>
-        </ul>
-        {%- else -%}
-        <ul>
-          <li{% if page.url == "/en/" %} class="current"{% endif %}><a href="/en/">Home</a></li>
-          <li{% if page.url == "/en/what-is-530a-account/" %} class="current"{% endif %}><a href="/en/what-is-530a-account/">What is a 530A account?</a></li>
-          <li{% if page.url == "/en/who-puts-money-into-530a/" %} class="current"{% endif %}><a href="/en/who-puts-money-into-530a/">Who puts money into 530A accounts?</a></li>
-          <li{% if page.url == "/en/how-530a-account-works/" %} class="current"{% endif %}><a href="/en/how-530a-account-works/">How does a 530A account work?</a></li>
-          <li{% if page.url == "/en/automatic-eligibility/" %} class="current"{% endif %}><a href="/en/automatic-eligibility/">Do I get this money automatically?</a></li>
-          <li{% if page.url == "/en/how-to-signup/" %} class="current"{% endif %}>
-            <a href="/en/how-to-signup/">How do I sign up for a 530A account?</a>
-            <ul class="sub-menu">
-              <li{% if page.url == "/en/how-to-signup/get-started/" %} class="current"{% endif %}><a href="/en/how-to-signup/get-started/">Get Started</a></li>
-              <li{% if page.url == "/en/how-to-signup/account-activation/" %} class="current"{% endif %}><a href="/en/how-to-signup/account-activation/">Account Activation</a></li>
-              <li{% if page.url == "/en/how-to-signup/who-should-sign-up/" %} class="current"{% endif %}><a href="/en/how-to-signup/who-should-sign-up/">Who should sign up?</a></li>
-            </ul>
-          </li>
-          <li{% if page.url == "/en/manage-account/" %} class="current"{% endif %}><a href="/en/manage-account/">Managing a 530A account</a></li>
-          <li{% if page.url == "/en/additional-resources/" %} class="current"{% endif %}><a href="/en/additional-resources/">Other topics</a></li>
-          <li><a href="https://getyourrefund.org/530A-referral">Visit GetYourRefund</a></li>
-        </ul>
-        {%- endif -%}
-        </div>
-      </nav>
-    </details>
+  {%- if config.collapse_menu != "never" -%}
+    <button type="button" class="menu-toggle" aria-controls="site-menu" aria-expanded="false" hidden>
+      <span class="menu-toggle-icon" aria-hidden="true"></span>
+      {{ pageLanguage.menu_label }}
+    </button>
+  {%- endif -%}
+  <div class="site-menu" id="site-menu">
+    {%- if config.collapse_menu != "never" -%}
+      <button type="button" class="menu-close" aria-label="{{ pageLanguage.close_menu_label }}" hidden>
+        {{- "hugeicons:cancel-01" | icon -}}
+      </button>
+    {%- endif -%}
+    {{- navItems | toNavigation: activeKey, pageLanguage.search_label, page.url -}}
   </div>
-  </div>
+  {%- include "navigation-end.html" -%}
 </nav>

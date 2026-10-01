@@ -22,11 +22,11 @@ const IGNORED_PROPERTIES = frozenSet(["size", "length"]);
 /** Match .addCollection("name" in JS source files */
 const ADD_COLLECTION_PATTERN = /\.addCollection\(\s*"([^"]+)"/g;
 
-/** Match "tags": ["name"] in directory data JSON files */
-const TAG_ARRAY_PATTERN = /"tags"\s*:\s*\[\s*"([^"]+)"\s*\]/g;
+/** Match tags: ["name"] in directory data (JSON, or JS like directory-data.js) */
+const TAG_ARRAY_PATTERN = /"?tags"?\s*:\s*\[\s*"([^"]+)"\s*\]/g;
 
-/** Match "tags": "name" in directory data JSON files */
-const TAG_STRING_PATTERN = /"tags"\s*:\s*"([^"]+)"/g;
+/** Match tags: "name" in directory data (JSON, or JS) */
+const TAG_STRING_PATTERN = /"?tags"?\s*:\s*"([^"]+)"/g;
 
 /** Match collections.NAME (dot notation) in templates */
 const DOT_ACCESS_PATTERN = /collections\.([a-zA-Z_][\w-]*)/g;
@@ -75,7 +75,11 @@ const buildRegisteredNames = (srcDir) =>
       ADD_COLLECTION_PATTERN,
     ),
     ...[TAG_ARRAY_PATTERN, TAG_STRING_PATTERN].flatMap((pattern) =>
-      extractNamesFromFiles(srcDir, (n) => n.endsWith(".json"), pattern),
+      extractNamesFromFiles(
+        srcDir,
+        (n) => n.endsWith(".js") || n.endsWith(".json"),
+        pattern,
+      ),
     ),
   ]);
 

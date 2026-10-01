@@ -198,7 +198,10 @@ export const generateCollectionConfig = (
     label: collection.label,
     path: collection.path,
     type: "collection",
-    subfolders: false,
+    // A translated site keeps each language in a folder (src/pages/es/), so
+    // editors browse into folders and add pages there; see directory-data.js
+    // for the folder-derived URL a new page gets.
+    subfolders: true,
     filename: memberOf(DATE_FILENAME_COLLECTIONS)(collectionName)
       ? "{year}-{month}-{day}-{name}.md"
       : "{name}.md",

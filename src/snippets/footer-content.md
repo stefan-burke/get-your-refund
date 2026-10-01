@@ -1,6 +1,8 @@
 ---
-name: Footer content (English)
+name: Footer content
 ---
+
+![](/images/site-icon.png)
 
 GetYourRefund.org is a free non-profit tax filing service built by [Code for America.](https://www.codeforamerica.org/)
 

@@ -1,8 +1,14 @@
 ---
 name: A guide to 530A/Trump Accounts
+eleventyNavigation:
+  key: "A guide to 530A/Trump Accounts"
+  title: "Home"
+  order: 1
 meta_title: A guide to 530A/Trump Accounts – GetYourRefund
 meta_description: If your child was born after January 1, 2025, you should open a 530A investment account (Trump Account) as soon as you can. The government will add $1,000 to the account.
 permalink: /en/
+redirect_from:
+  - /
 tags: ["pages", "gyr-home"]
 blocks:
   - type: split-image
@@ -86,6 +92,7 @@ blocks:
       variant: primary
       size: lg
   - type: faqs
+    collapsible: true
     items:
       - question: Do I get this money automatically?
         answer: |

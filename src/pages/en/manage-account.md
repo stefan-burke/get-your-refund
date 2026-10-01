@@ -1,8 +1,13 @@
 ---
 name: Managing a 530A account
+eleventyNavigation:
+  key: "Managing a 530A account"
+  order: 7
 meta_title: Managing a 530A account - GetYourRefund
 meta_description: Where is the money invested? Can I make choices on where to invest?
 permalink: /en/manage-account/
+redirect_from:
+  - /manage-account/
 blocks:
   - type: callout
     compact: true
@@ -19,6 +24,7 @@ blocks:
     figure_src: /images/530a-managing-account.png
     figure_alt: Person typing on a laptop at a wooden desk
   - type: faqs
+    collapsible: true
     items:
       - question: Where is the money invested? Can I make choices on where to invest?
         answer: |

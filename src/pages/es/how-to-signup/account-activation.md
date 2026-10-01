@@ -1,8 +1,10 @@
 ---
 name: Activar la cuenta
-meta_title: Activar la cuenta - GetYourRefund
 eleventyNavigation:
+  key: "Activar la cuenta"
   parent: "¿Cómo abro una cuenta 530A?"
+  order: 2
+meta_title: Activar la cuenta - GetYourRefund
 meta_description: Después de que el IRS reciba y procese su formulario, recibirá un correo electrónico de no-reply@TrumpAccounts.Treasury.gov con instrucciones para activar la
 permalink: /es/how-to-signup/account-activation/
 blocks:
@@ -18,6 +20,7 @@ blocks:
     figure_src: /images/530a-how-do-i-signup.png
     figure_alt: Una cuidadora sostiene a un bebé que ríe
   - type: faqs
+    collapsible: true
     items:
       - question: ¿Qué pasa después de presentar el formulario del IRS?
         answer: |

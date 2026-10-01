@@ -94,9 +94,7 @@ for facts or decisions that block implementation:
 
 If factual content is missing, omit the optional section or ask for it. Do not
 publish plausible-looking filler. For a migration, inventory the source pages,
-assets, redirects, and metadata before mapping them into CfA Static; for
-page-for-page mirrors of an existing live site, follow
-[site mirroring](site-mirroring.md).
+assets, redirects, and metadata before mapping them into CfA Static.
 
 ### 3. Plan Before Editing
 
@@ -116,7 +114,9 @@ available block or producing a generic hero/cards/CTA sequence.
 Read [project setup](references/project-setup.md) when changing identity,
 collections, CMS features, themes, languages, or deployment. Read
 [content authoring](references/content-authoring.md) before creating or
-migrating content files.
+migrating content files. Read [languages](references/i18n.md) for a site in
+more than one language, and [site mirroring](references/site-mirroring.md) to
+rebuild an existing site page for page.
 
 ### 4. Configure and Author
 

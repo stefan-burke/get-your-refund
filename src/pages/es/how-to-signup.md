@@ -1,5 +1,8 @@
 ---
 name: ¿Cómo abro una cuenta 530A?
+eleventyNavigation:
+  key: "¿Cómo abro una cuenta 530A?"
+  order: 6
 meta_title: ¿Cómo abro una cuenta 530A? - GetYourRefund
 meta_description: Abrir una cuenta 530A es un proceso de dos pasos. En esta página encontrará información sobre cómo comenzar, quién debe abrir la cuenta del menor, cómo
 permalink: /es/how-to-signup/

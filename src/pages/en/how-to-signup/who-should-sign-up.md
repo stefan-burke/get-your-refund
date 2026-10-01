@@ -1,10 +1,14 @@
 ---
 name: Who should sign up?
-meta_title: Who should sign up? - GetYourRefund
 eleventyNavigation:
+  key: "Who should sign up?"
   parent: "How do I sign up?"
+  order: 3
+meta_title: Who should sign up? - GetYourRefund
 meta_description: Am I the right person to sign up for my child?
 permalink: /en/how-to-signup/who-should-sign-up/
+redirect_from:
+  - /how-to-signup/who-should-sign-up/
 blocks:
   - type: callout
     compact: true
@@ -18,6 +22,7 @@ blocks:
     figure_src: /images/530a-how-do-i-signup.png
     figure_alt: A caregiver holding a laughing baby
   - type: faqs
+    collapsible: true
     items:
       - question: Am I the right person to sign up for my child?
         answer: |

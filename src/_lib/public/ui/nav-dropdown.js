@@ -8,7 +8,7 @@ import { onReady } from "#public/utils/on-ready.js";
  *   that toggles the submenu. The <a> stays a normal navigable link.
  */
 
-const updateNavMode = (navItems, canHover) => {
+const updateNavMode = (navItems, canHover, submenuLabel) => {
   document.body.classList.toggle("nav-can-hover", canHover);
   for (const item of navItems) {
     const existingButton = item.querySelector(":scope > .nav-caret");
@@ -24,7 +24,7 @@ const updateNavMode = (navItems, canHover) => {
     const button = document.createElement("button");
     button.className = "nav-caret";
     button.setAttribute("aria-expanded", "false");
-    button.setAttribute("aria-label", "Toggle submenu");
+    button.setAttribute("aria-label", submenuLabel);
     button.addEventListener("click", () => {
       const isExpanded = item.classList.toggle("expanded");
       button.setAttribute("aria-expanded", String(isExpanded));
@@ -34,19 +34,19 @@ const updateNavMode = (navItems, canHover) => {
 };
 
 export const initNavDropdown = () => {
-  const navToggle = document.getElementById("nav-toggle");
-  if (navToggle) navToggle.checked = false;
-
+  const nav = document.querySelector("nav.site-nav");
   const navItems = document.querySelectorAll(
-    "nav.site-nav > ul > li:has(> ul)",
+    "nav.site-nav .site-menu > ul > li:has(> ul)",
   );
-  if (navItems.length === 0) return;
+  if (!nav || navItems.length === 0) return;
+  // The caret buttons are named in the page language, from navigation.html
+  const submenuLabel = nav.getAttribute("data-submenu-label");
 
   const hoverQuery = window.matchMedia("(hover: hover)");
   hoverQuery.addEventListener("change", () =>
-    updateNavMode(navItems, hoverQuery.matches),
+    updateNavMode(navItems, hoverQuery.matches, submenuLabel),
   );
-  updateNavMode(navItems, hoverQuery.matches);
+  updateNavMode(navItems, hoverQuery.matches, submenuLabel);
 };
 
 onReady(initNavDropdown);

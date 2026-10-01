@@ -1,10 +1,14 @@
 ---
 name: Account Activation
-meta_title: Account Activation - GetYourRefund
 eleventyNavigation:
+  key: "Account Activation"
   parent: "How do I sign up?"
+  order: 2
+meta_title: Account Activation - GetYourRefund
 meta_description: What happens after I file the IRS form?
 permalink: /en/how-to-signup/account-activation/
+redirect_from:
+  - /how-to-signup/account-activation/
 blocks:
   - type: callout
     compact: true
@@ -18,6 +22,7 @@ blocks:
     figure_src: /images/530a-how-do-i-signup.png
     figure_alt: A caregiver holding a laughing baby
   - type: faqs
+    collapsible: true
     items:
       - question: What happens after I file the IRS form?
         answer: |

@@ -68,6 +68,16 @@ helpers live in `test/test-utils/` and are re-exported by `#test/test-utils.js`.
 Use them to exercise production behavior and isolate resources. Follow
 [all mandatory test criteria](test/TEST-QUALITY-CRITERIA.md).
 
+Tests travel with every site forked from the template, so they test the
+template, never the site's content. Site data comes from
+`test/fixtures/site-data/` (in-process imports and test-site builds are both
+redirected there), images and files from `test/fixtures/`, and collection
+directory data from `#collections/directory-data.js`. Only checks of a site's
+own generated artifacts, such as `.pages.yml` against its `site.json`, read the
+real files. `npm run test:fork` deletes the demo content, rewrites the site data
+the way a fork does, and runs the whole suite against that copy; CI runs it on
+every pull request.
+
 **Do not run `npm run test` repeatedly to diagnose one issue.** Start with a
 file, test name, or subsystem:
 

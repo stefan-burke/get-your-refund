@@ -1,8 +1,10 @@
 ---
 name: ¿Quiénes deberían inscribirse?
-meta_title: ¿Quiénes deberían inscribirse? - GetYourRefund
 eleventyNavigation:
+  key: "¿Quiénes deberían inscribirse?"
   parent: "¿Cómo abro una cuenta 530A?"
+  order: 3
+meta_title: ¿Quiénes deberían inscribirse? - GetYourRefund
 meta_description: ¿Soy la persona correcta para inscribir a mi hijo(a)?
 permalink: /es/how-to-signup/who-should-sign-up/
 blocks:
@@ -18,6 +20,7 @@ blocks:
     figure_src: /images/530a-how-do-i-signup.png
     figure_alt: Una cuidadora sostiene a un bebé que ríe
   - type: faqs
+    collapsible: true
     items:
       - question: ¿Soy la persona correcta para inscribir a mi hijo(a)?
         answer: |

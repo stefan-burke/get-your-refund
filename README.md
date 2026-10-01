@@ -17,43 +17,53 @@ of conscious deviations.
 
 ## Customisations from template defaults
 
-- **Collections/CMS:** pages only (no news, no guides, no galleries). Managed
-  via `npm run customise-cms`; `cms_config` is saved in `src/_data/site.json`.
-- **Languages:** `en` (default) + `es` in `src/_data/languages.json`, all 12
-  page pairs in `src/_data/translations.json`. Each locale's content is
-  converted from its own scraped page — the two locales are NOT symmetric
-  (different footer links, copy, and meta). The es privacy page keeps its
-  distinct slug `/es/politica-de-privacidad/`.
-- **Locale-aware chrome:** the header menu (`src/_includes/navigation.html`)
-  and footer copy (`src/snippets/footer-content-en.md` /
-  `footer-content-es.md`, picked by `pageLanguage.code`) differ per locale,
-  matching the live site's per-locale footer link rows.
+The site changes no template code: everything below is content, data, and
+`src/css/theme.scss`.
+
+- **Collections/CMS:** pages and snippets only. Managed via
+  `npm run customise-cms`; `cms_config` is saved in `src/_data/site.json`.
+- **Languages:** `en` (default, under `/en/`) and `es` in
+  `src/_data/languages.json`, all 12 page pairs in
+  `src/_data/translations.json`. Each language's pages live in
+  `src/pages/en/` and `src/pages/es/` and were converted from their own
+  scraped page — the two are not symmetric (footer links, copy, meta). The es
+  privacy page keeps its distinct slug `/es/politica-de-privacidad/`.
+- **Menus:** each page's `eleventyNavigation` entry builds its language's
+  menu, with the sign-up pages nested under how-to-signup. The "Visit
+  GetYourRefund" entries are link-only files (`visit-getyourrefund.md`,
+  `visite-getyourrefund.md`).
+- **Header and footer:** `logo` in `site.json`; `collapse_menu: always` and
+  `language_switcher: header` in `config.json`; footer copy is the
+  `footer-content` snippet, with the Spanish version at
+  `src/snippets/es/footer-content.md`.
+- **Redirects:** `/` and the live site's unprefixed URLs (`/how-to-signup/`,
+  `/privacy-policy/`, …) redirect to their `/en/` or `/es/` page through
+  `redirect_from`, as on the live site.
 - **Theme:** `src/css/theme.scss` carries the 530a palette (navy `#011E29`,
   cream `#FFFFF5`, mint `#E8FDF7`, sand `#EBECDB`, teal `#007C7C`, amber
-  `#FFAE00`), Geologica/Inter self-hosted in `src/css/_fonts.scss` +
-  `src/assets/fonts/` (downloaded from Bunny Fonts), navy sticky header with a
-  full-screen `<details>` "Menu" overlay mirroring the legacy Elementor popup
-  (cream right-hand panel, navy strip, white close box, tiny `gyr-menu.js`
-  enhancement for Esc/close/focus), full-bleed mint/sand home columns, navy CTA
-  band, collapsible `<details>/<summary>` FAQ accordions on a white band, and
-  a two-column navy footer. Column arrangements are configured in
-  `src/_data/blockLayouts.json` under the `gyr-home` / `gyr-signup` page tags.
+  `#FFAE00`), self-hosted Geologica/Inter (`src/assets/fonts/`), the navy
+  sticky header with the menu styled as the legacy full-screen popup, full-bleed
+  mint/sand home columns, the navy CTA band, FAQ accordions (`faqs` blocks
+  with `collapsible: true`) on a white band, the breadcrumb trail, and the
+  two-column navy footer. Column arrangements are in
+  `src/_data/blockLayouts.json` under the `gyr-home` / `gyr-signup` tags.
 - **Config toggles:** search, theme switcher, and placeholder images off;
-  breadcrumbs on (styled to the live trail, suppressed on pages the source
-  shows none); external links open in a new tab (as on the live site).
+  breadcrumbs on (`no_breadcrumbs: true` where the source shows none);
+  external links open in a new tab, as on the live site.
 
 ## Working on it
 
 - [Site Builder Reference](docs/developer-reference.md), [CLAUDE.md](CLAUDE.md)
 - Generated block reference:
   [skills/cfa-static-site-builder/references/blocks.md](skills/cfa-static-site-builder/references/blocks.md);
-  live gallery at `/blocks/` was removed with the demo pages — regenerate
-  reference material with `npm run generate-references` if needed
+  the `/blocks/` gallery page was removed with the demo pages; regenerate
+  reference material with `npm run generate-references`
 - Site data in `src/_data/`, content in `src/pages/`
 
 ## Checks
 
 ```sh
+npm run test         # every check below plus the template's test suite
 npm run build        # Eleventy build + Pagefind + internal link check
 npm run check:a11y   # axe WCAG 2.2 AA audit of built pages
 npm run lint:scss    # stylelint (theme changed? run this too)

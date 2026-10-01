@@ -78,12 +78,21 @@ const createSearchController = (elements, loader = loadPagefind) => {
     elements.list.innerHTML = "";
 
     if (state.results.length === 0) {
-      elements.message.textContent = "No results found.";
+      elements.message.textContent = elements.labels.noResults;
       elements.loadMore.hidden = true;
       return;
     }
 
-    elements.message.textContent = `${state.results.length} result${state.results.length === 1 ? "" : "s"} found.`;
+    // The count in the page language: one/other plural forms from
+    // #search-results' data attributes, {count} standing for the number. An
+    // unset lang (never so on a built page) uses the default locale.
+    const locales = [document.documentElement.lang].filter(Boolean);
+    const form = new Intl.PluralRules(locales).select(state.results.length);
+    const { one, other } = elements.labels;
+    elements.message.textContent = (form === "one" ? one : other).replace(
+      "{count}",
+      String(state.results.length),
+    );
     await showMore();
   };
 
@@ -116,6 +125,11 @@ const initSearch = () => {
     message: container.querySelector(".search-message"),
     loadMore: container.querySelector(".search-load-more"),
     input: form?.querySelector("input[type='search']"),
+    labels: {
+      noResults: container.dataset.noResultsLabel,
+      one: container.dataset.resultCountOneLabel,
+      other: container.dataset.resultCountOtherLabel,
+    },
   });
 
   if (form) {

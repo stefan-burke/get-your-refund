@@ -1,10 +1,14 @@
 ---
 name: Get Started
-meta_title: Get Started - GetYourRefund
 eleventyNavigation:
+  key: "Get Started"
   parent: "How do I sign up?"
+  order: 1
+meta_title: Get Started - GetYourRefund
 meta_description: "Option 1: Sign up online on the IRS website (Recommended)"
 permalink: /en/how-to-signup/get-started/
+redirect_from:
+  - /how-to-signup/get-started/
 blocks:
   - type: callout
     compact: true
@@ -24,6 +28,7 @@ blocks:
     figure_src: /images/530a-how-do-i-signup.png
     figure_alt: A caregiver holding a laughing baby
   - type: faqs
+    collapsible: true
     items:
       - question: "Option 1: Sign up online on the IRS website (Recommended)"
         answer: |

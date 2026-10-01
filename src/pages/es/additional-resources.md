@@ -1,5 +1,8 @@
 ---
 name: Otras preguntas
+eleventyNavigation:
+  key: "Otras preguntas"
+  order: 8
 meta_title: Otras preguntas - GetYourRefund
 meta_description: ¿Las cuentas 530A afectan mis beneficios públicos, como SSI, SNAP o Medicaid?
 permalink: /es/additional-resources/
@@ -13,6 +16,7 @@ blocks:
     content: |
       # Otras preguntas
   - type: faqs
+    collapsible: true
     items:
       - question: ¿Las cuentas 530A afectan mis beneficios públicos, como SSI, SNAP o Medicaid?
         answer: |

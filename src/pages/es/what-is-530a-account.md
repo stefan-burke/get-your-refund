@@ -1,5 +1,8 @@
 ---
 name: ¿Qué es una cuenta 530A?
+eleventyNavigation:
+  key: "¿Qué es una cuenta 530A?"
+  order: 2
 meta_title: ¿Qué es una cuenta 530A? - GetYourRefund
 meta_description: Una cuenta 530A es una nueva cuenta de inversión para niños. Conozca cómo funcionan estas cuentas y por qué se crearon.
 permalink: /es/what-is-530a-account/
@@ -19,6 +22,7 @@ blocks:
     figure_src: /images/530a-what-is-it.png
     figure_alt: Una alcancía rosa con lunares blancos junto a unas monedas
   - type: faqs
+    collapsible: true
     items:
       - question: ¿Por qué existen las cuentas 530A?
         answer: |

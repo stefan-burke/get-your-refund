@@ -6,7 +6,10 @@ import {
   processAndWrapImage,
 } from "#media/image.js";
 import { getCropMaxWidth, getMetadata } from "#media/image-crop.js";
-import { useSharedSite } from "#test/test-site-factory.js";
+import {
+  useSharedSite,
+  useSiteAsWorkingDirectory,
+} from "#test/test-site-factory.js";
 import { createMockEleventyConfig, wrapHtml } from "#test/test-utils.js";
 import { map } from "#utils/fp/array.js";
 
@@ -24,12 +27,17 @@ const imageTestPage = (slug, content, name = slug) => ({
   content,
 });
 
+const FIXTURE_IMAGE = "test/fixtures/images/party.jpg";
+
 /**
  * Create image file specs from destination names
  */
-const imageFiles = map((dest) => ({ src: "src/images/party.jpg", dest }));
+const imageFiles = map((dest) => ({ src: FIXTURE_IMAGE, dest }));
 
 describe("image", () => {
+  // The shortcode and transform tests resolve images from ./src/images.
+  useSiteAsWorkingDirectory({ images: ["party.jpg", "menu.jpg"] });
+
   // ============================================
   // Registered html transform tests
   // ============================================
@@ -248,8 +256,8 @@ describe("image", () => {
         imageTestPage("gallery", galleryContent, "Gallery"),
       ],
       images: [
-        { src: "src/images/party.jpg", dest: "test-image.jpg" },
-        { src: "src/images/party.jpg", dest: "scene.jpg" },
+        { src: FIXTURE_IMAGE, dest: "test-image.jpg" },
+        { src: FIXTURE_IMAGE, dest: "scene.jpg" },
         ...imageFiles(["alpha.jpg", "beta.jpg"]),
       ],
       processImages: true,

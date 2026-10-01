@@ -1,8 +1,13 @@
 ---
 name: Do I get this money automatically?
+eleventyNavigation:
+  key: "Do I get this money automatically?"
+  order: 5
 meta_title: Do I get this money automatically? - GetYourRefund
 meta_description: Why do I have to sign up?
 permalink: /en/automatic-eligibility/
+redirect_from:
+  - /automatic-eligibility/
 blocks:
   - type: callout
     compact: true
@@ -19,6 +24,7 @@ blocks:
     figure_src: /images/530a-do-i-get-this-money.png
     figure_alt: Fanned stack of one-hundred-dollar bills
   - type: faqs
+    collapsible: true
     items:
       - question: Why do I have to sign up?
         answer: |

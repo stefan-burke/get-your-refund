@@ -1,11 +1,8 @@
-<footer class="gyr-footer">
-  <img
-    src="/images/site-icon.png"
-    alt="GetYourRefund 530A accounts"
-    width="72"
-    height="72"
-    loading="lazy"
-  >
-  {%- assign footerSnippet = "footer-content-" | append: pageLanguage.code -%}
-  {%- render_snippet footerSnippet -%}
+<footer>
+  {%- include "language-switcher.html", placement: "footer" -%}
+  {%- include "footer-socials.html" -%}
+  {%- render_snippet "footer-content", "", pageLanguage.code -%}
+  {%- if page.url == "/" and config.homepage_footer_markdown -%}
+    {{ config.homepage_footer_markdown | markdown }}
+  {%- endif -%}
 </footer>

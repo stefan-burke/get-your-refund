@@ -2,7 +2,6 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, test } from "vitest";
 import YAML from "yaml";
-import siteData from "#data/site.json" with { type: "json" };
 import { rootDir } from "#test/test-utils.js";
 import { collectBlockReferences } from "#test/unit/utils/pages-yml-helpers.js";
 import {
@@ -21,6 +20,11 @@ const componentNameToBlockType = (componentName) =>
 const CONTAINER_FIELD_NAMES = ["dark", "compact"];
 
 const PAGES_YML_PATH = join(rootDir, ".pages.yml");
+// .pages.yml is generated from the site's own cms_config, so this compares
+// the site's real site.json (read from disk, not the test fixture) with it.
+const siteData = JSON.parse(
+  readFileSync(join(rootDir, "src", "_data", "site.json"), "utf-8"),
+);
 const parsedPagesYml = YAML.parse(readFileSync(PAGES_YML_PATH, "utf-8"));
 const components = parsedPagesYml.components || {};
 const blockComponents = Object.fromEntries(

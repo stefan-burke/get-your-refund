@@ -1,8 +1,14 @@
 ---
 name: What is a 530A account
+eleventyNavigation:
+  key: "What is a 530A account"
+  title: "What is a 530A account?"
+  order: 2
 meta_title: What is a 530A account - GetYourRefund
 meta_description: Why do 530A accounts exist?
 permalink: /en/what-is-530a-account/
+redirect_from:
+  - /what-is-530a-account/
 blocks:
   - type: callout
     compact: true
@@ -21,6 +27,7 @@ blocks:
     figure_src: /images/530a-what-is-it.png
     figure_alt: Pink polka-dot piggy bank standing on a stack of coins
   - type: faqs
+    collapsible: true
     items:
       - question: Why do 530A accounts exist?
         answer: |

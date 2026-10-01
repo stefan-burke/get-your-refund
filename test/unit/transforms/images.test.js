@@ -100,6 +100,14 @@ describe("images transform", () => {
       expect(options.alt).toBeNull();
       expect(options.classes).toBeNull();
       expect(options.aspectRatio).toBeNull();
+      expect(options.loading).toBeNull();
+    });
+
+    test("keeps an authored loading attribute, such as an eager logo", async () => {
+      const { options } = await getImageOptions(
+        '<html><body><img src="/images/logo.png" loading="eager"></body></html>',
+      );
+      expect(options.loading).toBe("eager");
     });
 
     test("extracts no-lqip attribute as true", async () => {

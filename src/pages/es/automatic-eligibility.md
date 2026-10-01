@@ -1,5 +1,8 @@
 ---
 name: ¿Recibo este dinero automáticamente?
+eleventyNavigation:
+  key: "¿Recibo este dinero automáticamente?"
+  order: 5
 meta_title: ¿Recibo este dinero automáticamente? - GetYourRefund
 meta_description: No recibirá este dinero automáticamente. Conoce por qué debe inscribirse y qué pasa si no lo hace.
 permalink: /es/automatic-eligibility/
@@ -19,6 +22,7 @@ blocks:
     figure_src: /images/530a-do-i-get-this-money.png
     figure_alt: Esculturas talladas en la fachada de un edificio clásico en blanco y negro
   - type: faqs
+    collapsible: true
     items:
       - question: ¿Por qué tengo que inscribirme?
         answer: |

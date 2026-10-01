@@ -48,9 +48,6 @@
       "#public/*": [
         "./src/_lib/public/*"
       ],
-      "#guide-categories/*": [
-        "./src/guide-categories/*"
-      ],
       "#test/*": [
         "./test/*"
       ],

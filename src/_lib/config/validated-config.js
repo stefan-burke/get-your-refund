@@ -7,6 +7,7 @@
  *
  * Exports validated values for use by other modules.
  */
+import config from "#data/config.json" with { type: "json" };
 import languages from "#data/languages.json" with { type: "json" };
 import site from "#data/site.json" with { type: "json" };
 import { baseLanguageErrors, languageFieldErrors } from "#utils/i18n.js";
@@ -102,6 +103,28 @@ const siteDescriptionErrors = isBlank(site.description)
   ? ["site.json is missing the 'description' field"]
   : [];
 
+/**
+ * config.json settings that take one of a fixed set of values (null keeps
+ * the default).
+ * @type {Record<string, string[]>}
+ */
+const CONFIG_CHOICES = {
+  collapse_menu: ["mobile", "always", "never"],
+  language_switcher: ["footer", "header"],
+};
+
+const configChoiceErrors = Object.entries(config)
+  .filter(
+    ([key, value]) =>
+      key in CONFIG_CHOICES &&
+      value !== null &&
+      !CONFIG_CHOICES[key].includes(`${value}`),
+  )
+  .map(
+    ([key, value]) =>
+      `config.json '${key}' must be one of ${CONFIG_CHOICES[key].join(", ")}, got: ${value}`,
+  );
+
 const errors = [
   ...baseLanguageErrors(languages),
   ...languageFieldErrors(languages),
@@ -109,6 +132,7 @@ const errors = [
   ...siteDescriptionErrors,
   ...siteUrlErrors,
   ...deploymentSiteUrlErrors,
+  ...configChoiceErrors,
 ];
 
 if (errors.length > 0) {

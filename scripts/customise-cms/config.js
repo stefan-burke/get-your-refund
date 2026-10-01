@@ -7,7 +7,7 @@
 import { existsSync } from "node:fs";
 import { readFile, writeFile } from "node:fs/promises";
 import { join } from "node:path";
-import siteConfig from "#data/config.json" with { type: "json" };
+import getConfig from "#data/config.js";
 import { ROOT_DIR } from "#lib/paths.js";
 import { getRequiredCollections } from "#scripts/customise-cms/collections.js";
 import { map, unique } from "#utils/fp/array.js";
@@ -142,7 +142,7 @@ export const createDefaultConfig = () => ({
     faqs: true,
     galleries: true,
     external_navigation_urls: true,
-    use_visual_editor: siteConfig.use_visual_editor === true,
+    use_visual_editor: getConfig().use_visual_editor,
     no_index: true,
   },
   hasSrcFolder: true,

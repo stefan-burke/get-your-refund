@@ -1,5 +1,8 @@
 ---
 name: Administrar una cuenta 530A
+eleventyNavigation:
+  key: "Administrar una cuenta 530A"
+  order: 7
 meta_title: Administrar una cuenta 530A - GetYourRefund
 meta_description: Aprenda dónde se invierte el dinero, qué opciones de inversión podrían estar disponibles y cómo transferir una cuenta 530A a otra empresa.
 permalink: /es/manage-account/
@@ -19,6 +22,7 @@ blocks:
     figure_src: /images/530a-managing-account.png
     figure_alt: Varios billetes de cien dólares apilados
   - type: faqs
+    collapsible: true
     items:
       - question: ¿Dónde se invierte el dinero? ¿Puedo elegir dónde invertir?
         answer: |

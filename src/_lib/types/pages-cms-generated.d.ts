@@ -12,6 +12,7 @@
 export interface PagesCMSEleventyNavigation {
   key?: string;
   order?: number;
+  url?: string;
 }
 
 export interface PagesCMSSocial {
