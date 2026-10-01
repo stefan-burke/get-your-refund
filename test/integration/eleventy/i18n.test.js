@@ -272,12 +272,33 @@ describe("a translated site's header and footer", () => {
     expect(await footerText("/about/index.html")).toContain("Shared footer");
   });
 
-  test("links the eager-loaded logo to the language's home page", async () => {
+  test("links the logo, as authored, to the language's home page", async () => {
     const logo = (await doc("/de/ueber-uns/index.html")).querySelector(
       "a.site-logo",
     );
     expect(logo.getAttribute("href")).toBe("/de/");
     expect(logo.querySelector("img").getAttribute("alt")).toBe(siteData.name);
     expect(logo.querySelector("img").getAttribute("loading")).toBe("eager");
+    // Served as authored, not turned into raster variants
+    expect(logo.querySelector("img").getAttribute("src")).toBe(
+      "/images/party.jpg",
+    );
+    expect(logo.querySelector("picture")).toBeNull();
+  });
+});
+
+describe("a site with no navigation pages", () => {
+  const getSite = useSharedSite({
+    files: [
+      navPage("pages/index.md", "/", "Home", { eleventyNavigation: false }),
+    ],
+  });
+
+  test("renders no menu or menu toggle", async () => {
+    const nav = (await getSite().getDoc("/index.html")).querySelector(
+      "nav.site-nav",
+    );
+    expect(nav.querySelector(".site-menu")).toBeNull();
+    expect(nav.querySelector(".menu-toggle")).toBeNull();
   });
 });
