@@ -97,23 +97,52 @@ const DATA = {
     linkify_urls: false,
   },
   "languages.json": [language("en", { is_default: true }), language("cy", {})],
-  "translations.json": [{ en: "/en/", cy: "/cy/" }],
+  "translations.json": [
+    { en: "/en/", cy: "/cy/" },
+    { en: "/en/about/", cy: "/cy/amdanom/" },
+  ],
   "blockLayouts.json": {},
   "strings.json": { news_name: "Updates" },
 };
 
-const forkPage = (permalink, heading) => ({
+/**
+ * A fork's page: each language in its own folder, the default language under
+ * /en/ with / redirecting to it, menus from frontmatter, and pages without a
+ * permalink publishing where their file sits.
+ */
+const forkPage = (heading, frontmatter) => ({
   frontmatter: {
     name: heading,
-    permalink,
     blocks: [{ type: "markdown", content: `# ${heading}` }],
+    ...frontmatter,
   },
   content: "",
 });
 
 const PAGES = {
-  "src/pages/en/index.md": forkPage("/en/", "Forked home"),
-  "src/pages/cy/index.md": forkPage("/cy/", "Hafan"),
+  "src/pages/en/index.md": forkPage("Forked home", {
+    permalink: "/en/",
+    redirect_from: ["/"],
+    eleventyNavigation: { key: "Home", order: 1 },
+  }),
+  "src/pages/en/about.md": forkPage("About", {
+    eleventyNavigation: { key: "About", order: 2 },
+  }),
+  "src/pages/cy/index.md": forkPage("Hafan", {
+    permalink: "/cy/",
+    eleventyNavigation: { key: "Hafan", order: 1 },
+  }),
+  "src/pages/cy/amdanom.md": forkPage("Amdanom", {
+    eleventyNavigation: { key: "Amdanom", order: 2 },
+  }),
+  "src/snippets/footer-content.md": {
+    frontmatter: { name: "Footer" },
+    content: "Footer",
+  },
+  "src/snippets/cy/footer-content.md": {
+    frontmatter: { name: "Troedyn" },
+    content: "Troedyn",
+  },
 };
 
 const writeText = (path, text) => {

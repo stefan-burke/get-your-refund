@@ -225,10 +225,14 @@ const createTestSite = async (options = {}) => {
   };
   const collections = createContentFiles(srcDir, options.files);
 
-  // Ensure an index page exists
+  // Ensure something serves "/": a home page, or a redirect from "/" (a site
+  // whose default language lives under a prefix such as /en/)
   const ensureIndexPage = (srcDir, files = [], collections) => {
     const hasIndex = files.some(
-      (f) => f.path === "pages/index.md" || f.frontmatter?.permalink === "/",
+      (f) =>
+        f.path === "pages/index.md" ||
+        f.frontmatter?.permalink === "/" ||
+        [f.frontmatter?.redirect_from].flat().includes("/"),
     );
 
     if (hasIndex) return;
