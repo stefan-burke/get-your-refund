@@ -8,7 +8,9 @@
 		"src/_lib/public/design-system.js",
 		"src/_lib/public/masonry.js",
 		"bin/profile-report.js",
-		"test/**/*.test.js"
+		"test/**/*.test.js",
+		"test/test-site-data-register.js",
+		"test/test-site-data-hooks.js"
 	],
 	"project": [
 		"**/*.{js,mjs}"

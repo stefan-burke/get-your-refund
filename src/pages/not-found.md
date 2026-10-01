@@ -8,5 +8,5 @@ blocks:
     content: |
       # Page Not Found
 
-      This page could not be found. Return to the [homepage](/) to find what you need.
+      This page could not be found. Return to the [homepage]({{ pageLanguage.home_url }}) to find what you need.
 ---

@@ -1,5 +1,3 @@
-import { linkableContent } from "#utils/linkable-content.js";
+import { directoryData } from "#collections/directory-data.js";
 
-export default linkableContent("news", {
-  date: (data) => data.page.date,
-});
+export default directoryData("news");

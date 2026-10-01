@@ -18,6 +18,7 @@ const DEFAULTS = frozenObject({
   default_image_widths: [240, 480, 900, 1300],
   search_collections: ["news", "pages", "guide-pages", "guide-categories"],
   linkify_urls: true,
+  disable_liquid_cache: false,
 });
 
 export { DEFAULTS };

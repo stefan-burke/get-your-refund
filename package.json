@@ -17,7 +17,6 @@
 		"#transforms/*": "./src/_lib/transforms/*",
 		"#utils/*": "./src/_lib/utils/*",
 		"#public/*": "./src/_lib/public/*",
-		"#guide-categories/*": "./src/guide-categories/*",
 		"#test/*": "./test/*",
 		"#scripts/*": "./scripts/*",
 		"#bin/*": "./bin/*"
@@ -26,6 +25,7 @@
 		"build": "rm -rf _site && node scripts/eleventy-build.js && npm run check:links",
 		"serve": "rm -rf _site && node scripts/eleventy-build.js --serve --incremental",
 		"test": "node ./test/run-tests.js",
+		"test:fork": "node ./test/fork-simulation.js",
 		"test:unit": "vitest run test/unit",
 		"test:integration": "vitest run test/integration",
 		"typecheck": "tsc --noEmit --incremental --tsBuildInfoFile tsconfig.tsbuildinfo",

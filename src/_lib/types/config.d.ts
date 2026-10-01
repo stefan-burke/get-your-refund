@@ -40,6 +40,7 @@ export type SiteConfig = {
   default_image_widths: number[];
   search_collections: string[];
   linkify_urls: boolean;
+  disable_liquid_cache: boolean;
 
   // Guaranteed by DEFAULTS ({} when unset; pickNonNull strips null overrides)
   screenshots: ScreenshotConfig;
@@ -61,5 +62,7 @@ export type SiteConfig = {
 export type SiteInfo = {
   url: string;
   name: string;
+  description: string;
   logo?: string;
+  socials?: Record<string, string>;
 };

@@ -1,0 +1,14 @@
+[
+	{
+		"code": "en",
+		"hreflang": "en-GB",
+		"og_locale": "en_GB",
+		"label": "English",
+		"home_url": "/",
+		"home_label": "Home",
+		"breadcrumb_label": "Breadcrumb",
+		"skip_to_content_label": "Skip to main content",
+		"search_label": "Search",
+		"is_default": true
+	}
+]

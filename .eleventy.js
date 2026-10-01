@@ -1,6 +1,6 @@
 import { EleventyHtmlBasePlugin, RenderPlugin } from "@awesome.me/buildawesome";
 import schemaPlugin from "@quasibit/eleventy-plugin-schema";
-import config from "#data/config.json" with { type: "json" };
+import getConfig from "#data/config.js";
 
 // Path prefix for deployments that serve the site from a subdirectory
 // (e.g. a static host serving it at /cfa-static/). The HTML base plugin
@@ -53,7 +53,7 @@ const CONFIGURATORS = [
 export default async function (eleventyConfig) {
   eleventyConfig.addWatchTarget("./src/**/*");
   eleventyConfig.setLayoutsDirectory("_layouts");
-  if (!config.disable_liquid_cache) {
+  if (!getConfig().disable_liquid_cache) {
     eleventyConfig.setLiquidOptions({ cache: true });
   }
   eleventyConfig
