@@ -700,6 +700,13 @@ body.design-system:has(.block-columns-2) .split h1 {
 // snippet (src/snippets/footer-content.md, src/snippets/es/footer-content.md).
 // ---------------------------------------------------------------------------
 .design-system footer {
+
+  // Cream, underlined links on the navy band, through the link tokens the
+  // template's link rule reads
+  --color-link: #FFFFF5;
+  --color-link-hover: #E8FDF7;
+  --link-decoration: underline;
+
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 8px 48px;
@@ -740,7 +747,8 @@ body.design-system:has(.block-columns-2) .split h1 {
     grid-row: 2;
   }
 
-  ul {
+  // Matching the template's list rule (ul:not([class])) so its indent is reset
+  ul:not([class]) {
     display: flex;
     grid-column: 1 / -1;
     grid-row: 3;
@@ -753,15 +761,6 @@ body.design-system:has(.block-columns-2) .split h1 {
     padding: 0;
 
     list-style: none;
-  }
-
-  a {
-    color: #FFFFF5;
-    text-decoration: underline;
-
-    &:hover {
-      color: #E8FDF7;
-    }
   }
 
   @media (width < 48rem) {
