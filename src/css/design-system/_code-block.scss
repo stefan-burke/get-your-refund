@@ -19,6 +19,10 @@
       font-size: $font-size-sm;
       color: $color-dark-text-muted;
       background: $color-dark-card-bg;
+
+      a:not(.btn) {
+        color: inherit;
+      }
     }
 
     .dots {
