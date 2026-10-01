@@ -1,4 +1,4 @@
-import { describe, expect, test } from "vitest";
+import { describe, expect, test, vi } from "vitest";
 import { configureHtmlTransform } from "#eleventy/html-transform.js";
 import {
   configureImages,
@@ -12,6 +12,11 @@ import {
 } from "#test/test-site-factory.js";
 import { createMockEleventyConfig, wrapHtml } from "#test/test-utils.js";
 import { map } from "#utils/fp/array.js";
+
+// Each shortcode and transform test generates real sharp variants for its own
+// argument tuple (the pipeline caches by that tuple); under the full suite's
+// parallel lanes that exceeds the default timeout.
+vi.setConfig({ testTimeout: 5000 });
 
 // ============================================
 // Functional Test Fixture Builders
