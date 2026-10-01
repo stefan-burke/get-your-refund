@@ -14,6 +14,7 @@ const NAV_HTML = `
     <button type="button" class="menu-close" aria-label="Close menu" hidden>x</button>
     <ul><li><a href="/">Home</a></li><li><a href="/about/">About</a></li></ul>
   </div>
+  <ul class="language-links"><li><a href="/de/">Deutsch</a></li></ul>
 </nav>
 <main><a href="/page-link/">A link in the page</a></main>
 `;
@@ -40,11 +41,9 @@ const expectClosed = () => {
   expect(document.documentElement.hasAttribute("data-menu-open")).toBe(false);
 };
 
-/** Focus moving from the menu link to another element, as the browser reports it. */
+/** Focus arriving on another element, as the browser reports it. */
 const moveFocus = (to) =>
-  menuLink().dispatchEvent(
-    new FocusEvent("focusout", { bubbles: true, relatedTarget: to }),
-  );
+  to.dispatchEvent(new FocusEvent("focusin", { bubbles: true }));
 
 afterEach(() => {
   document.body.innerHTML = "";
@@ -110,13 +109,21 @@ describe("site menu", () => {
     expectClosed();
   });
 
-  test("focus moving within the menu, or out of the window, keeps it open", async () => {
+  test("focus moving to the header beside the menu closes it too", async () => {
+    await openMenu();
+
+    moveFocus(document.querySelector(".language-links a"));
+
+    expectClosed();
+  });
+
+  test("focus moving within the menu or to its toggle keeps it open", async () => {
     await openMenu();
 
     moveFocus(closeButton());
     expect(nav().dataset.menu).toBe("open");
 
-    moveFocus(null);
+    moveFocus(toggle());
     expect(nav().dataset.menu).toBe("open");
   });
 

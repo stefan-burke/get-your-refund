@@ -10,9 +10,9 @@ import { onReady } from "#public/utils/on-ready.js";
  * `collapse_menu` setting asks for it.
  *
  * Closing returns focus to the toggle when the menu was closed from inside
- * it (Escape or the close button). Moving focus out of the open menu closes
- * it too, so a menu drawn over the page never leaves keyboard focus hidden
- * behind it (WCAG 2.4.11).
+ * it (Escape or the close button). Focus landing anywhere but the open menu
+ * and its toggle closes it too, so a menu drawn over the page never leaves
+ * keyboard focus hidden behind it (WCAG 2.4.11).
  */
 
 onReady(() => {
@@ -20,6 +20,7 @@ onReady(() => {
     const toggle = nav.querySelector(".menu-toggle");
     if (!toggle) continue;
     const close = nav.querySelector(".menu-close");
+    const menu = nav.querySelector(".site-menu");
     const isOpen = () => nav.getAttribute("data-menu") === "open";
     /** @param {boolean} open */
     const setOpen = (open) => {
@@ -41,9 +42,11 @@ onReady(() => {
       const isEscape = event instanceof KeyboardEvent && event.key === "Escape";
       if (isEscape && isOpen()) closeAndRefocus();
     });
-    nav.addEventListener("focusout", (event) => {
-      const next = event instanceof FocusEvent ? event.relatedTarget : null;
-      if (isOpen() && next instanceof Node && !nav.contains(next))
+    // Focus landing anywhere but the menu or its toggle closes it - even on
+    // the language links beside it in the header
+    document.addEventListener("focusin", (event) => {
+      const target = event.target instanceof Node ? event.target : null;
+      if (isOpen() && !toggle.contains(target) && !menu?.contains(target))
         setOpen(false);
     });
   }
