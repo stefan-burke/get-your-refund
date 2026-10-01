@@ -25,8 +25,9 @@ static pages.
 - **Content types** — Pages, News (with Atom feed), Guides (categorised
   documentation pages), and reusable Snippets.
 - **Multi-language** — publish the same page in more than one language with
-  `hreflang` tags, an `x-default`, and a footer language switcher. See the
-  Languages section below.
+  `hreflang` tags, an `x-default`, a header or footer language switcher, and
+  per-language menus, snippets, and interface labels. See the Languages
+  section below.
 - **Theming** — CSS custom properties throughout, prebuilt themes, a
   visual theme editor at `/theme-editor/` with export.
 - **Images** — responsive `srcset` via eleventy-img, base64 LQIP placeholders,
@@ -155,9 +156,9 @@ point any static host - or your own pipeline - at it.
 
 ## Configuration
 
-- `src/_data/site.json` — site name, URL, social links
+- `src/_data/site.json` — site name, URL, logo, social links
 - `src/_data/config.json` — feature toggles (breadcrumbs, theme switcher,
-  navigation style, search collections)
+  navigation style, `collapse_menu`, `language_switcher`, search collections)
 - `src/_data/strings.json` — news/guide label and permalink overrides
 - `src/_data/languages.json` / `translations.json` — languages the site
   publishes and which pages say the same thing in each
@@ -167,15 +168,19 @@ point any static host - or your own pipeline - at it.
 A site is written in one language until it says otherwise, and nothing in the
 template names a language.
 
-- `_data/languages.json` lists every language the site publishes, each with a
-  `code`, `hreflang`, `og_locale`, `label`, `home_url` prefix, `home_label`,
-  `breadcrumb_label`, `skip_to_content_label`, and `search_label`. Exactly one
-  entry has `is_default: true`.
+- `_data/languages.json` lists every language the site publishes, with its
+  URL prefix and a translation of every label the page chrome shows (menu,
+  breadcrumb, skip link, gallery, search). Exactly one entry has
+  `is_default: true`.
 - `_data/translations.json` pairs the pages that say the same thing, keyed by
   language code, e.g. `[{ "en": "/about/", "de": "/de/ueber-uns/" }]`.
 
-A page's language comes from its URL prefix. The template ships one language
-and no translations, which renders with no hreflang tags and no switcher.
+A page's language comes from its URL prefix. Each language gets its own menu
+from the pages written in it, and its own version of any snippet at
+`src/snippets/<code>/<name>.md`. The template ships one language and no
+translations, which renders with no hreflang tags and no switcher. The
+[languages reference](skills/cfa-static-site-builder/references/i18n.md) covers
+the whole pattern.
 
 ## Development
 

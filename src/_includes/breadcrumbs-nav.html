@@ -4,7 +4,7 @@
   <ol class="breadcrumbs">
     {%- for crumb in crumbs -%}
     <li>
-      {%- unless forloop.first -%}<span class="separator" aria-hidden="true">/</span>{%- endunless -%}
+      {%- unless forloop.first -%}<span class="separator" aria-hidden="true"></span>{%- endunless -%}
       {%- if crumb.url -%}
       <a href="{{ crumb.url }}{{ config.internal_link_suffix }}">{{ crumb.label }}</a>
       {%- else -%}

@@ -27,7 +27,8 @@ export type SiteConfig = {
   // Guaranteed by DEFAULTS (never null after config loading)
   sticky_mobile_nav: boolean;
   horizontal_nav: boolean;
-  collapse_mobile_menu: boolean;
+  collapse_menu: "mobile" | "always" | "never";
+  language_switcher: "footer" | "header";
   show_breadcrumbs: boolean;
   externalLinksTargetBlank: boolean;
   placeholder_images: boolean;

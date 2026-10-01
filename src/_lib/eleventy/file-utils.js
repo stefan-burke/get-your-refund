@@ -116,25 +116,23 @@ const ensureDir = (dirPath) => {
 
 /**
  * Snippet file path for a reference: a bare name, or the
- * `src/snippets/<name>.md` path Pages CMS saves.
+ * `src/snippets/<name>.md` path Pages CMS saves. A page in another language
+ * reads that language's own version, `src/snippets/<code>/<name>.md`, when
+ * the site has written one, and the shared snippet otherwise.
  * @param {string} name
  * @param {string} baseDir
+ * @param {string} [language] - The page language's code
  */
-const snippetPath = (name, baseDir) =>
-  path.join(
-    baseDir,
-    "src/snippets",
-    `${path.basename(name, path.extname(name))}.md`,
-  );
-
-/**
- * @param {string} name
- * @param {string} [baseDir]
- */
-const loadSnippet = (name, baseDir = process.cwd()) => {
-  const file = snippetPath(name, baseDir);
-  return fs.existsSync(file) ? matter.read(file) : null;
+const snippetPath = (name, baseDir, language = "") => {
+  const file = `${path.basename(name, path.extname(name))}.md`;
+  const localised = path.join(baseDir, "src/snippets", language, file);
+  return language && fs.existsSync(localised)
+    ? localised
+    : path.join(baseDir, "src/snippets", file);
 };
+
+/** @param {string} file - A snippet path from snippetPath */
+const loadSnippet = (file) => (fs.existsSync(file) ? matter.read(file) : null);
 
 const readSnippetData = memoize(
   /**
@@ -142,10 +140,11 @@ const readSnippetData = memoize(
    * `blocks` are validated and default-filled exactly like page blocks.
    * @param {string} name
    * @param {string} [baseDir]
+   * @param {string} [language]
    * @returns {SnippetData}
    */
-  (name, baseDir = process.cwd()) => {
-    const data = loadSnippet(name, baseDir)?.data;
+  (name, baseDir = process.cwd(), language = "") => {
+    const data = loadSnippet(snippetPath(name, baseDir, language))?.data;
     if (!data) return {};
     if (!data.blocks) return data;
     return {
@@ -162,14 +161,16 @@ const renderSnippet = memoize(
    * @param {string} [defaultString]
    * @param {string} [baseDir]
    * @param {ReturnType<typeof markdownIt>} [mdRenderer]
+   * @param {string} [language]
    */
   async (
     name,
     defaultString = "",
     baseDir = process.cwd(),
     mdRenderer = createMarkdownRenderer(),
+    language = "",
   ) => {
-    const parsed = loadSnippet(name, baseDir);
+    const parsed = loadSnippet(snippetPath(name, baseDir, language));
     if (!parsed) return defaultString;
 
     return mdRenderer.render(parsed.content);
@@ -177,22 +178,27 @@ const renderSnippet = memoize(
   { cacheKey: cacheKeyFromArgs },
 );
 
-/** @param {string} name */
-const snippetDataFilter = (name) => readSnippetData(name);
+/**
+ * @param {string} name
+ * @param {string} [language] - The page language's code
+ */
+const snippetDataFilter = (name, language = "") =>
+  readSnippetData(name, process.cwd(), language);
 
 /**
  * The blocks a `snippet` block renders. The referenced snippet must exist:
  * a dangling reference fails the build instead of silently rendering
  * nothing. Liquid in the blocks resolves in blocks.html, like page blocks.
  * @param {string} name
+ * @param {string} [language] - The page language's code
  */
-const snippetBlocksFilter = (name) => {
-  if (!fs.existsSync(snippetPath(name, process.cwd()))) {
+const snippetBlocksFilter = (name, language = "") => {
+  if (!fs.existsSync(snippetPath(name, process.cwd(), language))) {
     throw new Error(
       `Snippet block references "${name}", but src/snippets/ has no such snippet`,
     );
   }
-  return toBlockArray(readSnippetData(name).blocks);
+  return toBlockArray(readSnippetData(name, process.cwd(), language).blocks);
 };
 
 /**
@@ -202,10 +208,13 @@ const snippetBlocksFilter = (name) => {
  *
  * @this {LiquidFilterContext}
  * @param {string} name
+ * @param {string} [language] - The page language's code
  */
-async function sidebarBlocksFilter(name) {
+async function sidebarBlocksFilter(name, language = "") {
   return processLiquidStrings(
-    validateSidebarBlocks(readSnippetData(name).blocks),
+    validateSidebarBlocks(
+      readSnippetData(name, process.cwd(), language).blocks,
+    ),
     this.context.environments,
   );
 }
@@ -223,9 +232,15 @@ async function renderBlockLiquidFilter(blocks) {
  * @param {string} name
  * @param {string} defaultString
  * @param {ReturnType<typeof markdownIt>} mdRenderer
+ * @param {string} [language] - The page language's code
  */
-const renderSnippetShortcode = async (name, defaultString, mdRenderer) =>
-  await renderSnippet(name, defaultString, process.cwd(), mdRenderer);
+const renderSnippetShortcode = async (
+  name,
+  defaultString,
+  mdRenderer,
+  language = "",
+) =>
+  await renderSnippet(name, defaultString, process.cwd(), mdRenderer, language);
 
 /**
  * @param {{ addFilter: Function, addAsyncFilter: Function, addShortcode: Function, addAsyncShortcode: Function }} eleventyConfig
@@ -252,9 +267,10 @@ const configureFileUtils = (eleventyConfig) => {
     /**
      * @param {string} name
      * @param {string} defaultString
+     * @param {string} [language] - The page language's code
      */
-    async (name, defaultString) =>
-      await renderSnippetShortcode(name, defaultString, mdRenderer),
+    async (name, defaultString, language) =>
+      await renderSnippetShortcode(name, defaultString, mdRenderer, language),
   );
 };
 

@@ -25,13 +25,15 @@
   <div class="page-columns">
     <main id="content"{% if pagefind_body %} data-pagefind-body{% endif %}>
       {%- if config.show_breadcrumbs and page.url != pageLanguage.home_url -%}
-        {%- include "breadcrumbs-nav.html" -%}
+        {%- unless no_breadcrumbs -%}
+          {%- include "breadcrumbs-nav.html" -%}
+        {%- endunless -%}
       {%- endif -%}
       {{- content | validatePageBodyContent: layout, page.inputPath -}}
       {%- if banner_split.rest.size > 0 -%}
         {%- include "design-system/blocks.html", blocks: banner_split.rest -%}
       {%- endif -%}
-      {%- assign footer_snippet_data = "footer-content" | snippet_data -%}
+      {%- assign footer_snippet_data = "footer-content" | snippet_data: pageLanguage.code -%}
       {%- if footer_snippet_data.blocks -%}
         {%- include "design-system/blocks.html", blocks: footer_snippet_data.blocks -%}
       {%- endif -%}

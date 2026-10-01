@@ -1,0 +1,9 @@
+{%- comment -%}
+  Header slot before the menu: the site's logo, linking to the home page of
+  this page's language. Set `logo` in site.json to a path under src/images.
+{%- endcomment -%}
+{%- if site.logo -%}
+  <a class="site-logo" href="{{ pageLanguage.home_url }}">
+    <img src="{{ site.logo }}" alt="{{ site.name }}" loading="eager">
+  </a>
+{%- endif -%}

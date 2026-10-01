@@ -11,6 +11,7 @@ import "#public/ui/image-popup.js";
 import "#public/ui/nav-dropdown.js";
 import "#public/ui/scroll-fade.js";
 import "#public/ui/search.js";
+import "#public/ui/site-menu.js";
 import "#public/ui/slider.js";
 import "#public/ui/decrypt-text.js";
 

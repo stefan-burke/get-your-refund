@@ -112,7 +112,24 @@ eleventyNavigation:
 
 Use short, unique labels and deliberate ordering. Avoid putting utility pages
 such as search, accessibility statements, or privacy details in primary
-navigation unless the brief calls for them.
+navigation unless the brief calls for them. Nest a page under another with
+`parent: <key>`; a menu entry that links off-site is a page with
+`permalink: false`, `layout: false`, and `eleventyNavigation.url`.
+
+The header is configured, not edited:
+
+- `logo` in `site.json` (a path under `src/images/`) adds the logo, linked
+  to the home page.
+- `collapse_menu` in `config.json` folds the menu behind a toggle button:
+  `mobile` (default) below the md breakpoint, `always` at every width, or
+  `never`. The toggle, a close button, Escape, and focus leaving the menu all
+  close it. Style `.site-menu`, `.menu-toggle`, and `.menu-close` in the
+  theme, for example as a full-screen overlay.
+- `show_breadcrumbs` adds a breadcrumb trail; a page opts out with
+  `no_breadcrumbs: true`.
+
+Override `src/_includes/navigation-start.html` or `navigation-end.html` only
+for header content these settings cannot produce.
 
 Internal links should be site-relative (`/about/`), never hardcoded deployment
 origins. The build rewrites them for `PATH_PREFIX` deployments.
@@ -134,20 +151,18 @@ For a new visual direction:
 Do not mix multiple prebuilt themes or add arbitrary one-off values throughout
 block styles. Preserve the token system.
 
+Brand fonts are self-hosted: put the `woff2` files in `src/assets/fonts/`,
+declare them with `@font-face` at the top of `theme.scss`, and point
+`--font-family-body` and `--font-family-heading` at them. A CSS `@import`
+of a font service does not work there, because the theme is compiled into the
+middle of the bundle. Other small treatments are tokens too, such as
+`--breadcrumb-separator` (a CSS string, `"/"` by default).
+
 ## Languages
 
-Each entry in `languages.json` must provide every chrome label required by the
-current schema. Copy the shape of the existing default-language entry, then use
-real translated labels. Set one and only one default language.
-
-Place translated pages under their language URL prefix and pair equivalent
-routes in `translations.json`. Read nearby multilingual tests and content before
-editing. Language declarations are validated, but malformed translation groups
-can silently omit or misdirect hreflang links, so inspect every language pair in
-the built output.
-
-Do not machine-translate publishable copy unless the user explicitly accepts
-that workflow and arranges human review.
+Read [languages](i18n.md) before adding a language: the URL and folder
+convention, every label `languages.json` must translate, translation pairs,
+per-language menus and snippets, and the checks to run.
 
 ## Deployment
 

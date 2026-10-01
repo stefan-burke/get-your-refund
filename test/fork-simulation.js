@@ -28,6 +28,7 @@ import matter from "gray-matter";
 import { ensureDir } from "#eleventy/file-utils.js";
 import { ROOT_DIR } from "#lib/paths.js";
 import { isMainModule } from "#scripts/lib/is-main-module.js";
+import { EN } from "#test/fixtures/languages.js";
 
 /** Demo content a fork deletes: whole collections, pages, images, files. */
 const DELETED = [
@@ -58,16 +59,15 @@ const DELETED = [
   "src/images/video-background-placeholder.jpg",
 ];
 
+/** A language with every label a site must translate, marked with its code. */
 const language = (code, overrides) => ({
+  ...Object.fromEntries(
+    Object.entries(EN).map(([key, value]) => [key, `${value} (${code})`]),
+  ),
   code,
   hreflang: code,
   og_locale: code,
-  label: code.toUpperCase(),
   home_url: `/${code}/`,
-  home_label: `Home (${code})`,
-  breadcrumb_label: `Breadcrumb (${code})`,
-  skip_to_content_label: `Skip (${code})`,
-  search_label: `Search (${code})`,
   is_default: false,
   ...overrides,
 });
@@ -90,7 +90,8 @@ const DATA = {
     placeholder_images: false,
     sticky_mobile_nav: false,
     horizontal_nav: false,
-    collapse_mobile_menu: false,
+    collapse_menu: "always",
+    language_switcher: "header",
     enable_theme_switcher: false,
     externalLinksTargetBlank: true,
     linkify_urls: false,

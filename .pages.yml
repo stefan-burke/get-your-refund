@@ -94,6 +94,7 @@ components:
         fields:
           - { name: question, type: string, label: Question, required: true }
           - { name: answer, type: rich-text, label: Answer (Markdown) }
+      - { name: collapsible, type: boolean, label: Collapsible }
       - name: intro_content
         type: rich-text
         label: Intro Content (Markdown)
@@ -623,7 +624,7 @@ content:
     label: Pages
     path: src/pages
     type: collection
-    subfolders: false
+    subfolders: true
     filename: "{name}.md"
     view:
       fields:
@@ -692,7 +693,7 @@ content:
     label: News
     path: src/news
     type: collection
-    subfolders: false
+    subfolders: true
     filename: "{year}-{month}-{day}-{name}.md"
     view:
       fields:
@@ -756,7 +757,7 @@ content:
     label: Guide Categories
     path: src/guide-categories
     type: collection
-    subfolders: false
+    subfolders: true
     filename: "{name}.md"
     fields:
       - { name: name, type: string, label: Name, required: true }
@@ -811,7 +812,7 @@ content:
     label: Guide Pages
     path: src/guide-pages
     type: collection
-    subfolders: false
+    subfolders: true
     filename: "{name}.md"
     fields:
       - { name: name, type: string, label: Name, required: true }
@@ -873,7 +874,7 @@ content:
     label: Snippets
     path: src/snippets
     type: collection
-    subfolders: false
+    subfolders: true
     filename: "{name}.md"
     exclude:
       - README.md

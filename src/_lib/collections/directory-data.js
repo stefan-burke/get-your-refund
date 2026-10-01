@@ -33,14 +33,22 @@ const propertySlug = (data) =>
 const DIRECTORY_DATA = {
   pages: {
     tags: ["pages"],
-    permalink: "/{{ page.fileSlug }}/index.html",
     eleventyComputed: {
       /** @param {*} data */
       name: (data) => data.name || data.meta_title,
       /** @param {*} data */
       navigationParent: (data) => data.eleventyNavigation?.parent || null,
-      /** @param {*} data */
-      permalink: (data) => normalisePermalink(data.permalink),
+      /**
+       * An authored permalink (or permalink: false), else where the file sits
+       * under src/pages: src/pages/es/acerca.md publishes at /es/acerca/ and
+       * an index.md at its folder's URL, so a page in a language folder lands
+       * under that language's prefix without anyone writing a permalink.
+       * @param {*} data
+       */
+      permalink: (data) =>
+        data.permalink === false || data.permalink
+          ? normalisePermalink(data.permalink)
+          : `${data.page.filePathStem.replace(/^\/[^/]+/, "").replace(/\/index$/, "")}/`,
     },
   },
   news: {

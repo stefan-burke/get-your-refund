@@ -280,3 +280,56 @@ describe("toNavigation", () => {
       expect(html).toContain("<img");
     }));
 });
+
+describe("toNavigation current page", () => {
+  const renderAt = (pages, activeKey, currentUrl) =>
+    withIconMock(() => toNavigation(pages, activeKey, "Search", currentUrl));
+
+  test("marks the page being rendered aria-current=page", async () => {
+    const html = await renderAt(
+      [navEntry("Home", { url: "/" }), navEntry("About")],
+      "About",
+      "/about/",
+    );
+    expect(html).toContain(
+      '<a class="active" href="/about/" aria-current="page">',
+    );
+    expect(html.match(/aria-current/g)).toHaveLength(1);
+  });
+
+  test("marks the section of a page outside the menu aria-current=true", async () => {
+    // A news post is not in the menu; its navigationParent (News) is active
+    const html = await renderAt(
+      [navEntry("News"), navEntry("About")],
+      "News",
+      "/news/a-post/",
+    );
+    expect(html).toContain(
+      '<a class="active" href="/news/" aria-current="true">',
+    );
+  });
+
+  test("marks a child page itself and its parent's section", async () => {
+    const html = await renderAt(
+      [navEntry("Sign up", { children: [navEntry("Get started")] })],
+      "Sign up",
+      "/get started/",
+    );
+    expect(html).toContain('href="/sign up/" aria-current="true"');
+    expect(html).toContain('href="/get started/" aria-current="page"');
+  });
+});
+
+describe("inLanguage filter", () => {
+  const inLanguageFilter = async () =>
+    (await configureWithMock()).filters.inLanguage;
+  const pageIn = (code) => ({ data: { pageLanguage: { code } }, code });
+
+  test("keeps only the navigation pages written in the given language", async () => {
+    const inLanguage = await inLanguageFilter();
+    const pages = [pageIn("en"), pageIn("es"), pageIn("en")];
+
+    expect(inLanguage(pages, { code: "es" })).toEqual([pages[1]]);
+    expect(inLanguage(pages, { code: "en" })).toEqual([pages[0], pages[2]]);
+  });
+});

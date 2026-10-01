@@ -219,6 +219,54 @@ Unicode: café résumé naïve`;
     });
   });
 
+  describe("snippets in the page language", () => {
+    const snippet = (heading) =>
+      `---\nblocks:\n  - type: markdown\n    content: "${heading}"\n---\n# ${heading}\n`;
+
+    /** A shared footer snippet and a Spanish one, under a mocked CWD. */
+    const withLocalisedSnippets = async (testName, callback) => {
+      const { tempDir, snippetsDir } = createTempSnippetsDir(testName);
+      try {
+        fs.writeFileSync(`${snippetsDir}/footer.md`, snippet("Shared"));
+        fs.mkdirSync(`${snippetsDir}/es`);
+        fs.writeFileSync(`${snippetsDir}/es/footer.md`, snippet("Español"));
+        await withMockedCwd(tempDir, () => callback(createConfiguredMock()));
+      } finally {
+        cleanupTempDir(tempDir);
+      }
+    };
+
+    test("A page reads its language's own version of a snippet", () =>
+      withLocalisedSnippets(
+        "snippets-localised",
+        async ({ filters, asyncShortcodes }) => {
+          expect(filters.snippet_data("footer", "es").blocks[0].content).toBe(
+            "Español",
+          );
+          expect(filters.snippet_blocks("footer", "es")[0].content).toBe(
+            "Español",
+          );
+          expect(
+            await asyncShortcodes.render_snippet("footer", "", "es"),
+          ).toContain("<h1>Español</h1>");
+        },
+      ));
+
+    test("Falls back to the shared snippet for a language without one", () =>
+      withLocalisedSnippets(
+        "snippets-fallback",
+        async ({ filters, asyncShortcodes }) => {
+          expect(filters.snippet_data("footer", "de").blocks[0].content).toBe(
+            "Shared",
+          );
+          expect(filters.snippet_blocks("footer").at(0).content).toBe("Shared");
+          expect(
+            await asyncShortcodes.render_snippet("footer", "", "de"),
+          ).toContain("<h1>Shared</h1>");
+        },
+      ));
+  });
+
   describe("snippet_blocks filter", () => {
     const testSnippetBlocks = (testName, snippetName, content, callback) =>
       withSnippetSetup(testName, snippetName, content, (mockConfig) =>

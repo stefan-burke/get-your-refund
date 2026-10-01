@@ -25,7 +25,7 @@ Parameters:
           <span class="downloads__label">{{ item.label }}</span>
           <span class="downloads__meta">{{ info.extension | upcase }} &middot; {{ info.sizeHuman }}</span>
         </span>
-        <span class="downloads__affordance" aria-hidden="true">Download</span>
+        <span class="downloads__affordance" aria-hidden="true">{{ pageLanguage.download_label }}</span>
       </a>
     </li>
   {%- endfor -%}

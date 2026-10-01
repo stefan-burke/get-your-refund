@@ -3,7 +3,8 @@ import { initNavDropdown } from "#public/ui/nav-dropdown.js";
 import { noop } from "#test/test-utils.js";
 
 const NAV_HTML = `
-<nav class="site-nav">
+<nav class="site-nav" data-submenu-label="Untermenü anzeigen">
+  <div class="site-menu">
   <ul>
     <li>
       <a href="/products/">Products</a>
@@ -13,6 +14,7 @@ const NAV_HTML = `
     </li>
     <li><a href="/about/">About</a></li>
   </ul>
+  </div>
 </nav>
 `;
 
@@ -34,7 +36,8 @@ const initWithMode = (hoverMatches) => {
   };
 };
 
-const parentItem = () => document.querySelector("nav > ul > li:has(> ul)");
+const parentItem = () =>
+  document.querySelector(".site-menu > ul > li:has(> ul)");
 
 const clickCaretAndExpectExpanded = (button, expanded) => {
   button.click();
@@ -56,13 +59,14 @@ describe("click mode (no hover)", () => {
     expect(button).not.toBeNull();
     expect(button.tagName).toBe("BUTTON");
     expect(button.getAttribute("aria-expanded")).toBe("false");
-    expect(button.getAttribute("aria-label")).toBe("Toggle submenu");
+    // Named in the page language, from the nav's data-submenu-label
+    expect(button.getAttribute("aria-label")).toBe("Untermenü anzeigen");
   });
 
   test("does not inject button on items without submenus", () => {
     initWithMode(false);
 
-    const leaf = document.querySelector("nav > ul > li:last-child");
+    const leaf = document.querySelector(".site-menu > ul > li:last-child");
     expect(leaf.querySelector(".nav-caret")).toBeNull();
   });
 

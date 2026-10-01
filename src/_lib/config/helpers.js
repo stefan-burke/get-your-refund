@@ -3,7 +3,8 @@ import { frozenObject } from "#utils/fp/object.js";
 const DEFAULTS = frozenObject({
   sticky_mobile_nav: true,
   horizontal_nav: true,
-  collapse_mobile_menu: false,
+  collapse_menu: "mobile",
+  language_switcher: "footer",
   show_breadcrumbs: false,
   externalLinksTargetBlank: false,
   homepage_footer_markdown: null,

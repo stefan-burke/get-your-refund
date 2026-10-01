@@ -65,7 +65,7 @@ const extractImageOptions = (img, document) => {
     sizes: img.getAttribute("sizes"),
     widths,
     aspectRatio,
-    loading: null,
+    loading: img.getAttribute("loading"),
     noLqip,
     returnElement: true,
     document,

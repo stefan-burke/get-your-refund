@@ -114,7 +114,9 @@ available block or producing a generic hero/cards/CTA sequence.
 Read [project setup](references/project-setup.md) when changing identity,
 collections, CMS features, themes, languages, or deployment. Read
 [content authoring](references/content-authoring.md) before creating or
-migrating content files.
+migrating content files. Read [languages](references/i18n.md) for a site in
+more than one language, and [site mirroring](references/site-mirroring.md) to
+rebuild an existing site page for page.
 
 ### 4. Configure and Author
 

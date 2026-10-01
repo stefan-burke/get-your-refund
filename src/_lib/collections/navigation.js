@@ -29,8 +29,23 @@ const sortNavigationItems = orderThenString(
 );
 
 /**
+ * How an entry relates to the page being rendered, as its aria-current value:
+ * "page" for the page itself, "true" for the section it sits in (the entry
+ * named by activeKey, such as News for a news post), otherwise null.
  * @param {NavigationEntry} entry
  * @param {string} activeKey
+ * @param {string} currentUrl
+ * @returns {"page" | "true" | null}
+ */
+const currentState = (entry, activeKey, currentUrl) => {
+  if (entry.url && entry.url === currentUrl) return "page";
+  return activeKey === entry.key ? "true" : null;
+};
+
+/**
+ * @param {NavigationEntry} entry
+ * @param {string} activeKey
+ * @param {string} currentUrl
  * @param {RenderChildren} renderChildren
  * @param {boolean} isRootLevel
  * @param {boolean} showThumbnails
@@ -39,6 +54,7 @@ const sortNavigationItems = orderThenString(
 const renderNavEntry = async (
   entry,
   activeKey,
+  currentUrl,
   renderChildren,
   isRootLevel,
   showThumbnails,
@@ -59,10 +75,11 @@ const renderNavEntry = async (
       ? renderChildren(entry.children)
       : Promise.resolve(""),
   ]);
-  const href = entry.url ?? null;
+  const current = currentState(entry, activeKey, currentUrl);
   const anchorAttrs = {
-    class: activeKey === entry.key ? "active" : null,
-    href,
+    class: current ? "active" : null,
+    href: entry.url ?? null,
+    "aria-current": current,
   };
   const titleHtml = await createHtml("span", {}, entry.title);
   const anchor = await createHtml("a", anchorAttrs, thumbnailHtml + titleHtml);
@@ -107,14 +124,20 @@ const renderSearchItem = async (searchLabel) => {
 
 /**
  * Filter: renders navigation HTML.
- * Usage: {{ navItems | toNavigation: activeKey, pageLanguage.search_label }}
+ * Usage: {{ navItems | toNavigation: activeKey, pageLanguage.search_label, page.url }}
  * @param {NavigationEntry[]} pages
  * @param {string} [activeKey]
  * @param {string} [searchLabel] - The page language's `search_label`, needed
  *   only by sites that publish a search page
+ * @param {string} [currentUrl] - The rendered page's URL, marked aria-current
  * @returns {Promise<string>}
  */
-const toNavigation = async (pages, activeKey = "", searchLabel = "") => {
+const toNavigation = async (
+  pages,
+  activeKey = "",
+  searchLabel = "",
+  currentUrl = "",
+) => {
   if (!pages?.length) return "";
   if (pages[0]?.pluginType !== "eleventy-navigation") {
     throw new Error("toNavigation requires eleventyNavigation filter first");
@@ -123,12 +146,26 @@ const toNavigation = async (pages, activeKey = "", searchLabel = "") => {
   /** @param {NavigationEntry[]} children */
   const renderChildren = async (children) => {
     const items = await mapAsync((child) =>
-      renderNavEntry(child, activeKey, renderChildren, false, showThumbnails),
+      renderNavEntry(
+        child,
+        activeKey,
+        currentUrl,
+        renderChildren,
+        false,
+        showThumbnails,
+      ),
     )(children);
     return createHtml("ul", {}, items.join("\n"));
   };
   const navItems = await mapAsync((entry) =>
-    renderNavEntry(entry, activeKey, renderChildren, true, showThumbnails),
+    renderNavEntry(
+      entry,
+      activeKey,
+      currentUrl,
+      renderChildren,
+      true,
+      showThumbnails,
+    ),
   )(pages);
   const searchItem = fs.existsSync(SEARCH_PAGE_PATH)
     ? [await renderSearchItem(searchLabel)]
@@ -138,6 +175,16 @@ const toNavigation = async (pages, activeKey = "", searchLabel = "") => {
 };
 
 /**
+ * Filter: the navigation pages written in one language, so each language
+ * gets its own menu from the same navigationLinks collection.
+ * Usage: {{ collections.navigationLinks | inLanguage: pageLanguage | eleventyNavigation }}
+ * @param {Array<{ data: { pageLanguage?: { code: string } } }>} items
+ * @param {{ code: string }} language
+ */
+const inLanguage = (items, language) =>
+  items.filter((item) => item.data.pageLanguage?.code === language.code);
+
+/**
  * @param {import("#lib/types").UserConfig} eleventyConfig
  * @returns {Promise<void>}
  */
@@ -145,6 +192,7 @@ const configureNavigation = async (eleventyConfig) => {
   const nav = await import("@11ty/eleventy-navigation");
   eleventyConfig.addPlugin(nav.default);
   eleventyConfig.addAsyncFilter("toNavigation", toNavigation);
+  eleventyConfig.addFilter("inLanguage", inLanguage);
   eleventyConfig.addCollection(
     "navigationLinks",
     /** @param {import("#lib/types").EleventyCollectionApi} collectionApi */

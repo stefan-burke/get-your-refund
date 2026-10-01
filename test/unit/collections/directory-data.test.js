@@ -68,8 +68,18 @@ describe("pages directory data", () => {
     expect(computed.navigationParent({})).toBeNull();
   });
 
-  test("Normalises an authored permalink", () => {
-    expect(computed.permalink({ permalink: "about" })).toBe("/about/");
+  test("Normalises an authored permalink, and keeps permalink: false", () => {
+    const page = { filePathStem: "/pages/about" };
+    expect(computed.permalink({ permalink: "about", page })).toBe("/about/");
+    expect(computed.permalink({ permalink: false, page })).toBe(false);
+  });
+
+  test("Publishes a page without a permalink where its file sits", () => {
+    const at = (filePathStem) => computed.permalink({ page: { filePathStem } });
+    expect(at("/pages/about")).toBe("/about/");
+    expect(at("/pages/index")).toBe("/");
+    expect(at("/pages/es/acerca")).toBe("/es/acerca/");
+    expect(at("/pages/es/index")).toBe("/es/");
   });
 });
 

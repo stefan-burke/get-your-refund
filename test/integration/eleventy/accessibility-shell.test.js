@@ -42,6 +42,15 @@ describe("the accessibility shell of a built page", () => {
           ],
         },
       },
+      {
+        path: "pages/terms.md",
+        frontmatter: {
+          name: "Terms",
+          permalink: "/terms/",
+          no_breadcrumbs: true,
+          blocks: [{ type: "markdown", content: "# Terms" }],
+        },
+      },
     ],
   });
 
@@ -64,6 +73,11 @@ describe("the accessibility shell of a built page", () => {
     const doc = await privacy();
     const nav = doc.querySelector("nav[aria-label='Breadcrumb']");
     expect(nav.querySelector("ol.breadcrumbs")).not.toBeNull();
+  });
+
+  test("leaves the breadcrumbs off a page that opts out", async () => {
+    const doc = await getSite().getDoc("terms/index.html");
+    expect(doc.querySelector("ol.breadcrumbs")).toBeNull();
   });
 
   test("lists the page's own headings in its contents", async () => {

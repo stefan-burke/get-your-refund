@@ -34,8 +34,14 @@
       @include link-plain;
     }
 
+    // The separator is drawn by the theme: set --breadcrumb-separator
+    // (a CSS string, such as ">") to change it.
     .separator {
       @include muted-text;
+
+      &::before {
+        content: var(--breadcrumb-separator);
+      }
     }
 
     span[aria-current] {
