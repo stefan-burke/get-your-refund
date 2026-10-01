@@ -9,7 +9,7 @@ Guide-page-only block. No block-level parameters.
 {%- if guide-category -%}
 <div class="container-wide">
   {%- assign category = collections.guide-categories | getBySlug: guide-category -%}
-  <nav class="guide-navigation" aria-label="{{ pageLanguage.breadcrumb_label }}">
+  <nav class="guide-navigation" aria-label="{{ pageLanguage.back_to_label }} {{ category.data.name }}">
     <a href="{{ category.url }}">&larr; {{ pageLanguage.back_to_label }} {{ category.data.name }}</a>
   </nav>
 </div>
