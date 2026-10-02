@@ -2,7 +2,7 @@
 
 Static rebuild of [530a.getyourrefund.org](https://530a.getyourrefund.org), the
 Code for America guide to 530A ("Trump") investment accounts for children, in
-English and Spanish. Built from [CfA Static](https://github.com/codeforamerica/cfa-static);
+English and Spanish. A fork of [CfA Static](https://github.com/codeforamerica/cfa-static);
 template updates arrive only through a reviewed `upstream` merge.
 
 ## Status
@@ -19,6 +19,11 @@ of conscious deviations.
 
 The site changes no template code: everything below is content, data, and
 `src/css/theme.scss`.
+
+[Diff this site's code against the template
+baseline](https://github.com/stefan-burke/get-your-refund/compare/cfa-static-main..main):
+the `cfa-static-main` branch mirrors the `cfa-static` tip this site has
+adopted, so the direct comparison shows exactly this fork's own files.
 
 - **Collections/CMS:** pages and snippets only. Managed via
   `npm run customise-cms`; `cms_config` is saved in `src/_data/site.json`.
