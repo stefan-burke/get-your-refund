@@ -337,6 +337,9 @@ const createTestSite = async (options = {}) => {
               ...options.env,
               TEST_SITE_DIR: siteDir,
               PLACEHOLDER_IMAGES: options.processImages ? "0" : "1",
+              // Blank the vitest worker's cache override so each site keeps
+              // its own .image-cache instead of sharing the worker's.
+              IMAGE_CACHE_DIR: "",
             },
           },
         );

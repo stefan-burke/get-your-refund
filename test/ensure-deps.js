@@ -4,11 +4,21 @@
  */
 
 import { execSync } from "node:child_process";
-import { existsSync } from "node:fs";
+import { existsSync, mkdirSync, mkdtempSync } from "node:fs";
 import { join } from "node:path";
 import { ROOT_DIR } from "#lib/paths.js";
 
 const projectRoot = ROOT_DIR;
+
+// In-process image work must not seed the checkout's .image-cache, which
+// every site build then ships into _site/img/. Redirect it to a per-worker
+// directory under the .test-sites root that global-teardown sweeps.
+const testSitesRoot = join(projectRoot, "test", ".test-sites");
+mkdirSync(testSitesRoot, { recursive: true });
+process.env.IMAGE_CACHE_DIR ||= mkdtempSync(
+  join(testSitesRoot, "image-cache-"),
+);
+
 const nodeModulesPath = join(projectRoot, "node_modules");
 
 if (!existsSync(nodeModulesPath)) {

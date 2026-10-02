@@ -12,6 +12,17 @@ const DEFAULT_WIDTHS = [240, 480, 900, 1300];
 const DEFAULT_SIZE = "auto";
 
 /**
+ * Resolve the processed-image cache directory at call time. The
+ * IMAGE_CACHE_DIR environment variable redirects it so in-process test runs
+ * write to a swept temp directory instead of seeding the checkout's build
+ * cache, which every site build ships into `_site/img/`. Spawned test-site
+ * builds blank it to keep their cache site-local.
+ * @returns {string} Cache directory, cwd-relative by default
+ */
+export const getImageCacheDir = () =>
+  process.env.IMAGE_CACHE_DIR || ".image-cache";
+
+/**
  * Reduce an accepted image reference to a src/-relative path. The single
  * source of truth for the input shapes image references may take:
  * - "/images/photo.jpg", "src/images/photo.jpg", "images/photo.jpg", and
@@ -95,10 +106,11 @@ export const JPEG_FALLBACK_WIDTH = 1300;
 /**
  * Default options for eleventy-img processing.
  * Shared between local and external image processing — the single source of
- * truth for the cache directory and URL path.
+ * truth for the cache directory and URL path. The cache directory resolves
+ * through getImageCacheDir at import time, after test setup has had its say.
  */
 export const DEFAULT_IMAGE_OPTIONS = frozenObject({
-  outputDir: ".image-cache",
+  outputDir: getImageCacheDir(),
   urlPath: "/img/",
   /**
    * Generate filenames for resized images and LQIP thumbnails.
