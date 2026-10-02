@@ -137,6 +137,36 @@ body content`;
         },
       );
     });
+
+    test("A traversal name cannot escape src/snippets", () => {
+      const { tempDir, snippetsDir } = createTempSnippetsDir(
+        "snippet_data-traversal",
+      );
+      try {
+        // The "sensitive" file exists beside src/ with a matching basename;
+        // only src/snippets/secret.md may ever be read.
+        fs.writeFileSync(`${tempDir}/secret.md`, "---\ntitle: Secret\n---\n");
+        fs.writeFileSync(
+          `${snippetsDir}/secret.md`,
+          "---\ntitle: Snippet\n---\n",
+        );
+        withMockedCwd(tempDir, () => {
+          const mockConfig = createConfiguredMock();
+          for (const name of [
+            "../../secret",
+            "../secret",
+            "sub/../../secret",
+            "/etc/cron.d/secret",
+          ]) {
+            expect(mockConfig.filters.snippet_data(name)).toEqual({
+              title: "Snippet",
+            });
+          }
+        });
+      } finally {
+        cleanupTempDir(tempDir);
+      }
+    });
   });
 
   describe("render_snippet shortcode", () => {
