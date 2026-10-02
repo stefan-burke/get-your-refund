@@ -11,14 +11,11 @@ import {
 import { map } from "#utils/fp/array.js";
 
 vi.mock("#data/config.js", async () => {
-  const { DEFAULTS } = await import("#config/helpers.js");
-  return {
-    default: () => ({
-      ...DEFAULTS,
-      nav_thumbnails: true,
-      internal_link_suffix: "",
-    }),
-  };
+  const { mockTemplateConfig } = await import("#test/test-utils.js");
+  return mockTemplateConfig({
+    nav_thumbnails: true,
+    internal_link_suffix: "",
+  });
 });
 
 const { configureNavigation, toNavigation } = await import(
