@@ -1,5 +1,8 @@
 ---
 name: Inicio
+eleventyNavigation:
+  key: "Inicio"
+  order: 1
 meta_title: Inicio – GetYourRefund
 meta_description: Es posible que algunos niños nacidos antes de 2025 también se puedan beneficiar de una cuenta 530A. Siga leyendo para conocer más.
 permalink: /es/
@@ -90,6 +93,7 @@ blocks:
       variant: primary
       size: lg
   - type: faqs
+    collapsible: true
     items:
       - question: ¿Recibiré este dinero automáticamente?
         answer: |

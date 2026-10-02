@@ -89,6 +89,19 @@ describe("test-site-factory", () => {
       );
     });
 
+    test("adds no home page when a page redirects from /", async () => {
+      // A site whose default language lives under /en/ redirects / instead
+      const home = {
+        path: "pages/en/index.md",
+        frontmatter: { name: "Home", permalink: "/en/", redirect_from: ["/"] },
+      };
+      await withSetupTestSite({ files: [home] }, (site) => {
+        expect(fs.existsSync(path.join(site.srcDir, "pages/index.md"))).toBe(
+          false,
+        );
+      });
+    });
+
     const withTempTestImage = async (filename, dest, fn) => {
       // Keep the source image in a temp dir, never the repo root: the
       // findFiles walker stats every root entry from parallel workers, so a

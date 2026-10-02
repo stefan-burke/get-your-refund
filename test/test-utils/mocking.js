@@ -4,6 +4,8 @@
  * Provides utilities for mocking fetch, console, and other globals.
  */
 
+import { DEFAULTS } from "#config/helpers.js";
+
 /**
  * Create a console capture function with a given executor.
  * Curried: (executor) => (fn) => logs
@@ -131,10 +133,26 @@ const withMockFetch = async (response, options, callback) => {
   }
 };
 
+/**
+ * vi.mock factory body for `#data/config.js` that serves the template
+ * defaults, optionally overridden. For tests that exercise a module's own
+ * behavior rather than whatever the site's config.json enables.
+ *
+ * The name must keep its `mock` prefix: vi.mock factories may only
+ * reference outer variables that start with it.
+ *
+ * @param {Record<string, unknown>} [overrides] - Config values to set
+ * @returns {{ default: () => Record<string, unknown> }} Mock module shape
+ */
+const mockTemplateConfig = (overrides = {}) => ({
+  default: () => ({ ...DEFAULTS, ...overrides }),
+});
+
 export {
   captureConsole,
   captureConsoleLogAsync,
   createConsoleCapture,
   mockFetch,
+  mockTemplateConfig,
   withMockFetch,
 };

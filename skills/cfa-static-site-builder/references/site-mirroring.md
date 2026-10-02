@@ -1,118 +1,85 @@
 # Site Mirroring
 
-Read this reference when rebuilding an existing website as a CfA Static fork
-by mirroring a live source site page-for-page. It records the process that
-produced the 530a Accounts mirror (WordPress + Elementor → CfA Static) and
-the judgment rules that kept the copy faithful. For template mechanics —
-blocks, layouts, theming — read [project setup](project-setup.md),
-[content authoring](content-authoring.md), and the generated block reference
-first.
+Read this reference when rebuilding an existing website as a CfA Static fork,
+page for page. Mirroring means fidelity to the source's content and visual
+design, rebuilt with the block model — not reproducing its DOM. Read
+[project setup](project-setup.md), [content authoring](content-authoring.md),
+and the generated [block reference](blocks.md) first, and
+[languages](i18n.md) when the source publishes in more than one language.
 
-## 1. Scrape the source site
+## 1. Capture The Source
 
-1. Crawl the source sitemap; save per page: raw HTML (`html/<path>.html`),
-   a content inventory in DOM order (`inventory/<path>.md`: sections, exact
-   text, images, buttons/CTAs, nav + footer lists, tables, meta description),
-   downloaded assets with original filenames, and extracted palette/
-   typography notes. Keep everything in a gitignored scratch directory — it
-   is read-only ground truth, never shipped.
-2. Audit the extractor against the raw HTML before trusting it: naive DOM
-   walkers silently drop inline `<a href>`s inside `<p>` content and inline
-   `<strong>` markers (list items, headings, and button links survive). List
-   every content anchor per page with its resolved href and status
-   (already-linked / MISSING-HREF / WRONG-HREF) and treat that audit as the
-   authoritative href source during conversion.
-3. Record page pairing (en/es or other locales), oddities, and pages that are
-   empty placeholders in an index file.
+1. Crawl the source sitemap. Per page, save the raw HTML, a content inventory
+   in DOM order (sections, exact text, images, buttons, nav and footer lists,
+   tables, meta description), and the assets under their original filenames.
+   Extract the palette and typography. Keep it all in a gitignored scratch
+   directory: it is read-only ground truth, never shipped.
+2. Record the capture date. That snapshot is the content source of truth;
+   later edits to the live site are out of scope until someone re-captures.
+3. Audit the extractor against the raw HTML before trusting it. DOM walkers
+   commonly drop inline links and bold inside paragraphs. List every content
+   link per page with its target and treat that list as authoritative.
+4. Index page pairs (one per language), placeholder pages, and oddities.
+5. Note the source's redirects: the bare root and any unprefixed URLs usually
+   redirect somewhere, and those URLs must keep working after cutover.
 
-## 2. Map pages to the existing block vocabulary
+## 2. Map Pages To Blocks
 
-Convert each locale's page from ITS OWN inventory — locales on real sites are
-not symmetric (different copy, footer links, contact addresses); never derive
-one locale from another. Reuse existing block types in this order of
-preference:
+Convert each language from its own inventory; never derive one language from
+another. Prefer existing blocks:
 
-- Page-top "current as of…" notice → `callout` (`variant: warning`, `compact: true`).
-- Hero with heading + photo → `split-image` (`compact: true`); two-column
-  intro bands and three-up step cards → `blockLayouts.json` claim queues
-  keyed on a page tag, themed in `theme.scss` (full-bleed via
-  `margin-inline: calc(50% - 50vw)`).
-- Prose → `markdown`; Q&A/accordion runs → `faqs` with inline `items`;
-  standalone buttons → `link-button`; closing bands → `cta`; long legal text
-  → `markdown` blocks per h2 plus `table-of-contents`. When the source renders
-  Q&A runs as collapsed accordions (Elementor accordion widgets, chevron
-  icons), the `faqs` block already matches: it renders native
-  `<details>/<summary>` rows, collapsed by default, through a forked include
-  (documented diff from the template's historical open definition list).
-- Cross-check every link against the raw HTML, restore audit MISSING-HREF
-  anchors inline, and re-add `<strong>` bold the extractor lost.
+| Source pattern | Block |
+| --- | --- |
+| "Current as of…" notice above the page | `callout` (`variant: warning`, `compact: true`) |
+| Hero with heading and photo | `split-image` (`compact: true` on inner pages) |
+| Prose sections | `markdown` |
+| Q&A runs, accordions | `faqs` with `items`; `collapsible: true` when the source collapses them |
+| Standalone or closing buttons | `link-button`, `cta` |
+| Long legal text with a contents list | `markdown` per section plus `table-of-contents` |
+| Side-by-side bands, card rows | `blockLayouts.json` columns keyed on a page tag |
 
-## 3. Theme
+Restore every link from the audit and re-add lost bold. Keep text verbatim,
+including the source's typos and stale claims, and report them instead of
+silently fixing them.
 
-1. Rebuild `src/css/theme.scss` from the extracted palette as token
-   overrides, plus only the component treatments tokens cannot express
-   (button radius/padding/hover, callout borders, sticky header, footer band).
-2. Google-Fonts `@import url(...)` does not work — the theme file compiles
-   last into the CSS bundle, so the `@import` is never at the stylesheet top.
-   Self-host instead: download woff2 from Bunny Fonts into `src/assets/fonts/`
-   and append `@font-face` rules to `src/css/_fonts.scss`.
-3. The media transform wraps content images with an inline `max-width`;
-   countermand small fixed icons with `!important` in the theme.
+## 3. Theme And Chrome
 
-## 4. Locale-aware chrome
+1. Rebuild `src/css/theme.scss` as token overrides first; add component rules
+   only where tokens cannot express the treatment.
+2. Self-host brand fonts (see [project setup](project-setup.md#theme-and-brand)).
+3. Header: set `logo` in `site.json`; set `collapse_menu: always` when the
+   source opens a menu from a button at every width, and style the menu panel
+   (`.site-menu`) and its buttons (`.menu-toggle`, `.menu-close`) in the
+   theme. Put the language switcher where the source does with
+   `language_switcher`.
+4. Footer copy per language: `src/snippets/<code>/footer-content.md`.
+5. Breadcrumbs: leave `show_breadcrumbs` on when the source shows a trail,
+   set `--breadcrumb-separator` in the theme to match it, and opt pages out
+   with `no_breadcrumbs: true` where the source has none.
 
-- Footer copy: one snippet per locale (`footer-content-<code>.md`), selected
-  in the footer include by `pageLanguage.code`; repoint the base layout's
-  footer-snippet hook the same way.
-- Header menu: branch on `pageLanguage.code` in `navigation.html` and mirror
-  the live nav verbatim per locale, including submenus and external entries.
-  When the source opens its menu as a full-screen popup (Elementor popup
-  template), restyle the `<details>` disclosure's panel into that overlay —
-  same backdrop/panel colors, item typography and spacing, submenu treatment,
-  and a close control matching the source's — keeping it details-based with
-  no JS infrastructure forked (a `<summary>` styled as the X, placed inside
-  the panel's top strip, is the close control; Chromium does not natively
-  toggle non-first summaries, so a tiny UI-module enhancement provides the
-  close, Esc-to-close, exit fade, and focus return).
-- Pair all equivalent routes in `translations.json` (distinct slugs per
-  locale are fine). `check:links` counts `<link rel="alternate" hreflang>`
-  targets, so a pair whose pages are not all built yet fails the build — add
-  each group when both pages exist, or temporarily withhold it.
+None of this needs edits to `src/_includes/` or `src/_lib/`. A fork that has
+to change template files to match a source has found a template gap: record
+it for the template rather than carrying the change.
 
-## 5. Live-site quirk rules
+## 4. Live-Site Quirks
 
-Decide per case; document each in an upstream notes file:
+- Links: make internal links site-relative. Where the source links its own
+  unprefixed URLs that redirect to a language prefix, link the prefixed URL.
+- Dead links on the source: keep them as absolute URLs so the mirror behaves
+  like the source, and report them.
+- Placeholder pages: keep the URL with `no_index: true` and the scraped title.
+- Features that cannot be carried over (tracking pixels, third-party seals):
+  list them as deliberate differences.
 
-- Text: verbatim, including typos and stale claims — flag quirks for the
-  source site's team instead of silently fixing them.
-- Links: internal links become site-relative; normalize the source site's
-  locale-less URLs to the default locale (matches its own redirect behavior).
-  Preserve live 404 targets verbatim as absolute URLs (the internal-link
-  checker skips scheme'd hrefs) so the mirror reproduces the live behavior.
-- Empty placeholder pages: build a no-content page (`no_index: true`,
-  scraped title) so the URL parity holds; record the decision.
-- Breadcrumb trails: when the source shows a breadcrumb on inner pages, leave
-  the template's breadcrumb feature on (`show_breadcrumbs` in
-  `src/_data/config.json`) and restyle it to match; suppress it per page with
-  `no_breadcrumbs: true` where the source has none (e.g. legal pages). Pages
-  whose trail names differ from their titles use `eleventyNavigation.parent`.
-- Deliberately dropped source features (tracking pixels, third-party seals
-  that cannot be scraped): list them as conscious diffs in a per-page
-  visual-notes file.
+## 5. Validate And Compare
 
-## 6. Validate and compare
-
-1. `npm run build` (includes `check:links`), `npm run check:a11y`, and
-   `npm run lint:scss` after theme work.
-2. Serve `_site`, screenshot every route at desktop and mobile (full-page),
-   and capture the matching live pages; fix theme-level mismatches and
-   re-capture.
-3. Quantify with pixelmatch (threshold 0.1, `includeAA: true`): because
-   reflow makes full-page heights diverge, compare the common top segment
-   (crop both to width × min height) and a top 800px band; report both.
-   Force scroll-through before screenshots — `data-reveal` fades are caught
-   mid-transition otherwise. The noise floor for pages without a hero photo
-   is ~6-7%; the organic mask on source hero photos is not reproducible and
-   accounts for most of the remaining band difference.
-4. Commit in logical slices (identity/config, theme/chrome, pages per
-   locale, link restoration) and push.
+1. `npm run build` (includes the internal link check), `npm run check:a11y`,
+   and `npm run lint:scss` after theme work. Contrast and focus visibility
+   need a real browser; check them there.
+2. Serve `_site`, screenshot every route at desktop and mobile widths
+   alongside the source, and fix theme-level differences. Scroll through each
+   page before capturing so `data-reveal` fades have finished.
+3. Compare per route with a pixel-diff tool over the top of the page, where
+   layout still aligns, and record what remains and why.
+4. Walk each page by keyboard: skip link, menu open and close, every link
+   visible when focused.

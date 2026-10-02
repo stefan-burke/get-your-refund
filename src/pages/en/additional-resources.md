@@ -1,8 +1,13 @@
 ---
 name: Other topics
+eleventyNavigation:
+  key: "Other topics"
+  order: 8
 meta_title: Other topics - GetYourRefund
 meta_description: Do 530A Accounts have any impact on my eligibility for public benefits like SSI, SNAP, or Medicaid?
 permalink: /en/additional-resources/
+redirect_from:
+  - /additional-resources/
 blocks:
   - type: callout
     compact: true
@@ -13,6 +18,7 @@ blocks:
     content: |
       # Other topics
   - type: faqs
+    collapsible: true
     items:
       - question: Do 530A Accounts have any impact on my eligibility for public benefits like SSI, SNAP, or Medicaid?
         answer: |

@@ -135,3 +135,41 @@ describe("validated-config", () => {
     ).rejects.toThrow("uses a placeholder hostname");
   });
 });
+
+describe("config.json choices", () => {
+  const SITE = {
+    name: "Configured Site",
+    url: "https://configured.test",
+    description: "A configured site",
+  };
+  const importWithConfig = (config) => {
+    vi.doMock("#data/config.json", () => ({ default: config }));
+    return importWithSite(SITE);
+  };
+
+  afterEach(() => {
+    vi.doUnmock("#data/config.json");
+  });
+
+  test("accepts each documented value, and null for the default", async () => {
+    for (const config of [
+      { collapse_menu: "always", language_switcher: "header" },
+      { collapse_menu: "never", language_switcher: "footer" },
+      { collapse_menu: null, language_switcher: null },
+      {},
+    ]) {
+      await expect(importWithConfig(config)).resolves.toBeDefined();
+    }
+  });
+
+  test("names the setting, its choices, and the value it was given", async () => {
+    await expect(
+      importWithConfig({
+        collapse_menu: "sometimes",
+        language_switcher: "top",
+      }),
+    ).rejects.toThrow(
+      /collapse_menu' must be one of mobile, always, never, got: sometimes[\s\S]*language_switcher' must be one of footer, header, got: top/,
+    );
+  });
+});

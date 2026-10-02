@@ -1,5 +1,8 @@
 ---
 name: ¿Cómo funciona una cuenta 530A?
+eleventyNavigation:
+  key: "¿Cómo funciona una cuenta 530A?"
+  order: 4
 meta_title: ¿Cómo funciona una cuenta 530A? - GetYourRefund
 meta_description: ¿Puedo retirar dinero antes de que mi hijo cumpla 18 años?
 permalink: /es/how-530a-account-works/
@@ -21,6 +24,7 @@ blocks:
     figure_src: /images/530a-how-does-it-work.png
     figure_alt: Manos de una persona escribiendo en una computadora portátil
   - type: faqs
+    collapsible: true
     items:
       - question: ¿Puedo retirar dinero antes de que mi hijo cumpla 18 años?
         answer: |

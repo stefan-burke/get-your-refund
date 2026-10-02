@@ -1,0 +1,21 @@
+{
+  "show_breadcrumbs": true,
+  "placeholder_images": true,
+  "sticky_mobile_nav": null,
+  "horizontal_nav": null,
+  "collapse_menu": null,
+  "language_switcher": null,
+  "enable_theme_switcher": true,
+  "externalLinksTargetBlank": null,
+  "homepage_footer_markdown": null,
+  "default_image_widths": null,
+  "timezone": null,
+  "list_item_fields": null,
+  "navigation_content_anchor": null,
+  "nav_thumbnails": false,
+  "screenshots": null,
+  "use_visual_editor": true,
+  "search_collections": null,
+  "linkify_urls": null,
+  "disable_liquid_cache": null
+}

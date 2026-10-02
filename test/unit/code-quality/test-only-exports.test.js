@@ -38,7 +38,7 @@ const IMPORT_ALIASES = {
   "#test/": "test/",
   "#scripts/": "scripts/",
   "#bin/": "bin/",
-  // NOTE: #transforms/ and #guide-categories/ are deliberately absent for
+  // NOTE: #transforms/ is deliberately absent for
   // now: resolving them makes this gate see the transform test suites'
   // white-box imports, which need their own refactor before the gate can
   // cover them without an allowlist.

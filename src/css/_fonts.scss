@@ -61,26 +61,3 @@ $latin-unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC,
     url("../assets/fonts/orbitron-latin-600-normal.woff") format("woff");
   unicode-range: #{$latin-unicode-range};
 }
-
-// 530a Accounts brand fonts (self-hosted from Bunny Fonts, matching the
-// Google Fonts pairing used by 530a.getyourrefund.org)
-@mixin gyr-font-face($family, $weight, $file-prefix) {
-  @font-face {
-    font-family: $family;
-    font-weight: $weight;
-    font-style: normal;
-
-    font-display: swap;
-    src: url("../assets/fonts/#{$file-prefix}-latin-#{$weight}-normal.woff2")
-      format("woff2");
-    unicode-range: #{$latin-unicode-range};
-  }
-}
-
-@include gyr-font-face("Geologica", 400, "geologica");
-@include gyr-font-face("Geologica", 500, "geologica");
-@include gyr-font-face("Geologica", 700, "geologica");
-@include gyr-font-face("Geologica", 900, "geologica");
-@include gyr-font-face("Inter", 400, "inter");
-@include gyr-font-face("Inter", 500, "inter");
-@include gyr-font-face("Inter", 700, "inter");

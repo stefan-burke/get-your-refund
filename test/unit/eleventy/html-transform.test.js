@@ -1,6 +1,14 @@
-import { describe, expect, test } from "vitest";
+import { describe, expect, test, vi } from "vitest";
 import { configureHtmlTransform } from "#eleventy/html-transform.js";
 import { createMockEleventyConfig } from "#test/test-utils.js";
+
+// The transform reads the site config at module scope. These tests cover the
+// transform's own features, so they run it against the template defaults
+// rather than whatever the site's config.json turns on or off.
+vi.mock("#data/config.js", async () => {
+  const { mockTemplateConfig } = await import("#test/test-utils.js");
+  return mockTemplateConfig();
+});
 
 describe("html-transform", () => {
   // Mock image processor that returns a simple div

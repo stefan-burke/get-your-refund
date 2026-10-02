@@ -8,7 +8,7 @@
  *       { path: 'pages/test.md', frontmatter: { title: 'Test', permalink: '/test/' } }
  *     ],
  *     config: { site_name: 'Test Site' },
- *     images: ['party.jpg'],  // optional: copies from src/images/
+ *     images: ['party.jpg'],  // optional: copies from test/fixtures/images/
  *     processImages: true  // optional: real sharp processing instead of placeholders
  *   }, (site) => {
  *     const html = site.getOutput('/events/my-event/index.html');
@@ -19,8 +19,10 @@
 import { spawn } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
+import { pathToFileURL } from "node:url";
 import matter from "gray-matter";
 import { afterAll, beforeAll } from "vitest";
+import { directoryData } from "#collections/directory-data.js";
 import { ensureDir } from "#eleventy/file-utils.js";
 import { ROOT_DIR } from "#lib/paths.js";
 import { filter, flatMap, map, pipe, unique } from "#utils/fp/array.js";
@@ -28,6 +30,11 @@ import { memoize } from "#utils/fp/memoize.js";
 import { loadDOM } from "#utils/lazy-dom.js";
 
 const rootDir = ROOT_DIR;
+const FIXTURES_DIR = path.join(rootDir, "test", "fixtures");
+const SITE_DATA_REGISTER = path.join(
+  import.meta.dirname,
+  "test-site-data-register.js",
+);
 
 // -----------------------------------------------------------------------------
 // Curried Path Utilities
@@ -99,16 +106,17 @@ const copyDirFiles = (src, dest, filterFn = () => true) =>
     }),
   )();
 
-/** Copy 11ty data files for a collection */
-const copy11tyDataFiles = (templateSrc, srcDir) => (collection) => {
-  const hasExtension =
-    (...exts) =>
-    (filename) =>
-      exts.some((ext) => filename.endsWith(ext));
-  return copyDirFiles(
-    path.join(templateSrc, collection),
-    path.join(srcDir, collection),
-    hasExtension(".11tydata.js", ".json"),
+/**
+ * Write a collection's directory data file - the same one-line re-export of
+ * the template's directory data a site's own collection directory holds - so
+ * test sites never depend on a collection directory the site may have deleted.
+ * Directories that are not template collections get no directory data.
+ */
+const writeDirectoryData = (srcDir) => (collection) => {
+  if (!directoryData(collection)) return;
+  writeToDir(srcDir)(
+    `${collection}/${collection}.11tydata.js`,
+    `import { directoryData } from "#collections/directory-data.js";\n\nexport default directoryData("${collection}");\n`,
   );
 };
 
@@ -161,12 +169,14 @@ const createTestSite = async (options = {}) => {
     const writeData = writeToDir(dataTarget);
     const writeJson = writeJsonToDir(dataTarget);
 
-    // Copy base data files
+    // Copy the data modules, then the template-default site data over the
+    // site's own: tests build the template, not the fork they run in.
     copyDirFiles(dataSource, dataTarget);
+    copyDirFiles(path.join(FIXTURES_DIR, "site-data"), dataTarget);
 
-    // Merge config with source config
+    // Merge config with the template-default config
     if (options.config) {
-      const configPath = path.join(dataSource, "config.json");
+      const configPath = path.join(dataTarget, "config.json");
       const existing = JSON.parse(fs.readFileSync(configPath, "utf-8"));
       writeJson("config.json", { ...existing, ...options.config });
     }
@@ -194,14 +204,13 @@ const createTestSite = async (options = {}) => {
     map(({ path: filePath }) => getCollection(filePath)),
     unique,
   );
-  const createContentFiles = (templateSrc, srcDir, files = []) => {
+  const createContentFiles = (srcDir, files = []) => {
     const collections = extractCollections(files);
-    const copyDataFiles = copy11tyDataFiles(templateSrc, srcDir);
     const writeMarkdown = createMarkdownFile(srcDir);
 
-    // Copy data files for each collection (side effect)
+    // Write directory data for each collection (side effect)
     for (const collection of collections) {
-      copyDataFiles(collection);
+      writeDirectoryData(srcDir)(collection);
     }
 
     // Create markdown files (side effect)
@@ -214,18 +223,22 @@ const createTestSite = async (options = {}) => {
 
     return collections;
   };
-  const collections = createContentFiles(templateSrc, srcDir, options.files);
+  const collections = createContentFiles(srcDir, options.files);
 
-  // Ensure an index page exists
-  const ensureIndexPage = (templateSrc, srcDir, files = [], collections) => {
+  // Ensure something serves "/": a home page, or a redirect from "/" (a site
+  // whose default language lives under a prefix such as /en/)
+  const ensureIndexPage = (srcDir, files = [], collections) => {
     const hasIndex = files.some(
-      (f) => f.path === "pages/index.md" || f.frontmatter?.permalink === "/",
+      (f) =>
+        f.path === "pages/index.md" ||
+        f.frontmatter?.permalink === "/" ||
+        [f.frontmatter?.redirect_from].flat().includes("/"),
     );
 
     if (hasIndex) return;
 
     if (!collections.includes("pages")) {
-      copy11tyDataFiles(templateSrc, srcDir)("pages");
+      writeDirectoryData(srcDir)("pages");
     }
 
     createMarkdownFile(srcDir)("pages/index.md", {
@@ -236,12 +249,12 @@ const createTestSite = async (options = {}) => {
       },
     });
   };
-  ensureIndexPage(templateSrc, srcDir, options.files, collections);
+  ensureIndexPage(srcDir, options.files, collections);
 
   // Copy test images
   const normalizeImageSpec = (img) =>
     typeof img === "string"
-      ? { src: path.join(rootDir, "src/images", img), dest: img }
+      ? { src: path.join(FIXTURES_DIR, "images", img), dest: img }
       : {
           src: img.src.startsWith("/") ? img.src : path.join(rootDir, img.src),
           dest: img.dest,
@@ -310,13 +323,19 @@ const createTestSite = async (options = {}) => {
         // sharp image processing unless the test opts in via processImages.
         const child = spawn(
           process.execPath,
-          ["./node_modules/@11ty/eleventy/cmd.cjs", "--quiet"],
+          [
+            "--import",
+            pathToFileURL(SITE_DATA_REGISTER).href,
+            "./node_modules/@11ty/eleventy/cmd.cjs",
+            "--quiet",
+          ],
           {
             cwd: siteDir,
             stdio: ["ignore", "pipe", "pipe"],
             env: {
               ...process.env,
               ...options.env,
+              TEST_SITE_DIR: siteDir,
               PLACEHOLDER_IMAGES: options.processImages ? "0" : "1",
             },
           },
@@ -419,6 +438,25 @@ const useSharedSite = (options) => {
   return () => site;
 };
 
+/**
+ * Run a describe block's in-process tests from inside an unbuilt test site.
+ * Code that resolves files from the working directory - images resolve from
+ * ./src/images - then reads the site's fixtures instead of whatever content
+ * the repository (perhaps a fork with its demo deleted) happens to hold.
+ */
+const useSiteAsWorkingDirectory = (options) => {
+  let restore = null;
+  beforeAll(async () => {
+    const site = await createTestSite(options);
+    process.chdir(site.dir);
+    restore = () => {
+      process.chdir(rootDir);
+      site.cleanup();
+    };
+  });
+  afterAll(() => restore?.());
+};
+
 // The shared .test-sites root is swept by test/global-teardown.js after the
 // whole run, never mid-run: parallel workers build sibling sites in the same
 // root, so removing it from inside any single test file would race them.
@@ -438,6 +476,7 @@ export {
   createTestSite,
   pageWithBlocks,
   useSharedSite,
+  useSiteAsWorkingDirectory,
   withSetupTestSite,
   withTestSite,
 };

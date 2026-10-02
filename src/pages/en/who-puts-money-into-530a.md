@@ -1,8 +1,14 @@
 ---
 name: Who puts money into 530a
+eleventyNavigation:
+  key: "Who puts money into 530a"
+  title: "Who puts money into 530A accounts?"
+  order: 3
 meta_title: Who puts money into 530a - GetYourRefund
 meta_description: Money can be put in a 530A by the federal government, states, private philanthropists, your employer, or you and your family. Learn more about where the money
 permalink: /en/who-puts-money-into-530a/
+redirect_from:
+  - /who-puts-money-into-530a/
 blocks:
   - type: callout
     compact: true
@@ -19,6 +25,7 @@ blocks:
     figure_src: /images/530a-who-puts-money-in.png
     figure_alt: Mother holding her baby while using a laptop
   - type: faqs
+    collapsible: true
     items:
       - question: Should I put my own money into my child’s 530A account?
         answer: |

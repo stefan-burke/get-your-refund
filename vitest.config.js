@@ -1,3 +1,5 @@
+import { existsSync } from "node:fs";
+import { basename, dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { defineConfig } from "vitest/config";
 import { COVERAGE_IGNORE } from "./test/coverage-ignore.js";
@@ -8,7 +10,34 @@ const NO_NAV = {
   disableChildPageNavigation: true,
 };
 
+const ROOT = dirname(fileURLToPath(import.meta.url));
+const SITE_DATA_DIR = join(ROOT, "src", "_data");
+const SITE_DATA_FIXTURES = join(ROOT, "test", "fixtures", "site-data");
+
+/**
+ * Tests exercise the template, not the site built from it. A fork rewrites
+ * its src/_data/*.json (name, toggles, languages, translations), and the
+ * template's tests travel with it, so every import of a site-owned data file
+ * resolves to the template-default copy in test/fixtures/site-data/. The test
+ * site factory overlays the same fixtures onto the sites it builds.
+ */
+const siteDataFixtures = {
+  name: "site-data-fixtures",
+  enforce: "pre",
+  async resolveId(source, importer, options) {
+    if (!source.endsWith(".json")) return null;
+    const resolved = await this.resolve(source, importer, {
+      ...options,
+      skipSelf: true,
+    });
+    if (!resolved || dirname(resolved.id) !== SITE_DATA_DIR) return null;
+    const fixture = join(SITE_DATA_FIXTURES, basename(resolved.id));
+    return existsSync(fixture) ? fixture : null;
+  },
+};
+
 export default defineConfig({
+  plugins: [siteDataFixtures],
   resolve: {
     alias: {
       // uwrap publishes only a "module" entry; vite's SSR resolution wants

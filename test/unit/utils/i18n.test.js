@@ -14,6 +14,7 @@ import {
   baseLanguageErrors,
   languageFieldErrors,
   languageForUrl,
+  pageLocation,
   translationForUrl,
 } from "#utils/i18n.js";
 
@@ -150,5 +151,27 @@ describe("translationForUrl", () => {
 
   test("finds no counterpart in an untranslated site", () => {
     expect(translationForUrl("/about/", [])).toBeNull();
+  });
+});
+
+describe("pageLocation", () => {
+  test("is the URL of a page that has one", () => {
+    expect(
+      pageLocation({ url: "/de/ueber-uns/", filePathStem: "/pages/about" }),
+    ).toBe("/de/ueber-uns/");
+  });
+
+  test("is the path inside its collection directory for a page without a URL", () => {
+    // permalink: false - a navigation entry linking elsewhere, say
+    const location = pageLocation({
+      url: false,
+      filePathStem: "/pages/de/visit-us",
+    });
+    expect(location).toBe("/de/visit-us");
+    expect(languageForUrl(location, [EN, DE])).toBe(DE);
+  });
+
+  test("is undefined before Eleventy has filled the page in", () => {
+    expect(pageLocation(undefined)).toBeUndefined();
   });
 });

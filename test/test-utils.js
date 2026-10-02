@@ -67,6 +67,7 @@ import {
   captureConsoleLogAsync,
   createConsoleCapture,
   mockFetch,
+  mockTemplateConfig,
   withMockFetch,
 } from "#test/test-utils/mocking.js";
 // Import for internal use and re-export
@@ -371,6 +372,7 @@ export {
   item,
   mockExitThrow,
   mockFetch,
+  mockTemplateConfig,
   noop,
   path,
   popupSlideAlts,

@@ -408,6 +408,22 @@
   }
 }
 
+// FAQ definition list: question/answer pairs
+@mixin faqs-list {
+  @include flex-col($space-md);
+
+  dt {
+    @include heading-sm;
+  }
+
+  dd {
+    @include body-base;
+
+    line-height: $line-height-relaxed;
+    color: var(--color-text-muted);
+  }
+}
+
 // Contrast text custom properties for primary/dark panels
 @mixin contrast-text-vars {
   --color-text: var(--color-contrast-text);

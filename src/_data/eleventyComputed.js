@@ -3,7 +3,11 @@ import { getFirstValidImage } from "#media/image-frontmatter.js";
 import { getPlaceholderForPath } from "#media/thumbnail-placeholder.js";
 import { buildGalleryBlocks } from "#utils/block-gallery.js";
 import { applyBlockDefaults, collectBlockErrors } from "#utils/block-schema.js";
-import { languageForUrl, translationForUrl } from "#utils/i18n.js";
+import {
+  languageForUrl,
+  pageLocation,
+  translationForUrl,
+} from "#utils/i18n.js";
 import { withNavigationAnchor } from "#utils/navigation-utils.js";
 import {
   buildBaseMeta,
@@ -49,7 +53,8 @@ export default {
   description: (data) => data.description || data.meta_description || "",
 
   /**
-   * The language this page is written in, read from its URL prefix. The layout,
+   * The language this page is written in, read from its URL prefix (or, for a
+   * page with no URL, from where its file sits - see pageLocation). The layout,
    * the head tags, the breadcrumbs and the language switcher read it, so a
    * site with one language gets that language on every page and nothing has to
    * ask whether the site is translated at all.
@@ -60,7 +65,8 @@ export default {
    * @param {import("#lib/types").EleventyComputedData} data - Page data
    * @returns {import("#lib/types").Language|undefined}
    */
-  pageLanguage: (data) => languageForUrl(data.page?.url, data.languages || []),
+  pageLanguage: (data) =>
+    languageForUrl(pageLocation(data.page), data.languages || []),
 
   /**
    * The URLs of this page in every language it has been written in, keyed by

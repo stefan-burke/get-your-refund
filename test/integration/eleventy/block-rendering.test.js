@@ -6,6 +6,11 @@ const LINKS = [
   { icon: "&#9733;", text: "Second" },
 ];
 
+const FAQS = [
+  { question: "Is it free?", answer: "**Yes**, always." },
+  { question: "Who runs it?", answer: "A charity." },
+];
+
 // Each block under test renders on its own page within one shared site, so
 // the build runs once while each test inspects its own page.
 const getSite = useSharedSite({
@@ -39,6 +44,10 @@ const getSite = useSharedSite({
       },
     ]),
     pageWithBlocks("snippet", [{ type: "snippet", reference: "promo" }]),
+    pageWithBlocks("faqs", [{ type: "faqs", items: FAQS }]),
+    pageWithBlocks("faqs-collapsible", [
+      { type: "faqs", collapsible: true, items: FAQS },
+    ]),
     {
       path: "snippets/promo.md",
       frontmatter: {
@@ -100,5 +109,27 @@ describe("schema defaults reach the templates", () => {
     const callout = doc.querySelector("aside.callout");
     expect(callout.className).toBe("callout callout--info");
     expect(callout.textContent).toContain("From the snippet page");
+  });
+});
+
+describe("faqs", () => {
+  test("renders a definition list by default", async () => {
+    const doc = await getSite().getDoc("faqs/index.html");
+    expect(textsOf(doc, ".faqs dt")).toEqual(["Is it free?", "Who runs it?"]);
+    expect(doc.querySelector(".faqs dd strong").textContent).toBe("Yes");
+    expect(doc.querySelector(".faqs details")).toBeNull();
+  });
+
+  test("collapsible renders a closed accordion row per question", async () => {
+    const doc = await getSite().getDoc("faqs-collapsible/index.html");
+    const items = [...doc.querySelectorAll(".faqs--collapsible > details")];
+    expect(items.map((item) => item.open)).toEqual([false, false]);
+    expect(textsOf(doc, ".faqs__item > summary")).toEqual([
+      "Is it free?",
+      "Who runs it?",
+    ]);
+    expect(
+      items[0].querySelector(".faqs__answer.prose strong").textContent,
+    ).toBe("Yes");
   });
 });

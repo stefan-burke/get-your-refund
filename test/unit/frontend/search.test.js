@@ -44,7 +44,12 @@ const SEARCH_HTML = `
       <input type="search" name="q" placeholder="Search" autocomplete="off">
       <button type="submit">Search</button>
     </form>
-    <div id="search-results">
+    <div
+      id="search-results"
+      data-no-results-label="No results found."
+      data-result-count-one-label="{count} result found."
+      data-result-count-other-label="{count} results found."
+    >
       <p class="search-message"></p>
       <ul class="search-results-list"></ul>
       <button class="search-load-more btn btn--secondary" hidden>Load more</button>
@@ -57,6 +62,11 @@ const getElements = () => ({
   message: document.querySelector(".search-message"),
   loadMore: document.querySelector(".search-load-more"),
   input: document.querySelector("input[type='search']"),
+  labels: {
+    noResults: "No results found.",
+    one: "{count} result found.",
+    other: "{count} results found.",
+  },
 });
 
 const setSearchParam = (value) => {

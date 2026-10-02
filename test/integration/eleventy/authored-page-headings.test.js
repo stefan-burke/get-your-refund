@@ -89,15 +89,34 @@ describe("authored page headings", () => {
   test("published authored pages render exactly one main H1", async () => {
     expect(files.some(({ path }) => !path.startsWith("snippets/"))).toBe(true);
     expect(await authoredHeadingViolations(getSite())).toEqual([]);
-  });
+    // Parses every page the site publishes, and a fork publishes more of
+    // them than the demo content; under the full suite's parallel lanes that
+    // exceeds the default timeout.
+  }, 5000);
 });
+
+// The block gallery renders the schema examples: the downloads example links
+// a file and the snippet example references a "demo" snippet. Both come from
+// fixtures, not from content the site may have deleted.
+const galleryResources = [
+  {
+    src: "test/fixtures/files/template-overview.txt",
+    dest: "../files/template-overview.txt",
+  },
+];
 
 describe("authored heading output selection", () => {
   const getSite = useSharedSite({
-    images: resources,
+    images: galleryResources,
     files: [
       galleryIndex,
-      ...files.filter(({ path }) => path.startsWith("snippets/")),
+      {
+        path: "snippets/demo.md",
+        frontmatter: {
+          name: "Demo Snippet",
+          blocks: [{ type: "markdown", content: "From a snippet." }],
+        },
+      },
       {
         path: "guide-categories/heading-context.md",
         frontmatter: {

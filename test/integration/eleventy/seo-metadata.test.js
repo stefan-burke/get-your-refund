@@ -126,16 +126,10 @@ describe("generated SEO metadata", () => {
     });
   });
 
-  test("FAQ answers render rich text inside collapsed details accordions", async () => {
+  test("FAQ answers render rich text inside prose-styled definitions", async () => {
     const doc = await getSite().getDoc("/faq-page/index.html");
-    const items = [...doc.querySelectorAll(".faqs > details.faqs__item")];
-    expect(items).toHaveLength(2);
-    // Collapsed by default; the question is the accessible disclosure control.
-    for (const item of items) {
-      expect(item.hasAttribute("open")).toBe(false);
-      expect(item.querySelector(":scope > summary.faqs__question")).not.toBeNull();
-    }
-    const answers = items.map((item) => item.querySelector(".faqs__answer.prose"));
+    const answers = [...doc.querySelectorAll("dl.faqs > dd.prose")];
+    expect(answers).toHaveLength(2);
     expect(answers[1].querySelector("p > strong").textContent).toBe(
       "Formatted text",
     );

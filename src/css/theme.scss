@@ -1,6 +1,72 @@
 // 530a Accounts (GetYourRefund) theme
 // Palette and treatments mirrored from 530a.getyourrefund.org — see
 // .mirror-scratch/site-style.md for the extracted source values.
+
+// Brand fonts, self-hosted (woff2 from Bunny Fonts in src/assets/fonts/),
+// matching the Google Fonts pairing the live site uses.
+@font-face {
+  font-family: Geologica;
+  font-weight: 400;
+  font-style: normal;
+
+  font-display: swap;
+  src: url("../assets/fonts/geologica-latin-400-normal.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: Geologica;
+  font-weight: 500;
+  font-style: normal;
+
+  font-display: swap;
+  src: url("../assets/fonts/geologica-latin-500-normal.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: Geologica;
+  font-weight: 700;
+  font-style: normal;
+
+  font-display: swap;
+  src: url("../assets/fonts/geologica-latin-700-normal.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: Geologica;
+  font-weight: 900;
+  font-style: normal;
+
+  font-display: swap;
+  src: url("../assets/fonts/geologica-latin-900-normal.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: Inter;
+  font-weight: 400;
+  font-style: normal;
+
+  font-display: swap;
+  src: url("../assets/fonts/inter-latin-400-normal.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: Inter;
+  font-weight: 500;
+  font-style: normal;
+
+  font-display: swap;
+  src: url("../assets/fonts/inter-latin-500-normal.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: Inter;
+  font-weight: 700;
+  font-style: normal;
+
+  font-display: swap;
+  src: url("../assets/fonts/inter-latin-700-normal.woff2") format("woff2");
+}
+
 :root {
   // Warm cream body, navy ink
   --color-bg: #FFFFF5;
@@ -126,312 +192,260 @@
 }
 
 // ---------------------------------------------------------------------------
-// Header: sticky navy bar (~66px), white logo left; language link + "Menu"
-// disclosure right. Accessible <details> disclosure; no JS required.
+// Header: sticky navy bar (~66px), logo left, "Español" + "Menu" right.
+// config.json collapse_menu: always puts the menu behind its toggle at every
+// width; the open menu is a full-screen overlay like the legacy popup: a navy
+// strip across the top with a white close box at its right, and a cream
+// right-hand panel of large rows. Behaviour (Esc, close, focus) is the
+// template's site-menu.js.
 // ---------------------------------------------------------------------------
-.design-system nav.site-nav.gyr-header {
-  // Shared band height: the sticky header bar and the menu overlay's navy
-  // strip both derive from it, so the strip reads as the header continuing
-  // over the overlay instead of hand-mimicking its geometry.
-  --gyr-header-h: 66px;
+.design-system nav.site-nav {
+  --header-height: 66px;
 
   position: sticky;
   z-index: 500;
   top: 0;
+
+  display: flex;
+  gap: 24px;
+  align-items: center;
+
+  min-height: var(--header-height);
+  margin: 0;
+  // Header content sits in the page's centered 1200px container
+  padding: 8px max(32px, calc(50% - 568px));
+  border-radius: 0;
+
   background: #011E29;
+  box-shadow: none;
 
-  // Live header content sits in the same centered container as the page
-  .gyr-header-inner {
-    display: flex;
-    gap: 16px;
-    align-items: center;
-    justify-content: space-between;
-
-    width: 100%;
-    max-width: 1200px; // same box as .container-wide (border-box incl. gutters)
-    min-height: var(--gyr-header-h);
-    margin-inline: auto;
-    padding: 8px 32px;
+  // The live logo: 275×25 on desktop, 140×13 on phones
+  .site-logo img {
+    width: auto;
+    height: 25px;
   }
 
-  .gyr-logo {
-    display: inline-flex;
-    align-items: center;
+  .language-links {
+    order: 1;
+    margin-inline-start: auto;
 
-    img {
-      display: block;
-      width: auto;
-      height: 22px;
-    }
-  }
-
-  .gyr-header-bar {
-    display: flex;
-    gap: 24px;
-    align-items: center;
-  }
-
-  .gyr-lang-link {
-    font-weight: 700;
-    color: #FFFFF5;
-    text-decoration: none;
-
-    &:hover {
-      color: #E8FDF7;
-    }
-  }
-
-  details.gyr-menu {
-    position: relative;
-
-    summary {
-      cursor: pointer;
-
-      display: inline-flex;
-      gap: 8px;
-      align-items: center;
-
-      padding: 4px 2px;
-      border: none;
-
-      font-weight: 400;
+    a {
+      font-weight: 700;
       color: #FFFFF5;
-      text-decoration: underline;
-      list-style: none;
-
-      background: transparent;
-
-      &::-webkit-details-marker {
-        display: none;
-      }
+      text-decoration: none;
 
       &:hover {
         color: #E8FDF7;
       }
     }
+  }
 
-    &[open] summary.gyr-menu-button {
+  // Once site-menu.js has taken over the menu (data-menu): matching the
+  // template's collapsed-menu selector so these rules win over its defaults
+  &[data-menu][data-collapse] {
+    justify-content: flex-start;
+  }
+
+  &[data-menu][data-collapse] .menu-toggle {
+    order: 2;
+
+    min-height: 0;
+    margin: 0;
+    padding: 4px 2px;
+
+    font-weight: 400;
+    color: #FFFFF5;
+    text-decoration: underline;
+
+    &:hover,
+    &[aria-expanded="true"] {
       color: #E8FDF7;
     }
+  }
 
-    // Close toggle for the open overlay: white box in the navy strip's
-    // top-right corner holding the legacy popup's crossed-lines X
-    // (93-unit viewBox stroked #011E29, rendered at 30px). Lives in-flow
-    // inside .gyr-menu-strip; sized by its own padding around the 30px X —
-    // 2 × 20px + 30px = the legacy close box's measured 70px width — and
-    // stretched to the strip's full height (100% of the header band).
-    summary.gyr-menu-close {
-      cursor: pointer;
+  &[data-menu][data-collapse] .menu-toggle-icon {
+    display: none;
+  }
 
-      display: flex;
-      align-items: center;
-      justify-content: center;
+  // The open menu: a transparent full-screen layer holding the navy strip
+  // (::before), the close box, and the cream panel of links.
+  &[data-menu][data-collapse] .site-menu {
+    position: fixed;
+    inset: 0;
+    transform: none;
 
-      padding: 0 20px;
+    width: auto;
+    max-height: none;
+    padding: 0;
+    border-radius: 0;
 
-      list-style: none;
+    background: transparent;
+    box-shadow: none;
 
-      background: #FFF;
+    &::before {
+      content: "";
 
-      &::-webkit-details-marker {
-        display: none;
-      }
-
-      &:focus-visible {
-        outline: 2px solid #011E29;
-        outline-offset: -4px;
-      }
-    }
-
-    // Full-screen overlay mirroring the legacy Elementor popup (template
-    // 194 en / 1492 es): transparent backdrop, navy strip across the top,
-    // cream panel (500px, right-aligned) filling the rest, fadeIn 0.3s.
-    .gyr-menu-panel {
-      position: fixed;
-      z-index: 600;
-      inset: 0;
-
-      display: none;
-      flex-direction: column;
-      align-items: flex-end;
-
-      background: transparent;
-    }
-
-    // Navy band across the overlay's top, the sticky header's continuation
-    // (the live popup's own band measures 72px — an Elementor artifact of its
-    // taller header; we bind to our 66px header band instead so the strip
-    // never overhangs it). Width stays the legacy popup's measured 1000px
-    // region; the close box sits right-aligned inside, stretched to the
-    // strip's full height.
-    .gyr-menu-strip {
-      display: flex;
-      flex: none;
-      align-items: stretch;
-      justify-content: flex-end;
+      position: absolute;
+      top: 0;
+      right: 0;
 
       width: min(1000px, 100%);
-      height: var(--gyr-header-h);
+      height: var(--header-height);
 
       background: #011E29;
     }
+  }
 
-    &[open] .gyr-menu-panel {
+  &[data-menu][data-collapse] .menu-close {
+    cursor: pointer;
+
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    right: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 70px;
+    height: var(--header-height);
+    border: none;
+
+    color: #011E29;
+
+    background: #FFF;
+
+    svg {
+      width: 30px;
+      height: 30px;
+    }
+
+    &:focus-visible {
+      outline: 2px solid #011E29;
+      outline-offset: -4px;
+    }
+  }
+
+  &[data-menu][data-collapse] .site-menu > ul {
+    position: absolute;
+    top: var(--header-height);
+    right: 0;
+    bottom: 0;
+
+    overflow-y: auto;
+    display: block;
+
+    width: min(500px, 90vw);
+    margin: 0;
+    padding: 0 0 100px;
+
+    background: #FFFFF5;
+
+    > li:not(:last-child) {
+      border-bottom: 1px solid #011E29;
+    }
+
+    a {
+      position: relative;
+
       display: flex;
-      animation: gyr-menu-fade 0.3s ease;
+      align-items: center;
+
+      padding: 24px 50px;
+
+      font-family: Geologica, sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 20px;
+      color: #011E29;
+      text-decoration: none;
+
+      &:focus-visible {
+        outline: 2px solid #011E29;
+        outline-offset: -2px;
+      }
     }
 
-    .gyr-menu-body {
-      overflow-y: auto;
-      flex: 1 1 auto;
+    // Current page and hover: a 12px green dot left of the row
+    a[aria-current="page"]::before,
+    a:hover::before {
+      content: "";
 
-      width: 500px;
-      padding-bottom: 100px;
+      position: absolute;
+      top: calc(50% - 6px);
+      left: 32px;
 
-      background: #FFFFF5;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
 
-      ul {
-        margin: 0;
-        padding: 0;
-        list-style: none;
-      }
+      background: #008817;
+    }
 
-      > ul > li:not(:last-child) {
-        border-bottom: 1px solid #011E29;
-      }
+    // The sign-up sub-pages always show, indented in body type, as on the
+    // live popup (no submenu toggle).
+    li > ul {
+      display: block;
+      padding: 0 0 24px;
+    }
 
-      a {
-        position: relative;
+    li li a {
+      padding: 8px 0 8px 51px;
+      font-family: Inter, sans-serif;
+      font-weight: 400;
+    }
 
-        display: flex;
-        align-items: center;
+    .nav-caret {
+      display: none;
+    }
+  }
 
-        width: 100%;
-        padding: 24px 50px;
+  @media (width < 48rem) {
+    padding-inline: 20px;
 
-        font-family: Geologica, sans-serif;
-        font-size: 18px;
-        font-weight: 700;
-        line-height: 20px;
-        color: #011E29;
-        text-decoration: none;
+    .site-logo img {
+      height: 13px;
+    }
 
-        &:focus-visible {
-          outline: 2px solid #011E29;
-          outline-offset: -2px;
-        }
-      }
+    .language-links a {
+      font-size: 14px;
+    }
 
-      // Current-page marker: the live popup pins a 12px green dot left of
-      // the row (and on hover), like its circle.svg ornament.
-      li.current > a::before,
-      li > a:hover::before {
-        content: "";
+    &[data-menu][data-collapse] .menu-toggle {
+      font-size: 15px;
+    }
 
-        position: absolute;
-        top: 27px;
-        left: 32px;
+    // The navy strip shrinks to a tab behind the close box, leaving the
+    // site header (logo, language link) visible as on the live popup
+    &[data-menu][data-collapse] .site-menu::before {
+      width: 100px;
+    }
 
-        width: 12px;
-        height: 12px;
-        border-radius: 50%;
+    &[data-menu][data-collapse] .menu-close {
+      width: 80px;
+    }
 
-        background: #008817;
-      }
+    &[data-menu][data-collapse] .site-menu > ul a {
+      padding: 18px 40px;
+      font-size: 16px;
+      line-height: 1.1;
+    }
 
-      .sub-menu {
-        padding-bottom: 24px;
+    &[data-menu][data-collapse] .site-menu > ul li li a {
+      padding: 0 0 14px 41px;
+    }
 
-        li {
-          padding-bottom: 16px;
-
-          &:not(:last-child) {
-            border-bottom: none;
-          }
-        }
-
-        a {
-          display: block;
-
-          padding: 0 0 0 51px;
-
-          font-family: Inter, sans-serif;
-          font-size: 18px;
-          font-weight: 400;
-        }
-      }
-
-      .sub-menu li.current > a::before,
-      .sub-menu li > a:hover::before {
-        top: calc(50% - 6px);
-      }
+    &[data-menu][data-collapse] .site-menu > ul a[aria-current="page"]::before,
+    &[data-menu][data-collapse] .site-menu > ul a:hover::before {
+      left: 22px;
     }
   }
 }
 
-// Exit fade (matches the legacy popup's 0.3s fadeIn exit) driven by
-// ui/gyr-menu.js before it unsets `open`.
-details.gyr-menu.gyr-menu-closing {
-  .gyr-menu-panel,
-  .gyr-menu-close {
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-}
-
-// The legacy popup locks page scroll while open.
-body:has(details.gyr-menu[open]) {
+// The legacy popup locks page scroll while open
+html[data-menu-open] body {
   overflow: hidden;
-}
-
-@keyframes gyr-menu-fade {
-  from {
-    opacity: 0;
-  }
-}
-
-@media (width < 48rem) {
-  .design-system nav.site-nav.gyr-header details.gyr-menu {
-    // Mobile: the legacy popup leaves the site header (logo, language link)
-    // visible — its navy strip is only a small tab behind the close box.
-    // Live-measured geometry: the strip is the close box plus a 20px navy
-    // bleed to its left (100px total), both the full height of the header
-    // band, so the tab disappears against the navy header behind it.
-    .gyr-menu-strip {
-      width: fit-content;
-      padding-left: 20px;
-    }
-
-    // 2 × 25px + the 30px X = the legacy mobile close box's 80px width.
-    summary.gyr-menu-close {
-      padding: 0 25px;
-    }
-
-    .gyr-menu-body {
-      width: 90vw;
-
-      a {
-        padding: 18px 40px;
-        font-size: 16px;
-        line-height: 1.1;
-      }
-
-      li.current > a::before,
-      li > a:hover::before {
-        top: 20px;
-        left: 22px;
-      }
-
-      .sub-menu li {
-        padding-bottom: 14px;
-      }
-
-      .sub-menu a {
-        padding: 0 0 0 41px;
-        font-size: 16px;
-      }
-    }
-  }
 }
 
 // ---------------------------------------------------------------------------
@@ -625,12 +639,74 @@ body.design-system:has(.block-columns-2) .split h1 {
   }
 }
 
+// FAQ accordions (faqs blocks with collapsible: true): hairline rows with
+// 18px rhythm, bold body-type questions and indented answers, like the live
+// Elementor accordions.
+.design-system .faqs--collapsible {
+  .faqs__item {
+    border-bottom: 1px solid rgb(1 30 41 / 15%);
+  }
+
+  .faqs__question {
+    padding-block: 18px;
+    font-family: var(--font-family-body);
+    font-size: 1rem;
+    font-weight: 700;
+  }
+
+  .faqs__answer {
+    padding: 0 0 18px 18px;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Breadcrumbs: the live trail's teal links, ">" separators at half opacity,
+// and a medium-weight current page.
+// ---------------------------------------------------------------------------
+.design-system ol.breadcrumbs {
+  --breadcrumb-separator: ">";
+
+  gap: var(--space-sm);
+  padding-block: 8px; // tight under the page-top banner, as on the live site
+  font-size: 1rem;
+  line-height: 1.5;
+
+  li {
+    gap: var(--space-sm);
+  }
+
+  a {
+    color: var(--color-link);
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  .separator {
+    font-size: 0.875rem;
+    opacity: 0.5;
+  }
+
+  span[aria-current] {
+    font-weight: 500;
+  }
+}
+
 // ---------------------------------------------------------------------------
 // Footer: navy band, two columns — brand + sentence + link list on the left,
-// contact line on the right. Per-locale copy comes from the
-// footer-content-<lang> snippets.
+// contact line on the right. Per-language copy comes from the footer-content
+// snippet (src/snippets/footer-content.md, src/snippets/es/footer-content.md).
 // ---------------------------------------------------------------------------
-.design-system .gyr-footer {
+.design-system footer {
+
+  // Cream, underlined links on the navy band, through the link tokens the
+  // template's link rule reads
+  --color-link: #FFFFF5;
+  --color-link-hover: #E8FDF7;
+  --link-decoration: underline;
+
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 8px 48px;
@@ -641,20 +717,20 @@ body.design-system:has(.block-columns-2) .split h1 {
 
   text-align: left;
 
-  img {
-    display: block;
+  // The brand icon heading the footer snippet. The media transform wraps
+  // content images in a responsive wrapper with an inline max-width; cap it
+  // back to the small icon.
+  .image-wrapper {
     grid-column: 1;
     grid-row: 1;
-
-    width: 36px;
-    height: 36px;
+    max-width: 36px !important;
     margin: 0 0 16px;
   }
 
-  // The media transform wraps content images in a responsive wrapper with an
-  // inline max-width; cap it back to the small brand icon.
-  .image-wrapper {
-    max-width: 36px !important;
+  img {
+    display: block;
+    width: 36px;
+    height: 36px;
   }
 
   p {
@@ -671,7 +747,8 @@ body.design-system:has(.block-columns-2) .split h1 {
     grid-row: 2;
   }
 
-  ul {
+  // Matching the template's list rule (ul:not([class])) so its indent is reset
+  ul:not([class]) {
     display: flex;
     grid-column: 1 / -1;
     grid-row: 3;
@@ -684,15 +761,6 @@ body.design-system:has(.block-columns-2) .split h1 {
     padding: 0;
 
     list-style: none;
-  }
-
-  a {
-    color: #FFFFF5;
-    text-decoration: underline;
-
-    &:hover {
-      color: #E8FDF7;
-    }
   }
 
   @media (width < 48rem) {

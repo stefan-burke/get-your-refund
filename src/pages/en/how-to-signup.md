@@ -1,8 +1,14 @@
 ---
 name: How do I sign up?
+eleventyNavigation:
+  key: "How do I sign up?"
+  title: "How do I sign up for a 530A account?"
+  order: 6
 meta_title: How do I sign up? – GetYourRefund
 meta_description: Signing up for a 530A is a two-step process. Learn more on this page about how to get started, whether you are the right person to sign up for your child, how
 permalink: /en/how-to-signup/
+redirect_from:
+  - /how-to-signup/
 tags: ["pages", "gyr-signup"]
 blocks:
   - type: callout

@@ -1,8 +1,10 @@
 ---
 name: Cómo empezar
-meta_title: Cómo empezar - GetYourRefund
 eleventyNavigation:
+  key: "Cómo empezar"
   parent: "¿Cómo abro una cuenta 530A?"
+  order: 1
+meta_title: Cómo empezar - GetYourRefund
 meta_description: Para abrir una cuenta 530A y recibir la contribución de $1,000 del gobierno, si cumple los requisitos, primero debe presentar el formulario 4547 ante el IRS.
 permalink: /es/how-to-signup/get-started/
 blocks:
@@ -27,6 +29,7 @@ blocks:
     figure_src: /images/530a-how-do-i-signup.png
     figure_alt: Una cuidadora sostiene a un bebé que ríe
   - type: faqs
+    collapsible: true
     items:
       - question: "Opción 1: Abra la cuenta en línea en el sitio web del IRS (*recomendado*)"
         answer: |

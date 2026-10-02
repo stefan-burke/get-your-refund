@@ -160,3 +160,145 @@ describe("a site publishing two languages", () => {
     ]);
   });
 });
+
+const navPage = (path, permalink, key, extra = {}) => ({
+  path,
+  frontmatter: {
+    name: key,
+    permalink,
+    eleventyNavigation: { key },
+    blocks: [{ type: "markdown", content: `# ${key}` }],
+    ...extra,
+  },
+});
+
+const footerSnippet = (path, text) => ({
+  path,
+  frontmatter: { name: "Footer" },
+  content: text,
+});
+
+describe("a translated site's header and footer", () => {
+  const getSite = useSharedSite({
+    config: {
+      placeholder_images: false,
+      collapse_menu: "always",
+      language_switcher: "header",
+    },
+    dataFiles: [
+      { filename: "languages.json", data: LANGUAGES },
+      { filename: "translations.json", data: TRANSLATIONS },
+      {
+        filename: "site.json",
+        data: { ...siteData, logo: "/images/party.jpg" },
+      },
+    ],
+    images: ["party.jpg"],
+    files: [
+      navPage("pages/en/index.md", "/", "Home"),
+      navPage("pages/en/about.md", "/about/", "About"),
+      navPage("pages/de/index.md", "/de/", "Startseite"),
+      navPage("pages/de/ueber-uns.md", "/de/ueber-uns/", "Über uns"),
+      // A menu entry linking elsewhere has no URL or layout of its own; its
+      // language comes from where the file sits
+      navPage("pages/de/kontakt.md", false, "Kontakt", {
+        layout: false,
+        eleventyNavigation: { key: "Kontakt", url: "https://kontakt.test/" },
+      }),
+      footerSnippet("snippets/footer-content.md", "Shared footer"),
+      footerSnippet("snippets/de/footer-content.md", "Deutsche Fußzeile"),
+    ],
+  });
+
+  const doc = (path) => getSite().getDoc(path);
+  const menuOf = (page) =>
+    [...page.querySelectorAll(".site-menu a")].map((link) =>
+      link.textContent.trim(),
+    );
+
+  test("gives each language its own menu", async () => {
+    expect(menuOf(await doc("/about/index.html"))).toEqual(["About", "Home"]);
+    expect(menuOf(await doc("/de/ueber-uns/index.html"))).toEqual([
+      "Kontakt",
+      "Startseite",
+      "Über uns",
+    ]);
+  });
+
+  test("marks the current page in the menu", async () => {
+    const current = (await doc("/de/ueber-uns/index.html")).querySelector(
+      '.site-menu [aria-current="page"]',
+    );
+    expect(current.getAttribute("href")).toBe("/de/ueber-uns/");
+  });
+
+  test("names the header and its menu buttons in the page's language", async () => {
+    const nav = (await doc("/de/ueber-uns/index.html")).querySelector(
+      "nav.site-nav",
+    );
+    expect(nav.getAttribute("aria-label")).toBe(DE.navigation_label);
+    expect(nav.querySelector(".menu-toggle").textContent.trim()).toBe(
+      DE.menu_label,
+    );
+    expect(nav.querySelector(".menu-close").getAttribute("aria-label")).toBe(
+      DE.close_menu_label,
+    );
+    expect(nav.dataset.submenuLabel).toBe(DE.submenu_label);
+  });
+
+  test("names the image gallery controls in the page's language", async () => {
+    const popup = (await doc("/de/ueber-uns/index.html")).querySelector(
+      "#image-popup",
+    );
+    expect(popup.getAttribute("aria-label")).toBe(DE.gallery_label);
+    expect(
+      popup.querySelector("[data-popup-close]").getAttribute("aria-label"),
+    ).toBe(DE.close_gallery_label);
+  });
+
+  test("puts the language switcher in the header when configured", async () => {
+    const page = await doc("/about/index.html");
+    const switcher = page.querySelector("nav.site-nav .language-links a");
+    expect(switcher.getAttribute("href")).toBe("/de/ueber-uns/");
+    expect(page.querySelector("footer .language-links")).toBeNull();
+  });
+
+  test("renders a language's own snippet, falling back to the shared one", async () => {
+    const footerText = async (path) =>
+      (await doc(path)).querySelector("footer").textContent;
+    expect(await footerText("/de/ueber-uns/index.html")).toContain(
+      "Deutsche Fußzeile",
+    );
+    expect(await footerText("/about/index.html")).toContain("Shared footer");
+  });
+
+  test("links the logo, as authored, to the language's home page", async () => {
+    const logo = (await doc("/de/ueber-uns/index.html")).querySelector(
+      "a.site-logo",
+    );
+    expect(logo.getAttribute("href")).toBe("/de/");
+    expect(logo.querySelector("img").getAttribute("alt")).toBe(siteData.name);
+    expect(logo.querySelector("img").getAttribute("loading")).toBe("eager");
+    // Served as authored, not turned into raster variants
+    expect(logo.querySelector("img").getAttribute("src")).toBe(
+      "/images/party.jpg",
+    );
+    expect(logo.querySelector("picture")).toBeNull();
+  });
+});
+
+describe("a site with no navigation pages", () => {
+  const getSite = useSharedSite({
+    files: [
+      navPage("pages/index.md", "/", "Home", { eleventyNavigation: false }),
+    ],
+  });
+
+  test("renders no menu or menu toggle", async () => {
+    const nav = (await getSite().getDoc("/index.html")).querySelector(
+      "nav.site-nav",
+    );
+    expect(nav.querySelector(".site-menu")).toBeNull();
+    expect(nav.querySelector(".menu-toggle")).toBeNull();
+  });
+});

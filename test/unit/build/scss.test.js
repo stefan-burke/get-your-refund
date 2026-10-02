@@ -284,19 +284,31 @@ describe("scss", () => {
     expect(tableRule).toContain("margin: 0");
   });
 
-  test("Design-system mobile navigation panel supports scrolling overflow", async () => {
+  test("Collapsed menu panel scrolls within the viewport", async () => {
     const result = await compileDesignSystemBundle();
     const menuRule =
       result.match(
-        /\.design-system\.sticky-mobile-nav nav\.site-nav > ul\s*\{[^}]*\}/,
+        /\.design-system nav\.site-nav\[data-menu\]\[data-collapse=always\] \.site-menu\s*\{[^}]*\}/,
       )?.[0] ?? "";
 
     expect(menuRule).toContain("overflow-y: auto");
     expect(menuRule).toContain("overscroll-behavior-y: contain");
-    expect(menuRule).toContain("box-sizing: border-box");
-    expect(menuRule).toContain("height: calc(100vh - 3rem)");
-    expect(menuRule).toContain("height: calc(100dvh - 3rem)");
-    expect(menuRule).toContain("-webkit-overflow-scrolling: touch");
+    expect(menuRule).toContain("max-height: calc(100dvh - 3rem)");
+  });
+
+  test("Closed menu panel is hidden, not just moved out of view", async () => {
+    const result = await compileDesignSystemBundle();
+    const panelRule =
+      result.match(
+        /\.design-system nav\.site-nav\[data-menu\]\[data-collapse=always\] \.site-menu\s*\{[^}]*\}/,
+      )?.[0] ?? "";
+    const openRule =
+      result.match(
+        /\.design-system nav\.site-nav\[data-menu\]\[data-collapse=always\]\[data-menu=open\] \.site-menu\s*\{[^}]*\}/,
+      )?.[0] ?? "";
+
+    expect(panelRule).toContain("visibility: hidden");
+    expect(openRule).toContain("visibility: visible");
   });
 
   test("Mobile sticky nav positioning targets only the site header nav", async () => {
@@ -319,7 +331,7 @@ describe("scss", () => {
 
     const horizontalRules =
       result.match(
-        /\.design-system\.horizontal-nav nav\.site-nav\s*\{[^}]*\}/g,
+        /\.design-system\.horizontal-nav nav\.site-nav(:not\([^)]*\))?\s*\{[^}]*\}/g,
       ) ?? [];
     expect(
       horizontalRules.some((rule) => rule.includes("position: sticky")),

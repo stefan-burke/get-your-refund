@@ -12,6 +12,10 @@
 // within .design-system scope, with design-system variables for spacing/sizing.
 
 .design-system {
+  // The nav that stays expanded: no JS, or a collapse_menu setting that does
+  // not apply at this width.
+  $expanded-nav: 'nav.site-nav:not([data-menu][data-collapse="always"])';
+
   // ===========================================================================
   // BASE NAV
   // ===========================================================================
@@ -21,10 +25,42 @@
   nav.site-nav {
     @include nav.nav-base;
 
+    position: relative;
+
     .nav-thumbnails {
       @include nav.nav-thumbnails($space-xs);
     }
+
+    // Shown only where the menu collapses (below)
+    .menu-toggle,
+    .menu-close {
+      display: none;
+    }
+
+    .site-logo img {
+      display: block;
+      width: auto;
+      height: 2.5rem;
+    }
+
+    .language-links {
+      display: flex;
+      gap: $space-sm;
+
+      margin: 0;
+      padding: 0;
+
+      list-style: none;
+    }
   }
+
+  // ===========================================================================
+  // COLLAPSED MENU - config.collapse_menu: "always" everywhere, "mobile" below
+  // md. Only once site-menu.js has marked the nav (data-menu); without
+  // JavaScript the menu stays expanded.
+  // ===========================================================================
+
+  @include nav.nav-collapsed-when("always", $space-sm, $transition-normal);
 
   // ===========================================================================
   // MOBILE NAV (md and below) - layout only
@@ -35,23 +71,13 @@
       scroll-padding-top: 5rem;
     }
 
+    @include nav.nav-collapsed-when("mobile", $space-sm, $transition-normal);
+
     &.sticky-mobile-nav {
       padding-top: 5rem;
 
       nav.site-nav {
         @include nav.nav-sticky-bar($z-sticky, $space-xs);
-
-        .toggle {
-          @include nav.nav-toggle-checkbox("sr-only");
-        }
-
-        .toggle-label {
-          @include nav.nav-toggle-label($space-sm, $z-sticky, $transition-normal);
-        }
-
-        > ul {
-          @include nav.nav-mobile-menu($space-sm, $transition-normal);
-        }
       }
     }
   }
@@ -61,13 +87,7 @@
   // ===========================================================================
 
   @include breakpoint.up("md") {
-    .toggle,
-    .toggle-label,
-    .mobile-menu-toggle {
-      display: none !important;
-    }
-
-    &.left-nav nav.site-nav {
+    &.left-nav #{$expanded-nav} {
       @include nav.nav-left($space-sm);
     }
   }
@@ -78,7 +98,7 @@
 
   &.horizontal-nav {
     @include breakpoint.up("md") {
-      nav.site-nav {
+      #{$expanded-nav} {
         @include nav.nav-horizontal-layout($space-lg, $space-xs);
 
         position: sticky;
@@ -95,7 +115,7 @@
     }
 
     // Hover-mode (when device supports hover)
-    &.nav-can-hover nav.site-nav {
+    &.nav-can-hover #{$expanded-nav} {
       @include nav.nav-hover-dropdowns;
     }
   }

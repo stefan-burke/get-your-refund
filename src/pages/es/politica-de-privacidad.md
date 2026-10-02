@@ -4,6 +4,8 @@ meta_title: Política de privacidad - GetYourRefund
 no_breadcrumbs: true
 meta_description: GetYourRefund.org es un servicio creado por Code for America Labs, Inc. (“Code for America”, “nosotros”, “nos” o “nuestro”) para ayudar a hogares con ingresos
 permalink: /es/politica-de-privacidad/
+redirect_from:
+  - /politica-de-privacidad/
 blocks:
   - type: markdown
     content: |
