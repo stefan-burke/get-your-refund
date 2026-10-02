@@ -43,6 +43,7 @@ import { generatePlaceholderHtml } from "#media/image-placeholder.js";
 import {
   buildImageWrapperStyles,
   DEFAULT_IMAGE_OPTIONS,
+  getImageCacheDir,
   JPEG_FALLBACK_WIDTH,
   normalizeImagePath,
   normalizeImageUrl,
@@ -208,8 +209,9 @@ const configureImages = async (eleventyConfig) => {
     imageFiles.map((i) => i.split("/")[2]).reverse(),
   );
   eleventyConfig.on("eleventy.after", () => {
-    if (fs.existsSync(".image-cache/")) {
-      fs.cpSync(".image-cache/", "_site/img/", { recursive: true });
+    const cacheDir = getImageCacheDir();
+    if (fs.existsSync(cacheDir)) {
+      fs.cpSync(`${cacheDir}/`, "_site/img/", { recursive: true });
     }
   });
 };
