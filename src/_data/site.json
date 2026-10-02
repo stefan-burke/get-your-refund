@@ -9,12 +9,12 @@
 			"snippets"
 		],
 		"features": {
-			"permalinks": false,
+			"permalinks": true,
 			"redirects": true,
-			"faqs": false,
-			"galleries": false,
+			"faqs": true,
+			"galleries": true,
 			"external_navigation_urls": true,
-			"use_visual_editor": false,
+			"use_visual_editor": true,
 			"no_index": true
 		},
 		"hasSrcFolder": true,

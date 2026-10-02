@@ -15,6 +15,13 @@ export interface PagesCMSEleventyNavigation {
   url?: string;
 }
 
+export interface PagesCMSFaq {
+  /** Question */
+  question: string;
+  /** Answer */
+  answer: string;
+}
+
 export interface PagesCMSSocial {
   /** Github */
   Github?: string;
