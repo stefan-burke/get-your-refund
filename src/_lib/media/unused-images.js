@@ -1,42 +1,47 @@
 import fs from "node:fs";
 import path from "node:path";
-import matter from "gray-matter";
 import { globSync } from "tinyglobby";
 import { log } from "#utils/console.js";
 import { filter, map, notMemberOf, pipe, pluralize } from "#utils/fp/array.js";
 
 const IMAGE_PATTERN = /\.(jpg|jpeg|png|gif|webp|svg)$/i;
+
+/**
+ * Matches an image reference in raw source text: a path under images/, or a
+ * bare filename with an image extension. Stops at whitespace, closing
+ * parentheses, and quotes so Markdown links and quoted HTML attributes yield
+ * the filename they name. References live in YAML frontmatter (block fields,
+ * thumbnails), Markdown bodies, and template attributes alike.
+ */
 const IMAGE_REF_PATTERN =
-  /\/?images\/[^\s)]+|[^\s/]+\.(jpg|jpeg|png|gif|webp|svg)/gi;
-const FRONTMATTER_IMAGE_FIELDS = ["image", "thumbnail"];
+  /\/?images\/[^\s)'"]+|[^\s/'"(]+\.(?:jpg|jpeg|png|gif|webp|svg)/gi;
 
-/** @param {unknown} imagePath */
-const extractFilename = (imagePath) =>
-  typeof imagePath === "string" ? imagePath.split("/").pop() : null;
+/**
+ * Source files that author image references: content files, templates and
+ * includes, and the site data carrying the logo. Other data files
+ * (alt-tags.json) describe images without using them and stay out of scope.
+ */
+const SOURCE_FILE_PATTERN = "**/*.{md,html,liquid}";
+const SITE_DATA_FILE = "_data/site.json";
 
-// Extract used images from a markdown file's frontmatter and content (exported for testing)
+// Extract used images from a source file's raw text (exported for testing)
 /**
  * @param {string} inputDir
  * @param {string[]} imageFiles
  * @param {string} file
  */
 export const extractUsedImages = (inputDir, imageFiles, file) => {
-  const { data, content } = matter.read(path.join(inputDir, file));
-  /** @param {any} name */
-  const isValidImageName = (name) => imageFiles.includes(name);
+  const raw = fs.readFileSync(path.join(inputDir, file), "utf8");
 
-  const frontmatterImages = pipe(
-    filter(Boolean),
-    map(extractFilename),
-    filter(isValidImageName),
-  )(FRONTMATTER_IMAGE_FIELDS.map((field) => data[field]));
+  const referencedImages = Array.from(
+    raw.matchAll(IMAGE_REF_PATTERN),
+    (match) => match[0],
+  );
 
-  const contentImages = pipe(
-    map(extractFilename),
-    filter(isValidImageName),
-  )(Array.from(content.matchAll(IMAGE_REF_PATTERN), (m) => m[0]));
-
-  return [...frontmatterImages, ...contentImages];
+  return pipe(
+    map((reference) => reference.split("/").pop()),
+    filter((name) => imageFiles.includes(name)),
+  )(referencedImages);
 };
 
 // Report unused images to console (exported for reuse)
@@ -78,8 +83,12 @@ export const configureUnusedImages = (eleventyConfig) => {
         return;
       }
 
-      const markdownFiles = globSync("**/*.md", { cwd: dir.input });
-      const usedImages = markdownFiles.flatMap((file) =>
+      const hasSiteData = fs.existsSync(path.join(dir.input, SITE_DATA_FILE));
+      const sourceFiles = [
+        ...globSync(SOURCE_FILE_PATTERN, { cwd: dir.input }),
+        ...(hasSiteData ? [SITE_DATA_FILE] : []),
+      ];
+      const usedImages = sourceFiles.flatMap((file) =>
         extractUsedImages(dir.input, imageFiles, file),
       );
 
