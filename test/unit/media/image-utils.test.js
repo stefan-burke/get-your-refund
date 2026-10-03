@@ -1,7 +1,8 @@
-import { describe, expect, test } from "vitest";
+import { describe, expect, test, vi } from "vitest";
 import {
   buildImageWrapperStyles,
   DEFAULT_IMAGE_OPTIONS,
+  getImageCacheDir,
   normalizeImagePath,
   normalizeImageUrl,
   parseWidths,
@@ -9,6 +10,20 @@ import {
 } from "#media/image-utils.js";
 
 const { filenameFormat } = DEFAULT_IMAGE_OPTIONS;
+
+describe("getImageCacheDir", () => {
+  test("defaults to the checkout's .image-cache", () => {
+    vi.stubEnv("IMAGE_CACHE_DIR", "");
+    expect(getImageCacheDir()).toBe(".image-cache");
+    vi.unstubAllEnvs();
+  });
+
+  test("follows IMAGE_CACHE_DIR so test runs redirect processed output", () => {
+    vi.stubEnv("IMAGE_CACHE_DIR", "/swept/test-cache");
+    expect(getImageCacheDir()).toBe("/swept/test-cache");
+    vi.unstubAllEnvs();
+  });
+});
 
 describe("image-utils", () => {
   describe("normalizeImagePath", () => {

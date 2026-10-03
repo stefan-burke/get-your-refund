@@ -1,4 +1,4 @@
-import { existsSync, mkdirSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, test, vi } from "vitest";
 import { configureImages } from "#media/image.js";
@@ -42,8 +42,10 @@ describe("configureImages", () => {
 
   test("eleventy.after copies the image cache into the site when present", async () => {
     await withTempDirAsync("image-configure", async (dir) => {
-      // The handler reads ".image-cache/" relative to the real working
-      // directory, so actually chdir into the temp dir.
+      // The handler resolves the cache directory relative to the real
+      // working directory, so actually chdir into the temp dir and blank the
+      // worker's IMAGE_CACHE_DIR override.
+      vi.stubEnv("IMAGE_CACHE_DIR", "");
       await withChdirAsync(dir, async () => {
         const mockConfig = createMockEleventyConfig();
         await configureImages(mockConfig);
@@ -59,6 +61,26 @@ describe("configureImages", () => {
 
         expect(existsSync(join(dir, "_site/img/pic.webp"))).toBe(true);
       });
+      vi.unstubAllEnvs();
+    });
+  });
+
+  test("eleventy.after copies the cache directory named by IMAGE_CACHE_DIR", async () => {
+    await withTempDirAsync("image-configure-env", async (dir) => {
+      mkdirSync(join(dir, "redirected-cache"));
+      writeFileSync(join(dir, "redirected-cache/pic.webp"), "img-bytes");
+      vi.stubEnv("IMAGE_CACHE_DIR", join(dir, "redirected-cache"));
+
+      await withChdirAsync(dir, async () => {
+        const mockConfig = createMockEleventyConfig();
+        await configureImages(mockConfig);
+        mockConfig.eventHandlers["eleventy.after"]();
+      });
+
+      expect(readFileSync(join(dir, "_site/img/pic.webp"), "utf8")).toBe(
+        "img-bytes",
+      );
+      vi.unstubAllEnvs();
     });
   });
 });
